@@ -6,3 +6,4 @@
   * [Batch Normalization](/convolutional_neural_network/batch_normalization.md)
 * [Recurrent Neural Network](recurrent_neural_network/README.md)
   * [Vanilla Recurrent Neural Network](/recurrent_neural_network/recurrent_neural_networks.md)
+  * [LSTM Recurrent Neural Network](/recurrent_neural_network/long_short_term_memory.md)
