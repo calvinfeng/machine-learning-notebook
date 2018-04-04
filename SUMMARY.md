@@ -7,3 +7,4 @@
 * [Recurrent Neural Network](recurrent_neural_network/README.md)
   * [Vanilla Recurrent Neural Network](/recurrent_neural_network/recurrent_neural_networks.md)
   * [LSTM Recurrent Neural Network](/recurrent_neural_network/long_short_term_memory.md)
+* [Low Rank Matrix Factorization](low_rank_matrix_factorization/README.md)
