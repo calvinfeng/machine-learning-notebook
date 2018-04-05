@@ -1,7 +1,7 @@
 # Convolution Operation
 
 _Using 3x3 filter applied on a single channel 4x4 image_  
-![conv](img/conv.gif)
+![conv](diagrams/conv.gif)
 
 ## The Basics & Forward Pass
 
@@ -16,12 +16,12 @@ Question is, since we are starting from the top left corner, what if the filter 
 #### No padding
 
 Filter size of 3x3, stride is 1 and with no padding  
-![conv\_no\_padding](img/conv_no_padding.gif)
+![conv\_no\_padding](diagrams/conv_no_padding.gif)
 
 #### With padding and stride of 2
 
 Filter size of 3x3, stride is 2 and with padding  
-![conv\_padding](img/conv_padding.gif)
+![conv\_padding](diagrams/conv_padding.gif)
 
 * `F`: number of filters
 * `Hf` or `Wf`: spatial extend of the filters, which is 5 in this case
@@ -122,7 +122,7 @@ $$
 
 ```
 y[0][0] = x[0][0][0] * weight[0] + x[0][0][1] * weight[1] + x[0][0][1] * weight[2]
-y[0][1] = x[0][1][0] * weight[0] + x[0][1][1] * weight[1] + x[0][1][2] * weight[2] 
+y[0][1] = x[0][1][0] * weight[0] + x[0][1][1] * weight[1] + x[0][1][2] * weight[2]
 y[1][0] = x[1][0][0] * weight[0] + x[1][0][1] * weight[1] + x[1][0][2] * weight[2]
 y[1][1] = x[1][1][0] * weight[0] + x[1][1][1] * weight[1] + x[1][1][2] * weight[2]
 ```
@@ -160,7 +160,7 @@ for n in range(N):
                 grad_weight[f] += x_pad[n][:, i:i+Hf, j:j+Wf] * grad_y[n, f, h, w]
                 grad_x_pad[n][:, i:i+Hf, j:j+Wf] += weight[f] * grad_y[n, f, h, w]
 
-# Get rid of padding 
+# Get rid of padding
 grad_x = grad_x_pad[:, :, pad:pad+H, pad:pad+W]
 
 # Compute gradient of bias
@@ -174,7 +174,7 @@ So far the convolution we have seen actually downsample the image, i.e. creating
 
 Given a 4x4 input, using a 3x3 filter with `stride=1` and `pad=1`, we should expect an output of 4x4. Similarly, if we increase the stride size to 2. We should expect an output of 2x2. Now, a transpose convolution does the opposite. Given an input of 2x2, we produce an output of 4x4 using 3x3 transpose filter with `stride=2` and `pad=1`. What it does is that it takes one element of the input and multiplies it to the filter matrix as a scalar multiplcation on the filter. This is also called **fractionally strided convolution**.
 
-![transpose\_conv](img/transpose_conv.gif)
+![transpose\_conv](diagrams/transpose_conv.gif)
 
 ```
 y[0][0] = weight[0][0] * x[0][0]
@@ -188,7 +188,7 @@ and so on...
 
 We simply sum the overlapping regions.
 
-![transpose\_conv\_overlap](img/transpose_conv_overlap.png)
+![transpose\_conv\_overlap](diagrams/transpose_conv_overlap.png)
 
 ### One-dimensional Example
 
@@ -227,7 +227,7 @@ ax + by + cz \\
 bx + cy + dz \\
 cx + dy
 \end{vmatrix}
-= 
+=
 \begin{vmatrix}
 a^{'} \\ b^{'} \\ c^{'} \\ d^{'}
 \end{vmatrix}
@@ -242,7 +242,7 @@ $$
 x & 0 & 0 & 0 \\
 y & x & 0 & 0 \\
 z & y & x & 0 \\
-0 & z & y & x \\ 
+0 & z & y & x \\
 0 & 0 & z & y \\
 0 & 0 & 0 & z
 \end{vmatrix}
@@ -250,7 +250,7 @@ z & y & x & 0 \\
 \begin{vmatrix}
 a^{'} \\ b^{'} \\ c^{'} \\ d^{'}
 \end{vmatrix}
-= 
+=
 \begin{vmatrix}
 a^{'}x \\
 a^{'}y + b^{'}x \\
@@ -263,4 +263,3 @@ $$
 
 
 The primary takeaway for transpose convolution is that it **RESTORES** the dimension of an input that was previously downsampled.
-
