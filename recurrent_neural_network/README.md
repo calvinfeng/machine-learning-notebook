@@ -1,1 +1,3 @@
-# Recurrent Neural Network (RNN)
+# Recurrent Neural Networks
+* [x] Vanilla
+* [ ] LSTM
