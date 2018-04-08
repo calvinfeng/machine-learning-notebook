@@ -1,5 +1,7 @@
 # Summary
 * [Introduction](README.md)
+* Neural Network
+  * [Numpy Basics](/neural_network/numpy_basics.md)
 * Matrix Factorization
   * [Singular Value Decomposition](/matrix_factorization/singular_value_decomposition.md)
   * [Low Rank Matrix Factorization](/matrix_factorization/low_rank_matrix_factorization.md)
