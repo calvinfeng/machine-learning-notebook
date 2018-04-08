@@ -21,3 +21,6 @@ By now you should have `numpy`, `matplotlib` and `jupyter` installed.
 ```
 jupyter notebook
 ```
+
+## Source code
+The source code is in `lowrank` directory. Run `main.py` to play around with the Python module.
