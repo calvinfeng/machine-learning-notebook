@@ -10,7 +10,7 @@ $$
 The sigma matrix is said to be our diagonal singular matrix, with singular values filling up its diagonal sorted in decreasing order. The top left corner singular value has the highest value and it descendes as we move toward the bottom right. The U matrix and M matrix represent the latent information for each of our users and movies. However, before we dive too deep into the details, let's do a refresher on singular value decomposition.
 
 ## Solving SVD
-Using conventional definition, given a matrix A, we want to decompose it into three different matrices, $U$, $\Sigma$ and $V$. We need to first construct a symmetric matrix of $A$ using $A^{T}A$. 
+Using conventional definition, given a matrix A, we want to decompose it into three different matrices, $$U$$, $$\Sigma$$ and $$V$$. We need to first construct a symmetric matrix of $$A$$ using $$A^{T}A$$. 
 
 
 ```python
@@ -28,7 +28,7 @@ print A.T.dot(A)
      [-15.  25.]]
 
 
-Then we find the eigenvalues and eigenvectors of this symmetric matrix of $A$
+Then we find the eigenvalues and eigenvectors of this symmetric matrix of $$A$$
 
 
 ```python
@@ -63,7 +63,7 @@ print V
      [-0.70710678  0.70710678]]
 
 
-Finally we can solve for U using $U = AVS^{-1}$, note that $S^{-1}$ is the inverse of $S$.
+Finally we can solve for U using $$U = AVS^{-1}$$, note that $$S^{-1}$$ is the inverse of $$S$$.
 
 
 ```python
@@ -94,10 +94,10 @@ np.isclose(A, U.dot(S).dot(V.T))
 
 There are several properties of SVD we should know about 
 
-* It is always possible to decompose a real valued matrix into $U \Sigma V^{T}$
-* $U$, $\Sigma$, and $V$ are unique
-* $U$ and $V$ are column orthogonal i.e. $U^{T}U = I$ and $V^{T}V = I$
-* $\Sigma$ entries are positive and sorted in descending order
+* It is always possible to decompose a real valued matrix into $$U \Sigma V^{T}$$
+* $$U$$, $$\Sigma$$, and $$V$$ are unique
+* $$U$$ and $$V$$ are column orthogonal i.e. $$U^{T}U = I$$ and $$V^{T}V = I$$
+* $$\Sigma$$ entries are positive and sorted in descending order
 
 Going back to the movie example, imagine that we have 4 movies
 
