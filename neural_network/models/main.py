@@ -1,6 +1,6 @@
 import numpy as np
-import neural_net.data_util as dutil
-from neural_net.network import NeuralNetwork
+import data_util as dutil
+from four_layer import FourLayerNeuralNetwork
 
 
 if __name__ == "__main__":
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     hidden_dim = 200
     output_dim = 10 # Number of classes
 
-    network = NeuralNetwork(input_dim, hidden_dim, output_dim, std=1e-2)
+    network = FourLayerNeuralNetwork(input_dim, hidden_dim, output_dim, std=1e-2)
 
     train_acc = (network.predict(xtr) == ytr).mean()
     print 'Training accuracy: %s' % str(train_acc)

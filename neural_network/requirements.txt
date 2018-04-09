@@ -47,3 +47,6 @@ ipython==4.0.1
 ipython-genutils==0.1.0
 ipywidgets==4.1.1
 notebook==4.4.0
+
+# Tensorflow
+tensorflow==1.7.0

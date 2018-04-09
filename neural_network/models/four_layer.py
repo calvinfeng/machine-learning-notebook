@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class NeuralNetwork(object):
+class FourLayerNeuralNetwork(object):
     """A three-layer fully-connected neural network.
     Architecture:
         input -> fully-connected -> ReLU -> fully-connected -> ReLU -> fully-connected -> softmax -> prediction
@@ -209,5 +209,5 @@ if __name__ == "__main__":
     from neuralnet.tests.test_forward_prop import generate_random_data
     N, input_dim, hidden_dim, output_dim = 100, 10, 10, 5
     rand_X, rand_y = generate_random_data(N, input_dim, output_dim)
-    network = NeuralNetwork(input_dim, hidden_dim, output_dim, std=0.25)
+    network = FourLayerNeuralNetwork(input_dim, hidden_dim, output_dim, std=0.25)
     loss_hist = network.train(rand_X, rand_y, learning_rate=5e-1, reg=0)

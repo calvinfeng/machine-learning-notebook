@@ -3,6 +3,7 @@ import numpy as np
 import platform
 import os
 
+
 def load_pickle(f):
     version = platform.python_version_tuple()
     if version[0] == '2':
@@ -10,6 +11,7 @@ def load_pickle(f):
     elif version[0] == '3':
         return  pickle.load(f, encoding='latin1')
     raise ValueError("invalid python version: {}".format(version))
+
 
 def load_CIFAR_batch(filename):
     """Load a single batch of CIFAR-10 data
@@ -21,6 +23,7 @@ def load_CIFAR_batch(filename):
         X = X.reshape(10000, 3, 32, 32).transpose(0, 2, 3, 1).astype('float')
         Y = np.array(Y)
         return X, Y
+
 
 def load_CIFAR10(dir):
     """Load all CIFAR-10 data which contains 5 batches each has 10,000 images
@@ -37,6 +40,7 @@ def load_CIFAR10(dir):
     del X, Y
     Xte, Yte = load_CIFAR_batch(os.path.join(dir, 'test_batch'))
     return Xtr, Ytr, Xte, Yte
+
 
 def preprocess_cifar_10(dir, num_training=49000, num_validation=1000, num_test=1000):
     """Load the CIFAR-10 dataset from disk and perform preprocessing
@@ -70,6 +74,7 @@ def preprocess_cifar_10(dir, num_training=49000, num_validation=1000, num_test=1
     X_test = X_test.reshape(num_test, -1)
 
     return X_train, y_train, X_val, y_val, X_test, y_test
+
 
 if __name__ == "__main__":
     x_training, y_training, x_test, y_test = load_CIFAR10('data/cifar-10-batches-py')

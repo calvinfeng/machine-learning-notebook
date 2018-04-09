@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class ToyNetwork(object):
+class ThreeLayerNeuralNetwork(object):
     """This network exists for debugging purposes
     """
     def __init__(self, input_dim, hidden_dim, output_dim, std=1e-4):
@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
     N, input_dim, hidden_dim, output_dim = 5, 10, 10, 5
     rand_X, rand_y = generate_random_data(N, input_dim, output_dim)
-    network = ToyNetwork(input_dim, hidden_dim, output_dim, std=0.25)
+    network = ThreeLayerNeuralNetwork(input_dim, hidden_dim, output_dim, std=0.25)
 
     print network.gradient_check(rand_X, rand_y, reg=0)
     network.train(rand_X, rand_y)
