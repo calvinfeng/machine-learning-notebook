@@ -1,5 +1,4 @@
 # Low Rank Factorization
-## Setup
 Create a virtual environment
 ```
 virtualenv environment
@@ -15,12 +14,7 @@ Install pip dependencies
 pip install -r requirements.txt
 ```
 
-By now you should have `numpy`, `matplotlib` and `jupyter` installed.
-
-## Run Jupyter
+Start jupyter notebook
 ```
 jupyter notebook
 ```
-
-## Source code
-The source code is in `lowrank` directory. Run `main.py` to play around with the Python module.

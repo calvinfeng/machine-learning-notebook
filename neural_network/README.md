@@ -1,4 +1,4 @@
-# Recurrent Neural Networks
+# Neural Network (CNN)
 Create a virtual environment
 ```
 virtualenv environment
@@ -17,4 +17,9 @@ pip install -r requirements.txt
 Start jupyter notebook
 ```
 jupyter notebook
+```
+
+Obtain the CIFAR 10 dataset using the bash file in `models/datasets/` folder.
+```
+./get_cifar.sh
 ```

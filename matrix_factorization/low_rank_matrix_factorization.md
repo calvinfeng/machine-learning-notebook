@@ -29,7 +29,7 @@ r_{I,0} & ...     & ...      & ... & r_{I, J}
 \end{vmatrix}
 $$
 
-$X$ represents the latent feature matrix for all users in our system. $\Theta$ represents the latent feature matrix for all movies in our system. The matrix product of $X$ and $\Theta^{T}$ is the model predicated rating.
+$X$ represents the latent feature matrix for all users in our system. $\Theta$ represents the latent feature matrix for all movies in our system. The matrix product of $X$ and $\Theta^{T}$ is the model predicated rating. 
 
 $$
 X\Theta^{T} = \hat{R}
@@ -56,11 +56,11 @@ $$
 \frac{\partial L}{\partial \theta_{j, k}} = \sum_{i}^{I} (R_{i, j} - \hat{R}_{i, j})\cdot x_{i, k} + \lambda \theta_{j, k}
 $$
 
-Remember that
+Remember that 
 $$
 \hat{R}_{i, j} = \vec{x_{i}} \cdot \vec{\theta_{j}}
 $$
-
+ 
 ### Vectorized Approach
 
 Recall that the output of our low-rank matrices model is $\hat{R}$ and let's find the gradient of $L$ with respect to $\hat{R}$ first. The $\frac{1}{2}$ term will get canceled out by the square term.
@@ -102,7 +102,7 @@ grad_m = np.dot(grad_pred.T, self.U) + (self.reg * self.M)
 ```
 
 ### Caution
-In general vectorized approach is much faster than iterative approach but there is a huge memory constraint. When you run 260,000 users on 45,000 movies, the matrix size is 11,700,000,000 and assuming each matrix entry is a float64. That means it's taking up 93,600,000,000 bytes in memory for just one single matrix. I am pretty sure you don't have a machine that has 100+ GB in RAM. Thus, depending on dataset size, it is sometimes better to write an iterative approach using a static typed performant language (C, C++, Go, or Java/Scala.)
+In general vectorized approach is much faster than iterative approach but there is a huge memory constraint. When you run 260,000 users on 45,000 movies, the matrix size is 11,700,000,000 and assuming each matrix entry is a float64. That means it's taking up 93,600,000,000 bytes in memory for just one single matrix. I am pretty sure you don't have a machine that has 100+ GB in RAM. Thus, depending on dataset size, it is sometimes better to write an iterative approach using a static typed performant language (C, C++, Go, or Java/Scala.) 
 
 ### Implementation Details
 Please look at the `lowrank` module inside this folder to find out more about the implementation details.
@@ -119,11 +119,11 @@ np.random.seed(0)
 rand_training_mat = np.random.rand(5, 5)
 
 # Randomly remove certain values to make the matrix sparse
-rand_training_mat[rand_training_mat < 0.50] = 0
+rand_training_mat[rand_training_mat < 0.50] = 0 
 
 # Pick out some set of values from the training set to be test set and then remove those values from training set
 rand_test_mat = np.copy(rand_training_mat)
-rand_test_mat[rand_training_mat < 0.90] = 0
+rand_test_mat[rand_training_mat < 0.90] = 0 
 rand_training_mat[rand_test_mat != 0] = 0
 
 print 'Randomly initialized training sparse matrix'
@@ -204,11 +204,11 @@ plt.show()
 ```
 
     ☑ training: |████████████████████| 100%- current cost: 16262.495841419233
+    
 
 
 
-
-![png](diagrams/low_rank_matrix_factorization_7_1.png)
+![png](low_rank_matrix_factorization_files/low_rank_matrix_factorization_7_1.png)
 
 
 ## Root Mean Squared Error
@@ -227,4 +227,5 @@ plt.plot(steps, rmses, 'o-')
 
 
 
-![png](diagrams/low_rank_matrix_factorization_9_1.png)
+![png](low_rank_matrix_factorization_files/low_rank_matrix_factorization_9_1.png)
+
