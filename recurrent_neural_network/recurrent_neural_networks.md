@@ -3,7 +3,7 @@
 Recurrent neural network is a type of network architecture that accepts variable inputs and variable outputs, which contrasts with the vanilla feed-forward neural networks. We can also consider input with variable length, such as video frames and we want to make a decision along every frame of that video.
 
 ## Process Sequences
-![sequence](diagrams/sequence.png)
+![sequence](assets/sequence.png)
 
 * One-to-one
     * This is the classic feed forward neural network architecture, with one input and we expect one output.
@@ -22,31 +22,31 @@ Instead of imagining that hidden state is being *recurrently* fed back into the 
 
 For example, we begin with a zero'ed vector as our hidden state on the left. We feed it into the network along with our first input. When we receive the next input, we take the new hidden state and feed it into the network again with the second input. The procoess goes on until the point we wish to compute the final output of the network.
 
-![computational-graph-1](diagrams/computational-graph-1.png)
+![computational-graph-1](assets/computational-graph-1.png)
 
 We use the same set of weight for every time step of the computation.
 
-![computational-graph-2](diagrams/computational-graph-2.png)
+![computational-graph-2](assets/computational-graph-2.png)
 
 ### Many-to-many
-For the many-to-many case, we compute a `y[t]` and the loss for every time step. At the end we simply sum up the loss of all the time steps and count that as our total loss of the network.
+For the many-to-many case, we compute a `y[t]` and the loss for every time step. At the end we simply sum up the loss of all the time steps and count that as our total loss of the network. 
 
 When we think about the back propagation for this model, we will have a separate gradient for W flowing from each of those time steps and then the final gradient for W will be the sum of all those individual time step gradients. *Imagine that we have some sort of ground-truth label for every step of the sequence*:
 
 
-![computational-graph-many-to-many](diagrams/computational-graph-many-to-many.png)
+![computational-graph-many-to-many](assets/computational-graph-many-to-many.png)
 
 ### Many-to-one
-If we have this many to one situation, we make the decision based on the final hidden state of this network. This final hidden state summarizes all of the context from the entire sequence.
+If we have this many to one situation, we make the decision based on the final hidden state of this network. This final hidden state summarizes all of the context from the entire sequence. 
 
 
-![computational-graph-many-to-one](diagrams/computational-graph-many-to-one.png)
+![computational-graph-many-to-one](assets/computational-graph-many-to-one.png)
 
 ### One-to-many
-If we have this one to many situation, where we want to receive a fixed size input and produce a variable length output, then you would commonly use that fixed size input to initialize the hidden state and then let the network to propagate and evolve the hidden state forward.
+If we have this one to many situation, where we want to receive a fixed size input and produce a variable length output, then you would commonly use that fixed size input to initialize the hidden state and then let the network to propagate and evolve the hidden state forward. 
 
 
-![computational-graph-one-to-many](diagrams/computational-graph-one-to-many.png)
+![computational-graph-one-to-many](assets/computational-graph-one-to-many.png)
 
 ### Squence to Sequence
 For the sequence to sequence models where you might want to do something like machine translation, this is a combination of **many-to-one** and **one-to-many** architecture. We proceed in two stages, (1) the encoder receives a variably sized input like an english sentence and performs encoding into a hidden state vector, (2) the decoder receives the hidden state vector and produces a variably sized output. The motivation of using this architecture is modularity. We can easily swap out encoder and decoder for different type of language translation.
@@ -82,7 +82,7 @@ import numpy as np
 
 np.random.seed(0)
 class RecurrentNetwork(object):
-    """When we say W_hh, it means a weight matrix that accepts a hidden state and produce a new hidden state.
+    """When we say W_hh, it means a weight matrix that accepts a hidden state and produce a new hidden state. 
     Similarly, W_xh represents a weight matrix that accepts an input vector and produce a new hidden state. This
     notation can get messy as we get more variables later on with LSTM and I simplify the notation a little bit in
     LSTM notes.
@@ -94,12 +94,12 @@ class RecurrentNetwork(object):
         self.W_hy = np.random.randn(3, 3)
         self.Bh = np.random.randn(3,)
         self.By = np.random.rand(3,)
-
+    
     def forward_prop(self, x):
         # The order of which you do dot product is entirely up to you. The gradient updates will take care itself
         # as long as the matrix dimension matches up.
         self.hidden_state = np.tanh(np.dot(self.hidden_state, self.W_hh) + np.dot(x, self.W_xh) + self.Bh)
-
+        
         return self.W_hy.dot(self.hidden_state) + self.By
 ```
 
@@ -134,33 +134,33 @@ $$
 \frac{\partial L}{\partial W_{hh}} \;, \frac{\partial L}{\partial W_{xh}} \;
 $$
 
-**Please look at Character-level Language Model below for detailed backprop example**
+**Please look at Character-level Language Model below for detailed backprop example** 
 
-For recurrent neural network, we are essentially backpropagation through time, which means that we are forwarding through entire sequence to compute losses, then backwarding through entire sequence to compute gradients.
+For recurrent neural network, we are essentially backpropagation through time, which means that we are forwarding through entire sequence to compute losses, then backwarding through entire sequence to compute gradients. 
 
-However, this becomes problematic when we want to train a sequence that is very long. For example, if we were to train a a paragraph of words, we have to iterate through many layers before we can compute one simple gradient step. In practice, what people do is an approximation called **truncated backpropagation** through time. Run forward and backward through chunks of the sequence instead of the whole sequence.
+However, this becomes problematic when we want to train a sequence that is very long. For example, if we were to train a a paragraph of words, we have to iterate through many layers before we can compute one simple gradient step. In practice, what people do is an approximation called **truncated backpropagation** through time. Run forward and backward through chunks of the sequence instead of the whole sequence. 
 
-Even though our input sequence can potentially be very long or even infinite, when we are training our model, we will step forward for some number of steps and compute a loss only over this sub sequence of the data. Then backpropagate through this sub-sequence and make a gradient step on the weights. When we move to the next batch, we still have this hidden state from the previous batch of data, we will carry this hidden state forward. The forward pass is unaffected but we will only backpropgate again through this second batch.
+Even though our input sequence can potentially be very long or even infinite, when we are training our model, we will step forward for some number of steps and compute a loss only over this sub sequence of the data. Then backpropagate through this sub-sequence and make a gradient step on the weights. When we move to the next batch, we still have this hidden state from the previous batch of data, we will carry this hidden state forward. The forward pass is unaffected but we will only backpropgate again through this second batch. 
 
-![truncated-backprop](diagrams/truncated-backprop.png)
+![truncated-backprop](assets/truncated-backprop.png)
 
 ## Character-leve Language Model
 ### Training Time
 Suppose that we have a character-level language model, the list of possible *vocabularies* is `['h', 'e', 'l', 'o']`.  An example training sequence is `hello`. The same output from hidden layer is being fed to output layer and the next hidden layer, as noted below that `y[t]` is a product of `W_hy` and `h[t]`. Since we know what we are expecting, we can backpropagate the cost and update weights.
 
-The `y[t]` is a prediction for which letter is most likely to come next. For example, when we feed `h` into the network, `e` is the expected output of the network because the only training example we have is `hello`.
+The `y[t]` is a prediction for which letter is most likely to come next. For example, when we feed `h` into the network, `e` is the expected output of the network because the only training example we have is `hello`. 
 
-![language-model](diagrams/language-model.png)
+![language-model](assets/language-model.png)
 
 ### Test Time
 At test time, we sample characters one at a time and feed it back to the model to produce a whole sequence of characters (which makes up a word.) We seed the word with a prefix like the letter **h** in this case. The output is a softmax vector which represents probability. We can use it as a probability distribution and perform sampling.
 
 **This means EACH character has some chance to be selected** Samplng technique gives us more diversity in the output. This is evident in sentence construction. Given a prefix, we can have multiple words and phrases to represent the same idea.
 
-![language-model-test-time](diagrams/language-model-test-time.png)
+![language-model-test-time](assets/language-model-test-time.png)
 
 ###  Implementation: Minimal character-level Vanilla RNN model
-Let's use the same `tanh` example we had up there to implement a single layer recurrent nerual network. The forward pass is quite easy. Assuming the input is a list of character index, i.e. `a => 0`, `b => 1`, etc..., the target is a list of character index that represents the next letter in the sequence. For example, the target is characters of the word `ensorflow` and the input is `tensorflo`. Given a letter `t`, it should predict that next letter is `e`.
+Let's use the same `tanh` example we had up there to implement a single layer recurrent nerual network. The forward pass is quite easy. Assuming the input is a list of character index, i.e. `a => 0`, `b => 1`, etc..., the target is a list of character index that represents the next letter in the sequence. For example, the target is characters of the word `ensorflow` and the input is `tensorflo`. Given a letter `t`, it should predict that next letter is `e`. 
 
 
 #### ForwardProp
@@ -224,13 +224,13 @@ grads['By'] += grad_output
 grad_h = dot(self.params['Why'].T, grad_output) + grad_prev_h # (H, O)(O, H) => (H, H)
 ```
 
-We need to perform a little u-substitution here to simplify our derivatives.
+We need to perform a little u-substitution here to simplify our derivatives. 
 
 $$
 h_{t} = tanh(u) + B_{h}
 $$
 
-So we find the gradient of loss with respect to `u` and then use that to find rest of the gradients.
+So we find the gradient of loss with respect to `u` and then use that to find rest of the gradients. 
 
 $$
 \frac{\partial L}{\partial u} = \frac{\partial L}{\partial h_{t}} \cdot \frac{\partial h_{t}}{\partial u}
@@ -251,7 +251,7 @@ $$
 \frac{\partial L}{\partial W_{xh}} = \frac{\partial L}{\partial u} \cdot \frac{\partial u}{\partial W_{xh}}
 $$
 
-$$
+$$ 
 \frac{\partial L}{\partial W_{hh}} = \frac{\partial L}{\partial u} \cdot \frac{\partial u}{\partial W_{hh}}
 $$
 
@@ -292,7 +292,7 @@ while curr_iter < total_iters:
     if curr_iter == 0 or pointer + seq_length + 1 >= len(text_data):
         prev_hidden_state = np.zeros((hidden_dim, 1))  # Reset RNN memory
         pointer = 0  # Reset the pointer
-
+    
     # Since we are trying to predict next letter in the sequence, the target is simply pointer + 1
     input_list = [char_to_idx[ch] for ch in text_data[pointer:pointer+seq_length]]
     target_list = [char_to_idx[ch] for ch in text_data[pointer+1: pointer+seq_length+1]]
@@ -300,9 +300,9 @@ while curr_iter < total_iters:
     if curr_iter % epoch_size == 0:
         steps.append(curr_iter)
         losses.append(loss)
-
+        
     optimizer.update_param(grads)
-    curr_iter += 1
+    curr_iter += 1 
     pointer += seq_length
 ```
 
@@ -323,50 +323,22 @@ plt.show()
 
 ```python
 # Pick a random character and sample a 100 characters long sequence (i.e. a sentence.)
-letter = 'H'
+letter = 'T'
 hidden_state = np.zeros_like((hidden_dim, 1))
-_, sampled_indices = model.sample_chars(prev_hidden_state, char_to_idx[letter], 1000)
+_, sampled_indices = model.sample_chars(prev_hidden_state, char_to_idx[letter], 10)
 predicted_text = ''.join(idx_to_char[idx] for idx in sampled_indices)
 print "-------------\n%s\n-------------" % predicted_text
 ```
 
     -------------
-
-    In leav,s aven rooked down one as far as I could
-    To where it bent in the undergrowth;
-    Then took in as fa stood
-    And looked down one as favre lay
-    Ig perass trg
-    I sack.
-    I shene them really about the same,
-    And both that morning equally lay
-    In leaverg d re tat morning equally lay
-    In leaves be stood
-    And looked down one as far as I could
-    To whe other, as just as fair,
-    And having perhaps the better claim,
-    Because it was grassy and wanted wear;
-    Though as for that the passing the leaves no stood
-    And looked down one as far as I could
-    To where it bent in the undergrowth;
-    Then took the other, as just as fair,
-    And having perhaps the shat has saves no step had trodden black.
-    Oh, I kept the first for another day!
-    Yet knowing how way leads on to way,
-    I doubted if I should ever cous the other, as just as fair,
-    And having perhaps the better claim,
-    Because it was grassy and wanted wear;
-    Though as for that the passing there
-    Had worn  ood ss tn the undergrowth;
-    Then took the other, as just as fair,
-    And hav
+    I diver ao
     -------------
 
 
 ## Multi-layer RNN
 We can construct a multi-layer recurrent neural network by stacking layers of RNN together. That is simply taking the output hidden state and feed it into another hidden layer as an input sequence and repeat that process. However, in general RNN does not go very deep due to the exploding gradient problem from long sequence of data. Also for most natural language problems, there isn't a lot of incentive to go deep for every time step. The key thing is long sequence data.
 
-![multi-layer-rnn](diagrams/multi-layer-rnn.png)
+![multi-layer-rnn](assets/multi-layer-rnn.png)
 
 $$
 h^{layer}_{t} = tanh \begin{pmatrix} W^{layer} \begin{pmatrix} h^{layer - 1}_{t} \\ h^{layer}_{t-1} \end{pmatrix} \end{pmatrix}
