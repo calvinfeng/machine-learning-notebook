@@ -1,5 +1,5 @@
 import numpy as np
-from helpers import *
+from helpers import sigmoid
 
 
 class LSTMLayer(object):
@@ -68,7 +68,7 @@ class LSTMLayer(object):
             - grad_b: Gradient of biases, of shape (4H,)
         """
         N, T, H = grad_hidden_state_over_t.shape
-        grad_cell_state_over_t = np.zeros((N, T, H))
+        # grad_cell_state_over_t = np.zeros((N, T, H))
 
         grad_input_seq = np.zeros(self.input_sequence.shape)
         grad_Wx, grad_Wh, grad_b = np.zeros(self.Wx.shape), np.zeros(self.Wh.shape), np.zeros(self.b.shape)
@@ -76,9 +76,9 @@ class LSTMLayer(object):
         grad_prev_cell_state = np.zeros((N, H))
 
         for t in reversed(range(T)):
-            time_step_result = self.backward_step(grad_hidden_state_over_t[:, t, :] + grad_prev_hidden_state,
-                                                  grad_prev_cell_state,
-                                                  self.caches[t])
+            time_step_result = self._backward_step(grad_hidden_state_over_t[:, t, :] + grad_prev_hidden_state,
+                                                   grad_prev_cell_state,
+                                                   self.caches[t])
             grad_input_seq[:, t, :] = time_step_result[0]
             grad_prev_hidden_state = time_step_result[1]
             grad_prev_cell_state = time_step_result[2]
@@ -121,20 +121,65 @@ class LSTMLayer(object):
         next_hidden_state = output_gate * np.tanh(next_cell_state)
 
         # Cache the results
-        cache = (next_hidden_state,
-                 next_cell_state,
-                 input_gate,
-                 forget_gate,
-                 output_gate,
-                 gain_gate,
-                 x,
-                 prev_hidden_state,
-                 prev_cell_state)
+        cache = {
+            'x': x,
+            'next-c': next_hidden_state,
+            'next-h': next_cell_state,
+            'i-gate': input_gate,
+            'f-gate': forget_gate,
+            'o-gate': output_gate,
+            'g-gate': gain_gate,
+            'prev-h': prev_hidden_state,
+            'prev-c': prev_cell_state
+        }
 
         return next_hidden_state, next_cell_state, cache
 
-    def _backward_step(self):
-        pass
+    def _backward_step(self, grad_next_hidden_state, grad_next_cell_state, cache):
+        """Backward pass for a single time step of the LSTM layer.
+
+        :param np.array grad_next_hidden_state: Gradient of next hidden state, of shape (N, H)
+        :param np.array grad_next_cell_state: Gradient of next cell state, of shape (N, H)
+        :cache tuple cache: Cache object from the forward pass
+
+        Returns a tuple of:
+            - grad_x: Gradients of time step input, of shape (N, D)
+            - grad_prev_hidden_state: Gradients of previous hidden state, of shape (N, H)
+            - grad_prev_cell_state: Gradients of previous cell state, of shape (N, H)
+            - grad_Wx: Gradients of input-to-hidden weights, of shape (D, 4H)
+            - grad_Wh: Gradients of hidden-to-hidden weights, of shape (H, 4H)
+            - grad_b: Gradients of bias, of shape (4H,)
+        """
+        # Note that grad_prev_c has two contributions, one from grad_next_cell_state and another one from grad_next_hidden_state
+        grad_next_h_next_c = cache['o-gate'] * ( 1 - (np.tanh(cache['next-c']) * np.tanh(cache['next-c'])))
+        
+        grad_prev_cell_state = (grad_next_hidden_state * grad_next_h_next_c * cache['f-gate']) + (grad_next_cell_state + cache['f-gate'])
+        
+        # Each gate needs to go through the derivative of non-linearity
+        grad_i_gate = (grad_next_hidden_state * grad_next_h_next_c * cache['g-gate']) + (grad_next_cell_state * cache['prev-c'])
+        grad_i_gate = grad_i_gate * cache['i-gate'] * (1 - cache['i-gate'])
+
+        grad_f_gate = (grad_next_hidden_state * grad_next_h_next_c * cache['prev-c']) + (grad_next_cell_state * cache['prev-c'])
+        grad_f_gate = grad_f_gate * cache['f-gate'] * (1 - cache['f-gate'])
+
+        grad_o_gate = grad_next_hidden_state * np.tanh(cache['next-c'])
+        grad_o_gate = grad_o_gate * cache['o-gate'] * (1 - cache['o-gate'])
+
+        grad_g_gate = (grad_next_hidden_state * grad_next_h_next_c * cache['i-gate']) + (grad_next_cell_state * cache['i-gate'])
+        grad_g_gate = grad_g_gate * (1 - cache['g-gate'] * cache['g-gate'])
+
+        # Now stack them
+        grad_act = np.concatenate((grad_i_gate, grad_f_gate, grad_o_gate, grad_g_gate), axis=1)
+        
+        # And then do the same ol' gradient calculations
+        grad_x = np.dot(grad_act, self.Wx.T)
+        grad_prev_hidden_state = np.dot(grad_act, self.Wh.T)
+        grad_Wx = np.dot(cache['x'].T, grad_act)
+        grad_Wh = np.dot(cache['prev-h'].T, grad_act)
+        grad_b = np.sum(grad_act, axis=0)
+
+        return grad_x, grad_prev_hidden_state, grad_prev_cell_state, grad_Wx, grad_Wh, grad_b 
+
 
 if __name__ == "__main__":
     """Glossary
