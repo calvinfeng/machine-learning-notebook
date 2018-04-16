@@ -4,6 +4,7 @@
 import numpy as np
 import unittest
 from lstm import LSTMLayer
+from gradient_check import eval_numerical_gradient_array
 
 
 def rel_error(x, y):
@@ -65,5 +66,43 @@ class LSTMLayerTest(unittest.TestCase):
         ])    
 
         self.assertAlmostEqual(rel_error(hidden_state_over_time, expected), 1e-9, places=2)
-
     
+    def test_backward(self):
+        np.random.seed(231)
+
+        N, D, T, H = 2, 3, 10, 6
+        
+        # Create the layer
+        layer = LSTMLayer(D, H)        
+        Wx = np.random.randn(D, 4*H)
+        Wh = np.random.randn(H, 4*H)
+        b = np.random.randn(4*H)
+
+        # Create some arbitrary inputs
+        x = np.random.randn(N, T, D)
+        h0 = np.random.randn(N, H)
+
+        hidden_state_over_time = layer.forward(x, h0, Wx=Wx, Wh=Wh, b=b)
+
+        grad_h_over_time = np.random.randn(*hidden_state_over_time.shape)
+
+        grad_x, grad_h0, grad_Wx, grad_Wh, grad_b = layer.backward(grad_h_over_time)
+
+        fx = lambda x: layer.forward(x, h0, Wx=Wx, Wh=Wh, b=b)
+        fh0 = lambda h0: layer.forward(x, h0, Wx=Wx, Wh=Wh, b=b)
+        fWx = lambda Wx: layer.forward(x, h0, Wx=Wx, Wh=Wh, b=b)
+        fWh = lambda Wh: layer.forward(x, h0, Wx=Wx, Wh=Wh, b=b)
+        fb = lambda b: layer.forward(x, h0,  Wx=Wx, Wh=Wh, b=b)
+
+        grad_x_num = eval_numerical_gradient_array(fx, x, grad_h_over_time)
+        grad_h0_num = eval_numerical_gradient_array(fh0, h0, grad_h_over_time)
+        grad_Wx_num = eval_numerical_gradient_array(fWx, Wx, grad_h_over_time)
+        grad_Wh_num = eval_numerical_gradient_array(fWh, Wh, grad_h_over_time)
+        grad_b_num = eval_numerical_gradient_array(fb, b, grad_h_over_time)
+
+        print('grad_x error: ', rel_error(grad_x_num, grad_x))
+        print('grad_h0 error: ', rel_error(grad_h0_num, grad_h0))
+        print('grad_Wx error: ', rel_error(grad_Wx_num, grad_Wx))
+        print('grad_Wh error: ', rel_error(grad_Wh_num, grad_Wh))
+        print('grad_b error: ', rel_error(grad_b_num, grad_b))
+            

@@ -25,24 +25,33 @@ class LSTMLayer(object):
         self.cell_states_over_t = None
         self.caches = None
 
-    def forward(self, input_sequence, h0):
+    def forward(self, input_sequence, h0, Wx=None, Wh=None, b=None):
         """Forward pass for a LSTM layer over an entire sequence of data. This assumes an input sequence composed of T
         vectors, each of dimension D. The LSTM uses a hidden size of H, and it works over a mini-batch containing N
         sequences.
 
         :param np.array input_sequence: Input data of shape (N, T, D)
         :param np.array h0: Initial hidden state of shape (N, H)
-        :return np.array: Return hidden state over time of shape (N, T, H)
+        :param np.array Wx: Optional input-to-hidden weight matrix, of shape (D, 4H)
+        :param np.array Wh: Optional hidden-to-hidden weight matrix, of shape (H, 4H)
+        :param np.array b: Optional bias vector, of shape (4H,)
+
+        Returns np.array:
+            Hidden state over time of shape (N, T, H)
         """
+        if Wx is not None and Wh is not None and b is not None:
+            self.Wx, self.Wh, self.b = Wx, Wh, b
+
         N, T, D = input_sequence.shape
         _, H = h0.shape
 
         # Cache the inputs and create time series variables, i.e. hidden states over time and cell states over time.
-        self.h0 = h0
         self.input_sequence = input_sequence
+        self.h0 = h0
+
+        self.hidden_states_over_t = np.zeros((N, T, H))        
         self.cell_states_over_t = np.zeros((N, T, H))
         self.caches = dict()
-        self.hidden_states_over_t = np.zeros((N, T, H))
 
         # Run the sequence
         prev_hidden_state = h0
@@ -63,7 +72,7 @@ class LSTMLayer(object):
 
         :param np.array grad_hidden_state: Upstream gradients of hidden states, of shape (N, T, H)
 
-        Returns a tuple of:
+        Returns tuple:
             - grad_input_seq: Gradient of the input data, of shape (N, T, D)
             - grad_h0: Gradient of the initial hidden state, of shape (N, H)
             - grad_Wx: Gradient of input-to-hidden weight matrix, of shape (D, 4H)
@@ -103,7 +112,7 @@ class LSTMLayer(object):
         :param np.array prev_hidden_state: Previous hidden state of shape (N, H)
         :param np.array prev_cell_state: Previous cell state of shape (N, H)
 
-        Returns a tuple of:
+        Returns tuple:
             - next_hidden_state: Next hidden state, of shape (N, H)
             - next_cell_state: Next cell state, of shape (N, H)
             - cache: Tuple of values needed for back-propagation
@@ -145,7 +154,7 @@ class LSTMLayer(object):
         :param np.array grad_next_cell_state: Gradient of next cell state, of shape (N, H)
         :cache tuple cache: Cache object from the forward pass
 
-        Returns a tuple of:
+        Returns tuple:
             - grad_x: Gradients of time step input, of shape (N, D)
             - grad_prev_hidden_state: Gradients of previous hidden state, of shape (N, H)
             - grad_prev_cell_state: Gradients of previous cell state, of shape (N, H)
@@ -182,19 +191,3 @@ class LSTMLayer(object):
         grad_b = np.sum(grad_act, axis=0)
 
         return grad_x, grad_prev_hidden_state, grad_prev_cell_state, grad_Wx, grad_Wh, grad_b 
-
-
-if __name__ == "__main__":
-    """Glossary
-
-    N: Mini-batch size
-    T: Number of time steps
-    H: Hidden dimension
-    D: Word vector dimension
-    """
-    N, T, H, D = 10, 10, 20, 128
-    layer = LSTMLayer(D, H)
-
-    x_seq = np.random.rand(N, T, D)
-    h0 = np.random.randn(N, H)
-    print layer.forward(x_seq, h0).shape
