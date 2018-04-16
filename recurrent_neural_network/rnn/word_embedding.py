@@ -1,5 +1,5 @@
 import numpy as np
-from helpers import *
+
 
 class WordEmbeddingLayer(object):
     def __init__(self, vocab_size, word_vec_dim):
@@ -31,7 +31,7 @@ class WordEmbeddingLayer(object):
         :param np.array grad_out: Upstream gradients of shape (N, T, D)
         :return np.array grad_W: Gradient of word embedding matrix, of shape (V, D)
         """
-        if x is None:
+        if self.x is None:
             raise "forward pass must occur before backward pass"
 
         grad_W = np.zeros(self.W.shape)
@@ -45,19 +45,3 @@ class WordEmbeddingLayer(object):
         np.add.at(grad_W, self.x, grad_out)
 
         return grad_W
-
-
-if __name__ == "__main__":
-    vocab_to_idx, idx_to_vocab = load_text('datasets/text.txt')
-    layer = WordEmbeddingLayer(len(vocab_to_idx), 128)
-
-    input_sentence = "both that morning equally lay"
-
-    # As usual, N is the size of our mini-batch and T is the sequencel length
-    N, T = 6, 5
-    x = np.array(N * [list(map(lambda word: vocab_to_idx[word], input_sentence.split()))])
-    print 'x shape', x.shape
-    print 'forward pass output shape', layer.forward(x).shape
-
-    grad_out = np.random.randn(N, T, layer.D)
-    print 'gradient shape', layer.backward(grad_out).shape

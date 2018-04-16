@@ -21,6 +21,7 @@ class LSTMLayer(object):
         # Required states for back-propagation
         self.h0 = None
         self.input_sequence = None
+        self.hidden_state_over_t = None
         self.cell_states_over_t = None
         self.caches = None
 
@@ -41,7 +42,7 @@ class LSTMLayer(object):
         self.input_sequence = input_sequence
         self.cell_states_over_t = np.zeros((N, T, H))
         self.caches = dict()
-        hidden_states_over_t = np.zeros((N, T, H))
+        self.hidden_states_over_t = np.zeros((N, T, H))
 
         # Run the sequence
         prev_hidden_state = h0
@@ -50,10 +51,12 @@ class LSTMLayer(object):
             hidden_state, cell_state, self.caches[t] = self._forward_step(input_sequence[:, t, :],
                                                                          prev_hidden_state,
                                                                          prev_cell_state)
-            hidden_states_over_t[:, t, :] = hidden_state
+            self.hidden_states_over_t[:, t, :] = hidden_state
             self.cell_states_over_t[:, t, :] = cell_state
 
-        return hidden_states_over_t
+            prev_hidden_state, prev_cell_state = hidden_state, cell_state
+
+        return self.hidden_states_over_t
 
     def backward(self, grad_hidden_state_over_t):
         """Backward pass for a LSTM layer over an entire sequence of data.
