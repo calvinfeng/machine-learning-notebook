@@ -28,16 +28,13 @@ $$
 Think of taking derivative of `x.T * A * x` with respect to a vector as an element wise operation:
 
 $$
-\frac{\partial}{\partial \vec{x}} x^{T}Ax = \begin{bmatrix} \frac{\partial}{\partial x_{0}} \\ \frac{\partial}{\partial x_{1}} \end{bmatrix} x^{T}Ax
-$$
-
-Then we get the following result:
-
-$$
-\frac{\partial}{\partial \vec{x}} x^{T}Ax = \begin{bmatrix}
+\begin{align}
+\frac{\partial}{\partial \vec{x}} x^{T}Ax &= \begin{bmatrix} \frac{\partial}{\partial x_{0}} \\ \frac{\partial}{\partial x_{1}} \end{bmatrix} x^{T}Ax \\
+&= \begin{bmatrix}
 2a_{00}x_{0} + a_{01}x_{1} + a_{10}x_{1} \\
 a_{01}x_{0} + a_{10}x_{0} + 2a_{11}x_{1}
 \end{bmatrix}
+\end{align}
 $$
 
 Which is equivalent to:
@@ -114,4 +111,63 @@ $$
 \begin{bmatrix} x \\ y \\ \lambda \end{bmatrix}=
 \begin{bmatrix} 60 \\ 30 \\ 720 \end{bmatrix}
 $$
+
+
+## Part 3 - Minimize $x^{T}Ax$
+The objective here is to combine what we know from Part 1 and Part 2 to achieve the following:
+
+$$
+argmin_{\vec{x}} \; x^{T}Ax
+$$
+
+We want to minimize the expression `x * A.T * x` under the following constraints: 
+
+$$
+\text{x is normalized} \quad x^{T}x = 1
+$$
+
+$$
+\text{symmetric} \quad A = A^{T}
+$$
+
+$$
+\text{A is positive semidefinite} \quad x^{T}Ax \geq 0
+$$
+
+Being positive semidefinite is an important quality, because if a matrix is definite or semidefinite positive, the vector, at which derivative of the expression is zero, has to be the solution for minimization. Now we have our constraints, we are ready to use Lagrange multiplier to minimize this expression.
+
+$$
+\mathcal{L} = x^{T}Ax - \lambda\left(x^{T}x - 1\right)
+$$
+
+We will make an important assumption here, that `A` is a symmetric matrix. You will see that this is indeed the case later on. 
+
+$$
+\frac{\partial \mathcal{L}}{\partial x} = 2Ax - 2\lambda x = 0
+$$
+
+$$
+\frac{\partial \mathcal{L}}{\partial \lambda} = 1 - x^{T}x = 0
+$$
+
+Now solve for `x` and I will begin to use the vector notation here in case we forget that `x` is a vector, and it has always been a vector. I omitted the vector symbol to type less LaTeX code on my end but I must include it here to illustrate a point:
+
+$$
+A\vec{x} = \lambda\vec{x}
+$$
+
+The constraint equation gave us that
+
+$$
+x^{T}x = 1
+$$
+
+So what does this mean? It means that if you want to minimize the expression $$x^{T}Ax$$, $$\vec{x}$$ must be the eigenvectors of $$A$$! Here are couple important properties:
+
+* $$A$$ is positive if all eigenvalues are positive.
+* $$A$$ is semidefinite positive if all eigenvalues are either positive or zero.
+* All eigenvectors are the same size, they have a norm equal to 1.
+* The eigenvector corresponding to the smallest eigenvalue will give you the smallest possible value of $$A\vec{x}$$
+* In converse, eigenvector corresponding to the biggest eigenvalue will give you the maximum of $$A\vec{x}$$. However I am not 100% sure of this point, I need to run couple tests to verify it. 
+
 
