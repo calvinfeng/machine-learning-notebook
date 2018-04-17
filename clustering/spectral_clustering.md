@@ -28,13 +28,13 @@ $$
 Think of taking derivative of `x.T * A * x` with respect to a vector as an element wise operation:
 
 $$
-\begin{align}
+\begin{aligned}
 \frac{\partial}{\partial \vec{x}} x^{T}Ax &= \begin{bmatrix} \frac{\partial}{\partial x_{0}} \\ \frac{\partial}{\partial x_{1}} \end{bmatrix} x^{T}Ax \\
 &= \begin{bmatrix}
 2a_{00}x_{0} + a_{01}x_{1} + a_{10}x_{1} \\
 a_{01}x_{0} + a_{10}x_{0} + 2a_{11}x_{1}
 \end{bmatrix}
-\end{align}
+\end{aligned}
 $$
 
 Which is equivalent to:
@@ -57,7 +57,7 @@ $$
 ## Part 2 - Lagrange Multiplier
 Lagrange multiplier is frequently used in classical mechanics to solve function optimization under constraints. Lagrangian mechanic is often used in non-relativistic quantum mechanics for particle physics, however that would require knowledge in path integral. In this section, I am sticking to the plain old Lagrange multipler to solve a simple constraint problem as an example. 
 
-Suppose we want to minimize or maximize a function `f(x, y, z)` while subjecting to a constraint function `g(x, y, z) = k`. The easier example one can think of is that you want to a fence around your house, but the constraint is that you have limited materials from Home Depot. You want to maximize the area enclosed by your fence. Then you can use Lagrange Multiplier to perform the calculation and find the opitmal solution. 
+Suppose we want to minimize or maximize a function $$f(x, y, z)$$ while subjecting to a constraint function $$g(x, y, z) = k$$. The easier example one can think of is that you want to a fence around your house, but the constraint is that you have limited materials from Home Depot. You want to maximize the area enclosed by your fence. Then you can use Lagrange Multiplier to perform the calculation and find the opitmal solution. 
 
 ### Formulation
 We define Lagrangian as follows:
@@ -150,7 +150,7 @@ $$
 \frac{\partial \mathcal{L}}{\partial \lambda} = 1 - x^{T}x = 0
 $$
 
-Now solve for `x` and I will begin to use the vector notation here in case we forget that `x` is a vector, and it has always been a vector. I omitted the vector symbol to type less LaTeX code on my end but I must include it here to illustrate a point:
+Now solve for $$\vec{x}$$ and I will begin to use the vector notation here in case we forget that $x$ is a vector, and it has always been a vector. I omitted the vector symbol to type less LaTeX code on my end but I must include it here to illustrate a point:
 
 $$
 A\vec{x} = \lambda\vec{x}
