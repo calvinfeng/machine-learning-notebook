@@ -1,3 +1,6 @@
+# Created: April, 2018
+# Author(s): Calvin Feng
+
 import numpy as np
 
 
@@ -13,13 +16,16 @@ class WordEmbeddingLayer(object):
         self.W /= 100
         self.x = None
 
-    def forward(self, x):
+    def forward(self, x, W=None):
         """Forward pass for word embedding layer. This function operates on mini-batches of size N where each sequence
         has length T.
 
         :param np.array x: Integer array of shape (N, T), each element idx of x must be in the range 0 <= idx < V
         :return np.array: Array of shape (N, T, D) which represents the word vectors
         """
+        if W is not None:
+            self.W = W
+
         self.x = x
         return self.W[x]
 

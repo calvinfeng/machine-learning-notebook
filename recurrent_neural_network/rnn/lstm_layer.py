@@ -1,3 +1,6 @@
+# Created: April, 2018
+# Author(s): Calvin Feng
+
 import numpy as np
 from helpers import sigmoid
 

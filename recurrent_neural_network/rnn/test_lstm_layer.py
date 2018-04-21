@@ -3,7 +3,7 @@
 
 import numpy as np
 import unittest
-from lstm import LSTMLayer
+from lstm_layer import LSTMLayer
 from gradient_check import eval_numerical_gradient_array
 
 
@@ -68,7 +68,7 @@ class LSTMLayerTest(unittest.TestCase):
         self.assertAlmostEqual(rel_error(hidden_state_over_time, expected), 1e-9, places=2)
     
     def test_backward(self):
-        np.random.seed(231)
+        np.random.seed(271)
 
         N, D, T, H = 2, 3, 10, 6
         
