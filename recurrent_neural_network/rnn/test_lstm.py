@@ -100,9 +100,9 @@ class LSTMLayerTest(unittest.TestCase):
         grad_Wh_num = eval_numerical_gradient_array(fWh, Wh, grad_h_over_time)
         grad_b_num = eval_numerical_gradient_array(fb, b, grad_h_over_time)
 
-        print('grad_x error: ', rel_error(grad_x_num, grad_x))
-        print('grad_h0 error: ', rel_error(grad_h0_num, grad_h0))
-        print('grad_Wx error: ', rel_error(grad_Wx_num, grad_Wx))
-        print('grad_Wh error: ', rel_error(grad_Wh_num, grad_Wh))
-        print('grad_b error: ', rel_error(grad_b_num, grad_b))
-            
+        self.assertAlmostEqual(rel_error(grad_x_num, grad_x), 1e-9, places=2)
+        self.assertAlmostEqual(rel_error(grad_h0_num, grad_h0), 1e-9, places=2)
+        self.assertAlmostEqual(rel_error(grad_Wx_num, grad_Wx), 1e-9, places=2)
+        self.assertAlmostEqual(rel_error(grad_Wh_num, grad_Wh), 1e-9, places=2)
+        self.assertAlmostEqual(rel_error(grad_b_num, grad_b), 1e-9, places=2)
+

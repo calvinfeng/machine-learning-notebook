@@ -135,8 +135,8 @@ class LSTMLayer(object):
         # Cache the results
         cache = {
             'x': x,
-            'next-c': next_hidden_state,
-            'next-h': next_cell_state,
+            'next-h': next_hidden_state,
+            'next-c': next_cell_state,
             'i-gate': input_gate,
             'f-gate': forget_gate,
             'o-gate': output_gate,
@@ -165,10 +165,10 @@ class LSTMLayer(object):
         # Note that grad_prev_c has two contributions, one from grad_next_cell_state and another one from grad_next_hidden_state
         grad_next_h_next_c = cache['o-gate'] * ( 1 - (np.tanh(cache['next-c']) * np.tanh(cache['next-c'])))
         
-        grad_prev_cell_state = (grad_next_hidden_state * grad_next_h_next_c * cache['f-gate']) + (grad_next_cell_state + cache['f-gate'])
+        grad_prev_cell_state = (grad_next_hidden_state * grad_next_h_next_c * cache['f-gate']) + (grad_next_cell_state * cache['f-gate'])
         
         # Each gate needs to go through the derivative of non-linearity
-        grad_i_gate = (grad_next_hidden_state * grad_next_h_next_c * cache['g-gate']) + (grad_next_cell_state * cache['prev-c'])
+        grad_i_gate = (grad_next_hidden_state * grad_next_h_next_c * cache['g-gate']) + (grad_next_cell_state * cache['g-gate'])
         grad_i_gate = grad_i_gate * cache['i-gate'] * (1 - cache['i-gate'])
 
         grad_f_gate = (grad_next_hidden_state * grad_next_h_next_c * cache['prev-c']) + (grad_next_cell_state * cache['prev-c'])
