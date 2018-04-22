@@ -9,11 +9,12 @@ class LSTMLayer(object):
     def __init__(self, word_vec_dim, hidden_dim):
         """Initialize a long short-term memory recurrent layer
 
-        The factor of 4 is needed for i, f, o, g gates. Instead of declaring individual matrix for each of them, we
-        can combine all four of them into one.
+        The factor of 4 is needed for i, f, o, g gates. Instead of declaring individual matrix for 
+        each of them, we can combine all four of them into one.
 
-        :param int wordvec_dim: Dimension of the word vector
-        :param int hidden_dim: Dimension for the hidden layer
+        Args:
+            wordvec_dim (int): Dimension of the word vector
+            hidden_dim (int): Dimension for the hidden layer
         """
         self.Wx = np.random.randn(word_vec_dim, 4 * hidden_dim)
         self.Wx /= np.sqrt(word_vec_dim)
@@ -29,18 +30,19 @@ class LSTMLayer(object):
         self.caches = None
 
     def forward(self, input_sequence, h0, Wx=None, Wh=None, b=None):
-        """Forward pass for a LSTM layer over an entire sequence of data. This assumes an input sequence composed of T
-        vectors, each of dimension D. The LSTM uses a hidden size of H, and it works over a mini-batch containing N
-        sequences.
+        """Forward pass for a LSTM layer over an entire sequence of data. This assumes an input 
+        sequence composed of T vectors, each of dimension D. The LSTM uses a hidden size of H, and it 
+        works over a mini-batch containing N sequences.
 
-        :param np.array input_sequence: Input data of shape (N, T, D)
-        :param np.array h0: Initial hidden state of shape (N, H)
-        :param np.array Wx: Optional input-to-hidden weight matrix, of shape (D, 4H)
-        :param np.array Wh: Optional hidden-to-hidden weight matrix, of shape (H, 4H)
-        :param np.array b: Optional bias vector, of shape (4H,)
+        Args:
+            input_sequence (np.array): Input data of shape (N, T, D)
+            h0 (np.array): Initial hidden state of shape (N, H)
+            Wx (np.array): Optional input-to-hidden weight matrix, of shape (D, 4H)
+            Wh (np.array): Optional hidden-to-hidden weight matrix, of shape (H, 4H)
+            b (np.array): Optional bias vector, of shape (4H,)
 
-        Returns np.array:
-            Hidden state over time of shape (N, T, H)
+        Returns 
+            (np.array): Hidden state over time of shape (N, T, H)
         """
         if Wx is not None and Wh is not None and b is not None:
             self.Wx, self.Wh, self.b = Wx, Wh, b
@@ -48,7 +50,8 @@ class LSTMLayer(object):
         N, T, D = input_sequence.shape
         _, H = h0.shape
 
-        # Cache the inputs and create time series variables, i.e. hidden states over time and cell states over time.
+        # Cache the inputs and create time series variables, i.e. hidden states over time and cell 
+        # states over time.
         self.input_sequence = input_sequence
         self.h0 = h0
 
@@ -73,7 +76,8 @@ class LSTMLayer(object):
     def backward(self, grad_hidden_state_over_t):
         """Backward pass for a LSTM layer over an entire sequence of data.
 
-        :param np.array grad_hidden_state: Upstream gradients of hidden states, of shape (N, T, H)
+        Args:
+            grad_hidden_state (np.array): Upstream gradients of hidden states, of shape (N, T, H)
 
         Returns tuple:
             - grad_input_seq: Gradient of the input data, of shape (N, T, D)
@@ -111,9 +115,10 @@ class LSTMLayer(object):
     def _forward_step(self, x, prev_hidden_state, prev_cell_state):
         """Forward pass for a single time step of the LSTM layer.
 
-        :param np.array x: Input data of shape (N, D)
-        :param np.array prev_hidden_state: Previous hidden state of shape (N, H)
-        :param np.array prev_cell_state: Previous cell state of shape (N, H)
+        Args:
+            x (np.array): Input data of shape (N, D)
+            prev_hidden_state (np.array): Previous hidden state of shape (N, H)
+            prev_cell_state (np.array): Previous cell state of shape (N, H)
 
         Returns tuple:
             - next_hidden_state: Next hidden state, of shape (N, H)
@@ -151,9 +156,10 @@ class LSTMLayer(object):
     def _backward_step(self, grad_next_hidden_state, grad_next_cell_state, cache):
         """Backward pass for a single time step of the LSTM layer.
 
-        :param np.array grad_next_hidden_state: Gradient of next hidden state, of shape (N, H)
-        :param np.array grad_next_cell_state: Gradient of next cell state, of shape (N, H)
-        :cache tuple cache: Cache object from the forward pass
+        Args:
+            grad_next_hidden_state (np.array): Gradient of next hidden state, of shape (N, H)
+            grad_next_cell_state (np.array): Gradient of next cell state, of shape (N, H)
+            cache (tuple): Cache object from the forward pass
 
         Returns tuple:
             - grad_x: Gradients of time step input, of shape (N, D)

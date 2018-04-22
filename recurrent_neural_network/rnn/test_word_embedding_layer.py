@@ -3,7 +3,6 @@
 
 from word_embedding_layer import WordEmbeddingLayer
 from gradient_check import eval_numerical_gradient_array
-from helpers import load_text
 import numpy as np
 import unittest
 
@@ -63,6 +62,8 @@ class WordEmbeddingLayerTest(unittest.TestCase):
 
 
 def main():
+    from helpers import load_text
+
     vocab_to_idx, _ = load_text('datasets/text.txt')
     layer = WordEmbeddingLayer(len(vocab_to_idx), 128)
 
