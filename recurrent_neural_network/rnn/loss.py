@@ -76,11 +76,12 @@ def main():
     y = np.random.randint(V, size=(N, T))
     mask = (np.random.rand(N, T) > 0.5)
 
-    loss, dx = temporal_softmax_loss(x, y, mask, verbose=False)
+    loss, grad_x = temporal_softmax_loss(x, y, mask, verbose=False)
 
-    dx_num = eval_numerical_gradient(lambda x: temporal_softmax_loss(x, y, mask)[0], x, verbose=False)
+    grad_x_num = eval_numerical_gradient(lambda x: temporal_softmax_loss(x, y, mask)[0], x, verbose=False)
     
-    print rel_error(dx, dx_num)
+    print rel_error(grad_x, grad_x_num)
+    print loss
 
 
 if __name__ == "__main__":
