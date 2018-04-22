@@ -69,20 +69,6 @@ def main():
     check_loss(100, 10, 10, 1.0)  # Should be about 23
     check_loss(5000, 10, 10, 0.1) # Should be about 2.3
 
-    # Gradient check for temporal softmax loss
-    N, T, V = 7, 8, 9
-
-    x = np.random.randn(N, T, V)
-    y = np.random.randint(V, size=(N, T))
-    mask = (np.random.rand(N, T) > 0.5)
-
-    loss, grad_x = temporal_softmax_loss(x, y, mask, verbose=False)
-
-    grad_x_num = eval_numerical_gradient(lambda x: temporal_softmax_loss(x, y, mask)[0], x, verbose=False)
-    
-    print rel_error(grad_x, grad_x_num)
-    print loss
-
 
 if __name__ == "__main__":
     main()

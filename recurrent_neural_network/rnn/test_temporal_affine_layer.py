@@ -2,13 +2,10 @@
 # Author(s): Calvin Feng
 
 from temporal_affine_layer import TemporalAffineLayer
-from gradient_check import eval_numerical_gradient_array
+from gradient_check import eval_numerical_gradient_array, rel_error
 import numpy as np
 import unittest
 
-def rel_error(x, y):
-    """Returns relative error"""
-    return np.max(np.abs(x - y) / (np.maximum(1e-8, np.abs(x) + np.abs(y))))
 
 class TemporalAffineLayerTest(unittest.TestCase):
     def test_backward(self):

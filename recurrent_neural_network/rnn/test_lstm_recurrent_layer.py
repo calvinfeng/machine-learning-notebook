@@ -3,21 +3,16 @@
 
 import numpy as np
 import unittest
-from lstm_layer import LSTMLayer
-from gradient_check import eval_numerical_gradient_array
+from lstm_recurrent_layer import LSTMRecurrentLayer
+from gradient_check import eval_numerical_gradient_array, rel_error
 
 
-def rel_error(x, y):
-    """Returns relative error"""
-    return np.max(np.abs(x - y) / (np.maximum(1e-8, np.abs(x) + np.abs(y))))
-
-
-class LSTMLayerTest(unittest.TestCase):
+class LSTMRecurrentLayerTest(unittest.TestCase):
     def test_forward_step(self):
         N, D, H = 3, 4, 5
 
         # Create the layer
-        layer = LSTMLayer(D, H)
+        layer = LSTMRecurrentLayer(D, H)
         layer.Wx = np.linspace(-2.1, 1.3, num=4*D*H).reshape(D, 4*H)
         layer.Wh = np.linspace(-0.7, 2.2, num=4*H*H).reshape(H, 4*H)
         layer.b = np.linspace(0.3, 0.7, num=4*H)
@@ -45,7 +40,7 @@ class LSTMLayerTest(unittest.TestCase):
         N, D, H, T = 2, 5, 4, 3
 
         # Create the layer
-        layer = LSTMLayer(D, H)
+        layer = LSTMRecurrentLayer(D, H)
         layer.Wx = np.linspace(-0.2, 0.9, num=4*D*H).reshape(D, 4*H)
         layer.Wh = np.linspace(-0.3, 0.6, num=4*H*H).reshape(H, 4*H)
         layer.b = np.linspace(0.2, 0.7, num=4*H)
@@ -73,7 +68,7 @@ class LSTMLayerTest(unittest.TestCase):
         N, D, T, H = 2, 3, 10, 6
         
         # Create the layer
-        layer = LSTMLayer(D, H)        
+        layer = LSTMRecurrentLayer(D, H)        
         Wx = np.random.randn(D, 4*H)
         Wh = np.random.randn(H, 4*H)
         b = np.random.randn(4*H)

@@ -5,7 +5,7 @@ import numpy as np
 from helpers import sigmoid
 
 
-class LSTMLayer(object):
+class LSTMRecurrentLayer(object):
     def __init__(self, word_vec_dim, hidden_dim):
         """Initialize a long short-term memory recurrent layer
 
