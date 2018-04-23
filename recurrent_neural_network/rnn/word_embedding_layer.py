@@ -5,17 +5,17 @@ import numpy as np
 
 
 class WordEmbeddingLayer(object):
-    """Word embedding layer enables us to present words using vectors. Each word of the vocabulary 
-    be associated with a vector and these vectors will be learned jointly with the rest of the system.
+    """Word embedding layer represents words using vectors. Each word of the vocabulary be associated 
+    with a vector and these vectors will be learned jointly with the rest of the system.
     """
-    def __init__(self, vocab_size, word_vec_dim):
+    def __init__(self, V, D):
         """
         Args: 
-            vocab_size (int): Number of words in the dictionary.
-            word_vec_dim (int): Dimension of the desired word vector.
+            V (int): Number of words in the dictionary.
+            D (int): Dimension of the desired word vector.
         """
-        self.V = vocab_size
-        self.D = word_vec_dim
+        self.V = V
+        self.D = D
         self.W = np.random.randn(self.V, self.D)
         self.W /= 100
         self.x = None

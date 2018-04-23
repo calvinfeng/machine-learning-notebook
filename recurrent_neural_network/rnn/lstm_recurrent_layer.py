@@ -6,21 +6,21 @@ from helpers import sigmoid
 
 
 class LSTMRecurrentLayer(object):
-    def __init__(self, word_vec_dim, hidden_dim):
+    def __init__(self, D, H):
         """Initialize a long short-term memory recurrent layer
 
         The factor of 4 is needed for i, f, o, g gates. Instead of declaring individual matrix for 
         each of them, we can combine all four of them into one.
 
         Args:
-            wordvec_dim (int): Dimension of the word vector
-            hidden_dim (int): Dimension for the hidden layer
+            D (int): Dimension of the word vector
+            H (int): Dimension for the hidden layer
         """
-        self.Wx = np.random.randn(word_vec_dim, 4 * hidden_dim)
-        self.Wx /= np.sqrt(word_vec_dim)
-        self.Wh = np.random.randn(hidden_dim, 4 * hidden_dim)
-        self.Wh /= np.sqrt(word_vec_dim)
-        self.b = np.zeros(4 * hidden_dim)
+        self.Wx = np.random.randn(D, 4 * H)
+        self.Wx /= np.sqrt(D)
+        self.Wh = np.random.randn(H, 4 * H)
+        self.Wh /= np.sqrt(D)
+        self.b = np.zeros(4 * H)
 
         # Required states for back-propagation
         self.h0 = None

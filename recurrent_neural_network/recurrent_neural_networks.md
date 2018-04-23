@@ -144,7 +144,7 @@ Even though our input sequence can potentially be very long or even infinite, wh
 
 ![truncated-backprop](assets/truncated-backprop.png)
 
-## Character-leve Language Model
+## Character-level Language Model
 ### Training Time
 Suppose that we have a character-level language model, the list of possible *vocabularies* is `['h', 'e', 'l', 'o']`.  An example training sequence is `hello`. The same output from hidden layer is being fed to output layer and the next hidden layer, as noted below that `y[t]` is a product of `W_hy` and `h[t]`. Since we know what we are expecting, we can backpropagate the cost and update weights.
 
@@ -268,15 +268,15 @@ grad_prev_h = dot(self.params['Whh'].T, grad_u)
 
 ```python
 import numpy as np
-from adagrad import AdaGradOptimizer
-from data_util import *
-from vanilla_rnn import VanillaRNNModel
+from rnn.adagrad import AdaGradOptimizer
+from rnn.data_util import *
+from rnn.recurrent_model import VanillaRecurrentModel
 
 hidden_dim = 100
 seq_length = 50
 learning_rate = 1e-1
-text_data, char_to_idx, idx_to_char = load_dictionary("datasets/word_dictionary.txt")
-model = VanillaRNNModel(len(char_to_idx), hidden_dim)
+text_data, char_to_idx, idx_to_char = load_dictionary("rnn/datasets/random_text.txt")
+model = VanillaRecurrentModel(len(char_to_idx), hidden_dim)
 optimizer = AdaGradOptimizer(model, learning_rate)
 ```
 
@@ -325,13 +325,28 @@ plt.show()
 # Pick a random character and sample a 100 characters long sequence (i.e. a sentence.)
 letter = 'T'
 hidden_state = np.zeros_like((hidden_dim, 1))
-_, sampled_indices = model.sample_chars(prev_hidden_state, char_to_idx[letter], 10)
+_, sampled_indices = model.sample_chars(prev_hidden_state, char_to_idx[letter], 500)
 predicted_text = ''.join(idx_to_char[idx] for idx in sampled_indices)
 print "-------------\n%s\n-------------" % predicted_text
 ```
 
     -------------
-    I diver ao
+    ds ond wea, leaves no step had trodden black.
+    Oh, I kept the first for another day!
+    Yet keowrodde it waves no step had trodden black.
+    Oh, I kept the first for another day!
+    Yet knowing how way leads on to way,
+    I doubted if I should ever come backourd
+    Two roand I-
+    I took the undergrooked bow,
+    And how oway lay
+    In leaves no step had trodden black.
+    Oh, I kept the first for another day!
+    Yet knowing how way leads on to way,
+    I doubted if I should ever come back.
+    I shall be telliegh
+    Somewher come batk.
+    I
     -------------
 
 

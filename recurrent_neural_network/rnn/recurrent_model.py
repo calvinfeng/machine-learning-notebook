@@ -1,15 +1,17 @@
-# Author(s) Calvin Feng, 2018
+# Created: March, 2018
+# Author(s): Calvin Feng
+ 
 import numpy as np
 from random import uniform
 from numpy import dot, tanh, exp
 from adagrad import AdaGradOptimizer
-from data_util import *
+from data_util import load_dictionary
 
 
-class VanillaRNNModel(object):
+class VanillaRecurrentModel(object):
     """Vanilla recurrent neural network with no fancy optimization technique.
 
-    :param integer hidden_dim: Size of the hidden layer of neurons
+    :param integer hidden_diwordvec_dimm: Size of the hidden layer of neurons
     :param integer input_dim: Please note that input dimension is the same as output dimension for this character model
     """
     def __init__(self, input_dim, hidden_dim):
@@ -28,7 +30,7 @@ class VanillaRNNModel(object):
         x = np.zeros((self.input_dim, 1))
         x[seed_idx] = 1
         indices = []
-        for t in xrange(num_seq):
+        for _ in xrange(num_seq):
             hidden_state = tanh(dot(self.params['Wxh'], x) + dot(self.params['Whh'], hidden_state) + self.params['Bh'])
             output = dot(self.params['Why'], hidden_state) + self.params['By']
             prob = exp(output) / np.sum(exp(output))
@@ -70,7 +72,7 @@ class VanillaRNNModel(object):
             prob_states[t] = exp(y_states[t]) / np.sum(exp(y_states[t]))
 
             loss += -np.log(prob_states[t][target_seq[t], 0])  # Remember that prob is an (O, 1) vector.
-
+            
         # Perform back propagation
         grads = dict()
         grad_prev_h = np.zeros((self.hidden_dim, 1))
@@ -105,7 +107,7 @@ class VanillaRNNModel(object):
         for name in grads:
             np.clip(grads[name], -5, 5, out=grads[name])  # Clip to mitigate exploding gradients
 
-        return loss, grads, hidden_states[len(input_seq) - 1]
+            return loss, grads, hidden_states[len(input_seq) - 1]
 
     def gradient_check(self, input_seq, target_seq, prev_hidden_state):
         num_checks, delta = 10, 1e-6
@@ -115,7 +117,7 @@ class VanillaRNNModel(object):
                 raise "matrix dimensions don't match: %s and %s" % (grads[name].shape, self.params[name].shape)
 
             print name
-            for i in xrange(num_checks):
+            for _ in xrange(num_checks):
                 rand_idx = int(uniform(0, self.params[name].size))
 
                 old_val = self.params[name].flat[rand_idx]  # flatten the matrix and use integer index to retrieve value
@@ -138,8 +140,8 @@ def main():
     hidden_size = 100
     seq_length = 20
     learning_rate = 1e-1
-    text_data, char_to_idx, idx_to_char = load_dictionary("datasets/word_dictionary.txt")
-    model = VanillaRNNModel(len(char_to_idx), hidden_size)
+    text_data, char_to_idx, idx_to_char = load_dictionary("datasets/random_text.txt")
+    model = VanillaRecurrentModel(len(char_to_idx), hidden_size)
     optimizer = AdaGradOptimizer(model, learning_rate)
     step, pointer, epoch_size, smooth_loss = 0, 0, 100, -np.log(1.0/len(char_to_idx))*seq_length
 
