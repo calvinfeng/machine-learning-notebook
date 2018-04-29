@@ -169,7 +169,7 @@ class LSTMRecurrentLayer(object):
             - grad_Wh: Gradients of hidden-to-hidden weights, of shape (H, 4H)
             - grad_b: Gradients of bias, of shape (4H,)
         """
-        x, next_h, next_c, i_gate, f_gate, o_gate, g_gate, prev_h, prev_c = cache
+        x, _, next_c, i_gate, f_gate, o_gate, g_gate, prev_h, prev_c = cache
 
         # Note that grad_prev_c has two contributions, one from grad_next_cell_state and another one from 
         # grad_next_hidden_state
