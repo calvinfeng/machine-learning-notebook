@@ -61,3 +61,19 @@ class WordEmbeddingLayer(object):
         np.add.at(grad_W, self.x, grad_out)
 
         return grad_W
+
+    def update(self, grads, update_func, configs={}):
+        """
+        Args:
+            grad_W (np.array): Gradients of weights, of shape (H, V)
+            update_func (function): Update rule, e.g. gradient descent, adagrad, adam and etc...
+            configs (dict): Configuration for update rule on each param
+        
+        Returns:
+            next_config (np.array): Updated version of configuration for update rule
+        """
+        grad_W = grads
+        
+        self.W, configs['W'] = update_func(self.W, grad_W, configs.get('W', None))
+
+        return configs

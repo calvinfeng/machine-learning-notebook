@@ -3,6 +3,7 @@
 
 import numpy as np
 from helpers import sigmoid
+import pdb
 
 
 class LSTMRecurrentLayer(object):
@@ -201,3 +202,22 @@ class LSTMRecurrentLayer(object):
         grad_b = np.sum(grad_act, axis=0)
 
         return grad_x, grad_prev_hidden_state, grad_prev_cell_state, grad_Wx, grad_Wh, grad_b 
+
+    def update(self, grads, update_func, configs={}):
+        """
+        Args:
+            grad_W (np.array): Gradients of weights, of shape (H, V)
+            grad_b (np.array): Gradients of biases, of shape (V,)
+            update_func (function): Update rule, e.g. gradient descent, adagrad, adam and etc...
+            configs (dict): Configuration for update rule on each param
+        
+        Returns:
+            next_config (np.array): Updated version of configuration for update rule
+        """
+        _, _, grad_Wx, grad_Wh, grad_b = grads
+
+        self.Wx, configs['Wx'] = update_func(self.Wx, grad_Wx, configs.get('Wx', None))
+        self.Wh, configs['Wh'] = update_func(self.Wh, grad_Wh, configs.get('Wh', None))
+        self.b, configs['b'] = update_func(self.b, grad_b, configs.get('b', None))
+
+        return configs

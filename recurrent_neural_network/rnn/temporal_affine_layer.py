@@ -55,3 +55,21 @@ class TemporalAffineLayer(object):
         grad_b = grad_out.sum(axis=(0, 1))
 
         return grad_x, grad_W, grad_b
+
+    def update(self, grads, update_func, configs={}):
+        """
+        Args:
+            grad_W (np.array): Gradients of weights, of shape (H, V)
+            grad_b (np.array): Gradients of biases, of shape (V,)
+            update_func (function): Update rule, e.g. gradient descent, adagrad, adam and etc...
+            configs (dict): Configuration for update rule on each param
+        
+        Returns:
+            next_config (np.array): Updated version of configuration for update rule
+        """
+        _, grad_W, grad_b = grads
+
+        self.W, configs['W'] = update_func(self.W, grad_W, configs.get('W', None))
+        self.b, configs['b'] = update_func(self.b, grad_b, configs.get('b', None))
+
+        return configs

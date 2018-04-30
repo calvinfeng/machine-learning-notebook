@@ -71,20 +71,21 @@ class LSTMRecurrentModel(object):
         affine_out = self.temporal_affine_layer.forward(lstm_out)
         
         # Affine out is the score for softmax classification
-        loss, grad_score = temporal_softmax_loss(affine_out, sentences_out, mask, verbose=False)
+        score = affine_out
+        loss, grad_score = temporal_softmax_loss(score, sentences_out, mask, verbose=False)
         
         grads = dict()
         grads['temporal_affine'] = self.temporal_affine_layer.backward(grad_score)
         grads['lstm'] = self.lstm_recurrent_layer.backward(grads['temporal_affine'][0])
         grads['word_embedding'] = self.word_embedding_layer.backward(grads['lstm'][0])
 
-        return loss, grads
+        return score, loss, grads
 
 
 def main():
     sentences, word_to_idx, _ = load_random_sentences('datasets/random_sentences.txt', 20)
     model = LSTMRecurrentModel(word_to_idx)    
-    loss, _ = model.loss(sentences)
+    loss, _, _ = model.loss(sentences)
     print loss
 
 
