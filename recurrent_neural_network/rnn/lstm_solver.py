@@ -99,7 +99,8 @@ class LSTMSolver(object):
                 # Check model accuracy
                 sentences_in = self.data['training'][:, :-1]
                 sentences_out = self.data['training'][:, 1:]
-                print self.check_accuracy(sentences_in, sentences_out)
+                # print self.check_accuracy(sentences_in, sentences_out)
+                self.model.sample(sentences_in)
 
         if self.verbose:
             plt.plot(np.arange(total_iterations), self.loss_history)
@@ -142,13 +143,12 @@ class LSTMSolver(object):
         
 
 def main():
-    sentences, word_to_idx, _ = load_random_sentences('datasets/random_sentences.txt', 30)
-    print sentences.shape
-    model = LSTMRecurrentModel(word_to_idx)        
-    solver = LSTMSolver(model, {'training': sentences}, batch_size=10, 
-                                                        num_epochs=100, 
+    sentences, word_to_idx, idx_to_word = load_random_sentences('datasets/random_sentences.txt', 30)
+    model = LSTMRecurrentModel(word_to_idx, idx_to_word)        
+    solver = LSTMSolver(model, {'training': sentences}, batch_size=20, 
+                                                        num_epochs=1000, 
                                                         print_every=10,
-                                                        learning_rate_decay=0.9,
+                                                        learning_rate_decay=0.99,
                                                         update_rule='adam')
     solver.train()
 

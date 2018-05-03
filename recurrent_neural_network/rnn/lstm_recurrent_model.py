@@ -10,7 +10,7 @@ import numpy as np
 
 
 class LSTMRecurrentModel(object):
-    def __init__(self, word_to_idx, W=128, H=128):
+    def __init__(self, word_to_idx, idx_to_word, W=128, H=128):
         """
         Args:
             word_to_idx (dict): A dictionary giving the vocabulary. It contains V entries, and maps
@@ -19,6 +19,7 @@ class LSTMRecurrentModel(object):
             H (int): Dimension of hidden state of the RNN layer.
         """
         self.word_to_idx = word_to_idx
+        self.idx_to_word = idx_to_word
         self.W = W 
         self.H = H
         
@@ -61,19 +62,22 @@ class LSTMRecurrentModel(object):
         # sentences_out will be the first word.
         N, _ = sentences.shape
         sentences_in = sentences[:, :-1]
-        sentences_out = sentences[:, 1:]
         
-        mask = (sentences_out != self._null_token)
-        h0 = np.zeros((N, self.H))
-
+        # Perform forward propagation
         word_embedding_out = self.word_embedding_layer.forward(sentences_in)
+        h0 = np.zeros((N, self.H))
         lstm_out = self.lstm_recurrent_layer.forward(word_embedding_out, h0)
         affine_out = self.temporal_affine_layer.forward(lstm_out)
         
         # Affine out is the score for softmax classification
         score = affine_out
+        
+        # Compute loss
+        sentences_out = sentences[:, 1:]
+        mask = (sentences_out != self._null_token)
         loss, grad_score = temporal_softmax_loss(score, sentences_out, mask, verbose=False)
         
+        # Perform back propagation
         grads = dict()
         grads['temporal_affine'] = self.temporal_affine_layer.backward(grad_score)
         grads['lstm'] = self.lstm_recurrent_layer.backward(grads['temporal_affine'][0])
@@ -81,10 +85,41 @@ class LSTMRecurrentModel(object):
 
         return score, loss, grads
 
+    def sample(self, sentences, max_length=30):
+        """Run a test-time forward pass for the model
+        
+        At each time step, we embed the current word. We pass the word vector and the previous 
+        hidden state to get the next hidden state. Then use the hidden state to get scores for all
+        vocab words and randomly sample a word using the softmax probabilities.
 
+        Args:
+            max_length (int): Maximum length T of the generated sentence.
+
+        Returns:
+            sentence (np.array): Array of shape (1, max_length) giving sampled sentence. 
+        """
+        N, _ = sentences.shape    
+        word_embedding_out = self.word_embedding_layer.forward(sentences)
+        h0 = np.zeros((N, self.H))
+        lstm_out = self.lstm_recurrent_layer.forward(word_embedding_out, h0)
+        affine_out = self.temporal_affine_layer.forward(lstm_out)
+
+        score = affine_out
+
+        N, T, vocab_size = score.shape 
+        for i in range(N):
+            sampled_words = []
+            for t in range(T):
+                prob = np.exp(score[i, t]) / np.sum(np.exp(score[i, t]))
+                word_idx = np.random.choice(range(vocab_size), p=prob)
+                sampled_words.append(self.idx_to_word[word_idx])
+            
+            print ' '.join(sampled_words)
+        
+    
 def main():
-    sentences, word_to_idx, _ = load_random_sentences('datasets/random_sentences.txt', 20)
-    model = LSTMRecurrentModel(word_to_idx)    
+    sentences, word_to_idx, idx_to_word = load_random_sentences('datasets/random_sentences.txt', 30)
+    model = LSTMRecurrentModel(word_to_idx, idx_to_word)    
     loss, _, _ = model.loss(sentences)
     print loss
 
