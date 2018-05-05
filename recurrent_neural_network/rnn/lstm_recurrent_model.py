@@ -5,7 +5,8 @@ from word_embedding_layer import WordEmbeddingLayer
 from lstm_recurrent_layer import LSTMRecurrentLayer
 from temporal_affine_layer import TemporalAffineLayer
 from temporal_softmax import temporal_softmax_loss
-from data_util import load_random_sentences
+from data_util import load_word_based_text_input
+from data_util import START_TOKEN, END_TOKEN, NULL_TOKEN
 import numpy as np
 
 
@@ -44,38 +45,33 @@ class LSTMRecurrentModel(object):
         # We can treat the above as another affine layer.
         ###########################################################################################        
 
-    def loss(self, sentences):
+    def loss(self, inputs, outputs):
         """Compute training-time loss for the model.
 
         Args:
-            sentences (np.array): Ground-truth sentences or captions; an integer array of shape (N, T) 
-                                  where each element is in the range 0 <= y[n, t] < V.
+            inputs (np.array): Input sentences or captions; an integer array of shape (N, T) 
+                               where each element is in the range 0 <= y[n, t] < V.
+            outputs (np.array): Expected output sentences or captions; an integer array of shape
+                                (N, T) where each element is in range 0 <= y[n, t] < V.
         
         Returns tuple:
             loss (float): Scalar loss.
             grads (dict): Dictionary of gradients
         """
-        # Cut sentences into two pieces, sentences_in has everything but the last word and will be
-        # input to the RNN; sentences_out has everything but teh first word and this is what we 
-        # will expefct the RNN to generate. RNN should produce word (t + 1) after receiving word t.
-        # The first element of sentences_in will be the START token and the first element of 
-        # sentences_out will be the first word.
-        N, _ = sentences.shape
-        sentences_in = sentences[:, :-1]
+        N, _ = inputs.shape
         
         # Perform forward propagation
-        word_embedding_out = self.word_embedding_layer.forward(sentences_in)
+        word_embedding_out = self.word_embedding_layer.forward(inputs)
         h0 = np.zeros((N, self.H))
         lstm_out = self.lstm_recurrent_layer.forward(word_embedding_out, h0)
         affine_out = self.temporal_affine_layer.forward(lstm_out)
         
-        # Affine out is the score for softmax classification
+        # Affine out is the score for softmax classifi
         score = affine_out
         
         # Compute loss
-        sentences_out = sentences[:, 1:]
-        mask = (sentences_out != self._null_token)
-        loss, grad_score = temporal_softmax_loss(score, sentences_out, mask, verbose=False)
+        mask = (outputs != self._null_token)
+        loss, grad_score = temporal_softmax_loss(score, outputs, mask, verbose=False)
         
         # Perform back propagation
         grads = dict()
@@ -85,7 +81,7 @@ class LSTMRecurrentModel(object):
 
         return score, loss, grads
 
-    def sample(self, sentences, max_length=30):
+    def sample(self, inputs, max_length=30):
         """Run a test-time forward pass for the model
         
         At each time step, we embed the current word. We pass the word vector and the previous 
@@ -93,13 +89,13 @@ class LSTMRecurrentModel(object):
         vocab words and randomly sample a word using the softmax probabilities.
 
         Args:
-            max_length (int): Maximum length T of the generated sentence.
+            max_length (int): Maximum length T of the gesentencesnerated sentence.
 
         Returns:
             sentence (np.array): Array of shape (1, max_length) giving sampled sentence. 
         """
-        N, _ = sentences.shape    
-        word_embedding_out = self.word_embedding_layer.forward(sentences)
+        N, _ = inputs.shape    
+        word_embedding_out = self.word_embedding_layer.forward(inputs)
         h0 = np.zeros((N, self.H))
         lstm_out = self.lstm_recurrent_layer.forward(word_embedding_out, h0)
         affine_out = self.temporal_affine_layer.forward(lstm_out)
@@ -108,19 +104,50 @@ class LSTMRecurrentModel(object):
 
         N, T, vocab_size = score.shape 
         for i in range(N):
-            sampled_words = []
+            question = self._word_vector_to_string(inputs[i])
+
+            sampled_word_vector = []
             for t in range(T):
                 prob = np.exp(score[i, t]) / np.sum(np.exp(score[i, t]))
-                word_idx = np.random.choice(range(vocab_size), p=prob)
-                sampled_words.append(self.idx_to_word[word_idx])
-            
-            print ' '.join(sampled_words)
+                sampled_word_vector.append(np.random.choice(range(vocab_size), p=prob))
+
+            answer = self._word_vector_to_string(np.array(sampled_word_vector))
+
+            print '=============================='
+            print question
+            print answer
+            print '=============================='
         
+    def _word_vector_to_string(self, vector):
+        T, = vector.shape
+
+        words = []
+        for t in range(T):
+            words.append(self.idx_to_word[vector[t]])
+
+        # Find the beginning and ending of the sentence
+        start_idx, end_idx = None, None
+        for idx, word in enumerate(words):
+            if word == START_TOKEN and start_idx is None:
+                start_idx = idx
+        
+            if word == END_TOKEN and end_idx is None:
+                end_idx = idx
     
+        if start_idx is not None and end_idx is not None:
+            return ' '.join(words[start_idx+1:end_idx])
+        else:
+            return 'bad sentence'
+
+
 def main():
-    sentences, word_to_idx, idx_to_word = load_random_sentences('datasets/random_sentences.txt', 30)
+    input_filepath = 'datasets/questions.txt'
+    output_filepath = 'datasets/answers.txt'
+    questions, answers, word_to_idx, idx_to_word = load_word_based_text_input(input_filepath, 
+                                                                              output_filepath, 
+                                                                              30)
     model = LSTMRecurrentModel(word_to_idx, idx_to_word)    
-    loss, _, _ = model.loss(sentences)
+    _, loss, _ = model.loss(questions, answers)
     print loss
 
 

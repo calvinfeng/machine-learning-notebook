@@ -4,7 +4,12 @@
 import numpy as np
 
 
-def load_dictionary(filepath):
+START_TOKEN = '<START>'
+END_TOKEN = '<END>'
+NULL_TOKEN = '<NULL>'
+
+
+def load_char_based_text_input(filepath):
     with open(filepath, 'r') as file:
         text_data = file.read()
         chars = list(set(text_data))
@@ -24,20 +29,25 @@ def load_dictionary(filepath):
         return text_data, char_to_idx, idx_to_char
 
 
-def load_random_sentences(filepath, sentence_length):
-    word_to_idx = {
-        '<START>': 0,
-        '<END>': 1,
-        '<NULL>': 2
-    }
+def load_word_based_text_input(input_filepath, output_filepath,  sentence_length):
+    word_to_idx = {START_TOKEN: 0, END_TOKEN: 1, NULL_TOKEN: 2}
+    idx_to_word = {0: START_TOKEN, 1: END_TOKEN, 2: NULL_TOKEN}
+    
+    input_mat = _load_text(input_filepath, 
+                           word_to_idx, 
+                           idx_to_word, 
+                           sentence_length, 
+                           idx=len(word_to_idx))
+    output_mat = _load_text(output_filepath, 
+                            word_to_idx, 
+                            idx_to_word, 
+                            sentence_length, 
+                            idx=len(word_to_idx))
 
-    idx_to_word = {
-        0: '<START>',
-        1: '<END>',
-        2: '<NULL>',
-    }
+    return input_mat, output_mat, word_to_idx, idx_to_word
 
-    idx = 3
+
+def _load_text(filepath, word_to_idx, idx_to_word, sentence_length, idx=0):
     mat = []
     with open(filepath, 'r') as file:
         lines = file.readlines()
@@ -57,4 +67,4 @@ def load_random_sentences(filepath, sentence_length):
 
             mat.append(row)
     
-    return np.array(mat), word_to_idx, idx_to_word
+    return np.array(mat)

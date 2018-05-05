@@ -1,7 +1,7 @@
 import numpy as np
 import optimizers
 import matplotlib.pyplot as plt
-from data_util import load_random_sentences
+from data_util import load_word_based_text_input
 from lstm_recurrent_model import LSTMRecurrentModel
 
 
@@ -17,9 +17,9 @@ class LSTMSolver(object):
     - model.temporal_affine_layer must be a TemporalAffineLayer object.
     - model.loss(sentences) must be a function that computes training-time loss and gradients.
     """
-    def __init__(self, model, data, **kwargs):
+    def __init__(self, model, feed_dict={}, **kwargs):
         self.model = model
-        self.data = data
+        self.feed_dict = feed_dict
 
         # Unpack keyword arguments
         self.update_rule = kwargs.pop('update_rule', 'sgd')
@@ -56,14 +56,15 @@ class LSTMSolver(object):
     def _step(self):
         """Make a single gradient update
         """
-        num_train = self.data['training'].shape[0]
+        num_train = self.feed_dict['training_x'].shape[0]
 
         # Create a mini-batch of training data
         batch_mask = np.random.choice(num_train, self.batch_size)
-        minibatch = self.data['training'][batch_mask]
+        minibatch_x = self.feed_dict['training_x'][batch_mask]
+        minibatch_y = self.feed_dict['training_y'][batch_mask]
 
         # Compute loss and gradients
-        _, loss, grads = self.model.loss(minibatch)
+        _, loss, grads = self.model.loss(minibatch_x, minibatch_y)
         self.loss_history.append(loss)
 
         self.model.temporal_affine_layer.update(grads['temporal_affine'], 
@@ -77,7 +78,7 @@ class LSTMSolver(object):
                                                self.optim_configs['word_embedding'])
 
     def train(self):
-        num_train = self.data['training'].shape[0]
+        num_train = self.feed_dict['training_x'].shape[0]
         iterations_per_epoch = max(num_train // self.batch_size, 1)
         total_iterations = self.num_epochs * iterations_per_epoch
 
@@ -96,11 +97,10 @@ class LSTMSolver(object):
                     for param in self.optim_configs[layer]:
                         self.optim_configs[layer][param]['learning_rate'] *= self.learning_rate_decay
                 
-                # Check model accuracy
-                sentences_in = self.data['training'][:, :-1]
-                sentences_out = self.data['training'][:, 1:]
-                # print self.check_accuracy(sentences_in, sentences_out)
-                self.model.sample(sentences_in)
+                # Model sanity check by providing some inputs and see what will it output
+                rand_n = np.random.choice(num_train, size=2)
+                inputs = self.feed_dict['training_x'][rand_n]
+                self.model.sample(inputs)
 
         if self.verbose:
             plt.plot(np.arange(total_iterations), self.loss_history)
@@ -143,13 +143,24 @@ class LSTMSolver(object):
         
 
 def main():
-    sentences, word_to_idx, idx_to_word = load_random_sentences('datasets/random_sentences.txt', 30)
-    model = LSTMRecurrentModel(word_to_idx, idx_to_word)        
-    solver = LSTMSolver(model, {'training': sentences}, batch_size=20, 
-                                                        num_epochs=1000, 
-                                                        print_every=10,
-                                                        learning_rate_decay=0.99,
-                                                        update_rule='adam')
+    input_filepath = 'datasets/questions.txt'
+    output_filepath = 'datasets/answers.txt'
+    questions, answers, word_to_idx, idx_to_word = load_word_based_text_input(input_filepath, 
+                                                                              output_filepath, 
+                                                                              30)
+    model = LSTMRecurrentModel(word_to_idx, idx_to_word)
+
+    feed_dict = {
+        'training_x': questions,
+        'training_y': answers
+    }
+
+    solver = LSTMSolver(model, feed_dict=feed_dict,
+                               batch_size=20, 
+                               num_epochs=1000, 
+                               print_every=10,
+                               learning_rate_decay=0.99,
+                               update_rule='adam')
     solver.train()
 
 

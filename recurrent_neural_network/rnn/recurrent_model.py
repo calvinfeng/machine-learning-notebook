@@ -5,7 +5,7 @@ import numpy as np
 from random import uniform
 from numpy import dot, tanh, exp
 from adagrad import AdaGradOptimizer
-from data_util import load_dictionary
+from data_util import load_char_based_text_input
 
 
 class VanillaRecurrentModel(object):
@@ -140,7 +140,7 @@ def main():
     hidden_size = 100
     seq_length = 20
     learning_rate = 1e-1
-    text_data, char_to_idx, idx_to_char = load_dictionary("datasets/random_text.txt")
+    text_data, char_to_idx, idx_to_char = load_char_based_text_input("datasets/random_text.txt")
     model = VanillaRecurrentModel(len(char_to_idx), hidden_size)
     optimizer = AdaGradOptimizer(model, learning_rate)
     step, pointer, epoch_size, smooth_loss = 0, 0, 100, -np.log(1.0/len(char_to_idx))*seq_length

@@ -48,7 +48,7 @@ class LSTMRecurrentLayer(object):
         if Wx is not None and Wh is not None and b is not None:
             self.Wx, self.Wh, self.b = Wx, Wh, b
 
-        N, T, D = input_sequence.shape
+        N, T, _ = input_sequence.shape
         _, H = h0.shape
 
         # Cache the inputs and create time series variables, i.e. hidden states over time and cell 
