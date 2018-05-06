@@ -76,7 +76,9 @@ $$
 And compute the cell states and hidden states in the following way:
 
 $$
-c_{t} = f_{t} \odot c_{t-1} + i_{t} \odot \tanh \left( W_{gx}x + W_{gh}h_{t-1} + b_{g} \right) \\ 
+c_{t} = f_{t} \odot c_{t-1} + i_{t} \odot \tanh \left( W_{gx}x + W_{gh}h_{t-1} + b_{g} \right)
+$$
+$$
 h_{t} = o_{t} \odot tanh \left(c_{t} \right) 
 $$
 
