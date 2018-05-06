@@ -64,8 +64,12 @@ We take the previous cell state and hidden state as the inputs to our LSTM cell.
 I omitted biases in above equations. Also, in some literatures, people tend to omit the `g` gate. In a non-matrix form, including biases, we can express the internal cell equations in the following way:
 
 $$
-f_{t} = \sigma \left(W_{hf}h_{t-1} + W_{xf}x + b_{f}\right) \\
-i_{t} = \sigma \left(W_{hi}h_{t-1} + W_{xi}x + b_{i}\right) \\
+f_{t} = \sigma \left(W_{hf}h_{t-1} + W_{xf}x + b_{f}\right)
+$$
+$$
+i_{t} = \sigma \left(W_{hi}h_{t-1} + W_{xi}x + b_{i}\right)
+$$
+$$
 o_{t} = \sigma \left(W_{ho}h_{t-1} + W_{xo}x + b_{o}\right)
 $$
 
