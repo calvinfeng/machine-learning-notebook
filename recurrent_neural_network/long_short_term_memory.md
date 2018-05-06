@@ -59,7 +59,7 @@ $$
 
 We take the previous cell state and hidden state as the inputs to our LSTM cell. The previous hidden state is combined with the input vector and multiply with the weight matrix to produce `ifog`. The forget gate multiplies element-wise with the previous cell state. The input and gate gate also multiply element wise. The two results are combined through sum elemenwise to produce a new cell state. The cell state is then squashed by a `tanh` and multiplied element-wise by the output gate to produce our next hidden state.
 
-<img src="assets/lstm.png" width=400>
+<img src="assets/lstm.png" width="400">
 
 I omitted biases in above equations. Also, in some literatures, people tend to omit the `g` gate. In a non-matrix form, including biases, we can express the internal cell equations in the following way:
 
