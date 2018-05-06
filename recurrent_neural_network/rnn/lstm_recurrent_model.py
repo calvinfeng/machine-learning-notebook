@@ -113,10 +113,8 @@ class LSTMRecurrentModel(object):
 
             answer = self._word_vector_to_string(np.array(sampled_word_vector))
 
-            print '=============================='
-            print question
-            print answer
-            print '=============================='
+            print 'Q: ' + question
+            print 'A: ' + answer
         
     def _word_vector_to_string(self, vector):
         T, = vector.shape
@@ -136,8 +134,10 @@ class LSTMRecurrentModel(object):
     
         if start_idx is not None and end_idx is not None:
             return ' '.join(words[start_idx+1:end_idx])
+        elif end_idx is not None:
+            return ' '.join(words[:end_idx])
         else:
-            return 'bad sentence'
+            return ' '.join(words)
 
 
 def main():

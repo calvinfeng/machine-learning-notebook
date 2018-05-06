@@ -1,3 +1,6 @@
+# Created: April, 2018
+# Author(s): Calvin Feng
+
 import numpy as np
 import optimizers
 import matplotlib.pyplot as plt
@@ -53,7 +56,7 @@ class LSTMSolver(object):
         for param in ['word_embedding', 'lstm', 'temporal_affine']:
             self.optim_configs[param] = dict()
 
-    def _step(self):
+    def _gradient_update_step(self):
         """Make a single gradient update
         """
         num_train = self.feed_dict['training_x'].shape[0]
@@ -83,10 +86,11 @@ class LSTMSolver(object):
         total_iterations = self.num_epochs * iterations_per_epoch
 
         for t in range(total_iterations):
-            self._step()
+            self._gradient_update_step()
 
             if self.verbose and t % self.print_every == 0:
                 print '(Iteration %d / %d): loss: %f' % (t + 1, total_iterations, self.loss_history[-1])
+                
 
             epoch_end = (t + 1) % iterations_per_epoch == 0
             if epoch_end:
@@ -98,13 +102,12 @@ class LSTMSolver(object):
                         self.optim_configs[layer][param]['learning_rate'] *= self.learning_rate_decay
                 
                 # Model sanity check by providing some inputs and see what will it output
-                rand_n = np.random.choice(num_train, size=2)
-                inputs = self.feed_dict['training_x'][rand_n]
-                self.model.sample(inputs)
+                if self.verbose:
+                    rand_n = np.random.choice(num_train, size=2)
+                    inputs = self.feed_dict['training_x'][rand_n]
+                    self.model.sample(inputs)
 
-        if self.verbose:
-            plt.plot(np.arange(total_iterations), self.loss_history)
-            plt.show()
+        return np.arange(total_iterations), self.loss_history
 
     def check_accuracy(self, X, y, num_samples=None, batch_size=100):
         """Check accuracy of the model on the provided data
@@ -157,11 +160,14 @@ def main():
 
     solver = LSTMSolver(model, feed_dict=feed_dict,
                                batch_size=20, 
-                               num_epochs=1000, 
+                               num_epochs=100, 
                                print_every=10,
                                learning_rate_decay=0.99,
                                update_rule='adam')
-    solver.train()
+    iters, losses = solver.train()
+
+    plt.plot(iters, losses)
+    plt.show()
 
 
 if __name__ == "__main__":

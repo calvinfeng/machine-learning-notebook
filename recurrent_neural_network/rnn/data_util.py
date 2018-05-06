@@ -68,3 +68,22 @@ def _load_text(filepath, word_to_idx, idx_to_word, sentence_length, idx=0):
             mat.append(row)
     
     return np.array(mat)
+
+
+def convert_string_to_index_matrix(str_input, word_to_idx):
+    """
+    Args:
+        str_input (string): Any string that represents a human readable sentence.
+        word_to_idx (dict): A dictionary that maps vocabulary to integer index.abs
+
+    Returns:
+        (np.array)
+    """    
+    indices = []
+    for word in str_input.split(' '):
+        if word_to_idx.get(word):
+            indices.append(word_to_idx[word])
+        else:
+            indices.append(word_to_idx[NULL_TOKEN])
+    
+    return np.array([indices])
