@@ -76,8 +76,6 @@ c_{t} = f_{t} \odot c_{t-1} + i_{t} \odot \tanh \left( W_{gx}x + W_{gh}h_{t-1} +
 h_{t} = o_{t} \odot tanh \left(c_{t} \right) 
 $$
 
-
-
 ### LSTM Gradient Flow
 Backpropagating from `c[t]` to `c[t-1]` is only element-wise multiplication by the `f` gate, and there is no matrix multiplication by W. The `f` gate is different at every time step, ranged between 0 and 1 due to sigmoid property, thus we have avoided of the problem of multiplying the same thing over and over again. 
 
