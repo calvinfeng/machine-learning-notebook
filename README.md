@@ -8,5 +8,6 @@ are also notes I took from working on my professional/personal projects using ma
 will also include some other non-machine learning related topics in a sub section.
 
 ## Todo List
-[ ] Variational Auto Encoder
-[ ] Write a CNN example using CIFAR/NMIST datasets, since I have already written the code for it.
+* [ ] Variational Auto Encoder
+* [ ] Write a CNN example using CIFAR/NMIST datasets, since I have already written the code for it.
+* [ ] Generative Adversarial Networks (GANs)
