@@ -48,5 +48,9 @@ ipython-genutils==0.1.0
 ipywidgets==4.1.1
 notebook==4.4.0
 
-# Tensorflow
-# tensorflow==1.7.0
+# Tensorflow & Open AI
+tensorflow==1.6
+keras==2.1.5
+matplotlib==2.2.2
+h5py==2.7.1
+gym==0.10.5
