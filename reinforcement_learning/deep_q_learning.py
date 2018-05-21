@@ -14,8 +14,20 @@ class DeepQAgent(object):
         """Initialize a deep Q agent.
 
         Args:
-            state_dim (int): Dimension of possible states
-            action_dim (int): Dimension of possible actions            
+            state_dim (int): Dimension of state, e.g. cart position, cart velocity, and etc...
+            action_dim (int): Dimension of executable actions, in case this, left & right.
+
+        Properties:
+            state_dim (int): Dimension of state, e.g. cart position, cart velocity, and etc...
+            action_dim (int): Dimension of executable actions, in case this, left & right.
+            gamma (float): Future reward discount rate.
+            epsilon (float): Probability for choosing random policy.
+            epsilon_decay (float): Rate at which epsilon decays toward zero.
+            learning_rate (float): Learning rate for Adam optimizer.
+            model (keras.Sequential): Sequential neural network model.
+
+        Returns:
+            agent (DeepQAgent)            
         """
         self.state_dim = state_dim
         self.action_dim = action_dim
@@ -37,17 +49,22 @@ class DeepQAgent(object):
         return model
     
     def remember(self, state, action, reward, next_state, done):
+        """Append a new memory tuple state to the memory deque
+        """
         self.memory.append((state, action, reward, next_state, done))
     
     def act(self, state):
+        """Take action on a given state
+        """
         if np.random.rand() <= self.epsilon:
-            print 'acting randomly!'
             return random.randrange(self.action_dim)
         
         policies = self.model.predict(state)
         return np.argmax(policies[0])
 
     def replay(self, batch_size):
+        """Replay the experience and perform model update on every experience replay.
+        """
         minibatch = random.sample(self.memory, batch_size)
 
         for state, action, reward, next_state, done in minibatch:
@@ -56,16 +73,14 @@ class DeepQAgent(object):
             if not done:
                 target = reward + self.gamma * np.amax(self.model.predict(next_state)[0])
 
-            target_policy = self.model.predict(state)
-            target_policy[0][action] = target
+            target_action_values = self.model.predict(state)
+            target_action_values[0][action] = target
 
-            self.model.fit(state, target_policy, epochs=1, verbose=0)
+            self.model.fit(state, target_action_values, epochs=1, verbose=0)
 
             if self.epsilon > self.epsilon_min:
                 self.epsilon *= self.epsilon_decay
 
-
-EPISODES = 5000
 
 
 if __name__ == '__main__':
@@ -78,9 +93,10 @@ if __name__ == '__main__':
     state_dim, = env.observation_space.shape
 
     agent = DeepQAgent(state_dim=state_dim, action_dim=action_dim)
+    max_episodes = 5000
     batch_size = 32
 
-    for e in range(EPISODES):
+    for e in range(max_episodes):
         # state[0]: cart position range from -2.4 to 2.4
         # state[1]: cart velocity range from -Inf to Inf
         # state[2]: pole angle range from -41.8 to 41.8
@@ -110,7 +126,7 @@ if __name__ == '__main__':
 
             if game_over:
                 print 'Epsiode: {}/{} is over! Score: {}, epsilon: {:.2}'.format(e+1, 
-                                                                                 EPISODES, 
+                                                                                 max_episodes, 
                                                                                  score, 
                                                                                  agent.epsilon)
             
