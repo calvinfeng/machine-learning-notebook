@@ -35,7 +35,7 @@ class DeepQAgent(object):
         self.gamma = 0.95
         self.epsilon = 1.0
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.9999
+        self.epsilon_decay = 0.999
         self.learning_rate = 5e-3
         self.model = self._build_model()
 
@@ -96,14 +96,14 @@ if __name__ == '__main__':
     max_episodes = 5000
     batch_size = 32
 
+
+    # state[0]: cart position range from -2.4 to 2.4
+    # state[1]: cart velocity range from -Inf to Inf
+    # state[2]: pole angle range from -41.8 to 41.8
+    # state[3]: pole velocity at tip range from -Inf to Inf
     for e in range(max_episodes):
-        # state[0]: cart position range from -2.4 to 2.4
-        # state[1]: cart velocity range from -Inf to Inf
-        # state[2]: pole angle range from -41.8 to 41.8
-        # state[3]: pole velocity at tip range from -Inf to Inf
         state = env.reset()
         state = np.reshape(state, [1, state_dim])
-        
         score = 0
         game_over = False
         while not game_over:

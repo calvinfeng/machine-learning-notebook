@@ -21,3 +21,6 @@
 ### Unsupervised Learning
 * Clustering
   * [Spectral Clustering](/clustering/spectral_clustering.md)
+* Reinforcement Learning
+  * [Deep Q Learning](/reinforcement_learning/reinforcement_learning.md)
+  
