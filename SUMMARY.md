@@ -23,4 +23,4 @@
   * [Spectral Clustering](/clustering/spectral_clustering.md)
 * Reinforcement Learning
   * [Deep Q Learning](/reinforcement_learning/reinforcement_learning.md)
-  
+  * [Policy Gradients](/reinforcement_learning/policy_gradients.md)
