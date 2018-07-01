@@ -1,6 +1,6 @@
 from pretrained_models.squeeze_net import SqueezeNet
-import tensorflow as tf
 from tensorflow.python.framework.errors_impl import NotFoundError
+import tensorflow as tf
 
 
 def get_session():
