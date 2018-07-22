@@ -3,7 +3,7 @@
 ## Unit Gaussian Activations
 Batch normalization is *invented* and widely popularized by the paper *Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift*. In deep neural network, activations between neural layers are extremely dependent on the parameter initialization, which in turn affects how outputs are backprop into each layer during training. Poor initialization can greatly affect how well a network is trained and how fast it can be trained. Networks train best when each layer has an unit Gaussian distribution for its activations. So if you really want unit Gaussian activations, you can make them so by applying batch normalization to every layer. 
 
-Basically, batch normalization is a powerful technique for decoupling the weight updates from parameter initialization. Quoted from the paper, *batch normalization allows us to use much higher learning rates and be less careful about initialization.* Let's consider a batch of activations at some layer, we can make each dimension (denoted by $k$) unit Gaussian by applying: 
+Basically, batch normalization is a powerful technique for decoupling the weight updates from parameter initialization. Quoted from the paper, *batch normalization allows us to use much higher learning rates and be less careful about initialization.* Let's consider a batch of activations at some layer, we can make each dimension (denoted by $$k$$) unit Gaussian by applying: 
 
 $$
 \hat{x}^{(k)} = \frac{x^{(k)} - E[x^{(k)}]}{\sqrt{Var[x^{(k)}]}}
