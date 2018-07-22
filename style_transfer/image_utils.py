@@ -32,3 +32,19 @@ def preprocess_image(img):
         img (np.array): Input image for preprocessing
     """
     return (img.astype(np.float32) / 255.0 - SQUEEZENET_MEAN) / SQUEEZENET_STD
+
+
+def deprocess_image(img, rescale=False):
+    """Undo preprocessing in an image and convert back to uint8
+
+    Args:
+        img (np.array): Input image for undo preprocessing
+        rescale (boolean): Whether to rescale or not
+    """
+    img = (img * SQUEEZENET_STD + SQUEEZENET_MEAN)
+
+    if rescale:
+        vmin, vmax = img.min(), img.max()
+        img = (img - vmin) / (vmax - vmin)
+    
+    return np.clip(255 * img, 0.0, 255.0).astype(np.uint8)
