@@ -1,4 +1,4 @@
-# Neural Network (CNN)
+# Neural Network
 Create a virtual environment
 ```
 virtualenv environment
