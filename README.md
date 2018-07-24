@@ -1,4 +1,4 @@
-# [Machine Learning Notebook](https://calvinfeng.gitbooks.io/machine-learning-notebook/content/)
+# [Machine Learning Notebook](https://calvinfeng.gitbook.io/machine-learning-notebook/)
 
 ## Introduction
 This is my personal machine learning notebook, used primarily for references and sharing what I 
