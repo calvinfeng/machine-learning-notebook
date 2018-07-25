@@ -36,7 +36,7 @@ And effectively recover the identity mapping as if you didn't have batch normali
 
 **Inputs**: Values of $$x$$ over a mini-batch: **B** = $$\{x_{1}...x_{m}\}$$
 
-**Outputs**: $\{y_{i} = BN_{\gamma, \beta}(x_{i})\}$
+**Outputs**: $$\{y_{i} = BN_{\gamma, \beta}(x_{i})\}$$
 
 Find mini-batch mean:
 $$
