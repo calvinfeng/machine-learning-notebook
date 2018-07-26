@@ -23,15 +23,16 @@ def visualize_img_data(img_data):
 
 
 def plot_histo_chart(hist):
-    plt.subplot(121)
+    plt.figure(figsize=(10,8))
+
+    plt.subplot(211)
     plt.title('model accuracy')
     plt.ylabel('accuracy')
-    plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
     plt.plot(hist.history.get('acc', []), '-o')
     plt.plot(hist.history.get('val_acc', []), '-o')
 
-    plt.subplot(122)
+    plt.subplot(212)
     plt.title('model loss')
     plt.ylabel('loss')
     plt.xlabel('epoch')

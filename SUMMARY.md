@@ -17,6 +17,8 @@
 * Matrix Factorization
   * [Singular Value Decomposition](/matrix_factorization/singular_value_decomposition.md)
   * [Low Rank Matrix Factorization](/matrix_factorization/low_rank_matrix_factorization.md)
+* Tutorial
+  * [MNIST Tutorial](/mnist_tutorial/mnist_tutorial.md)
 
 ### Unsupervised Learning
 * Clustering
