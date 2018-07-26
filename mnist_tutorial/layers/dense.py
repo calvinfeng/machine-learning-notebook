@@ -7,7 +7,7 @@ class Dense(object):
         self.weight = None
         self.bias = None
 
-    def forward(self, x, w, b):
+    def forward_prop(self, x, w, b):
         """Performs forward propagation in the Dense layer.
 
         Args:
@@ -21,8 +21,36 @@ class Dense(object):
         self.input = x
         self.weight = w
         self.bias = b
-        
-        return np.dot(x, w) + b
+
+        D = np.prod(x.shape[1:])
+        x_reshaped = x.reshape(x.shape[0], D)
+
+        return np.dot(x_reshaped, w) + b
+
+    def backprop(self, grad_output):
+        """Performs back propagation in Dense layer.
+
+        Args:
+            grad_out: Upstream derivative
+    
+        Returns:
+            grad_x: Gradients of upstream variable with respect to input matrix
+            grad_w: Gradient of upstream variable with respect to weight matrix of shape (D, H)
+            grad_b: Gradient of upstream variable with respect to bias vector of shape (H,)
+
+        The shape changes depending on whether this is the initial layer. For example, if it is the
+        first layer in the network, then grad_x has the shape (N, d_1, ..., d_k) and grad_w has
+        (D, H). Otherwise, the grad_x would be (N x D) and grad_w would be (D x H).
+        """
+        if self.input is not None and self.weight is not None:
+            D = np.prod(self.input.shape[1:])
+            input_reshaped = self.input.reshape(self.input.shape[0], D)
+
+            grad_w = np.dot(input_reshaped.T, grad_output)
+            grad_x = np.dot(grad_output, self.weight.T).reshape(self.input.shape)
+            grad_b = np.sum(grad_output.T, axis=1)
+
+            return grad_x, grad_w, grad_b  
 
 
 if __name__ == '__main__':
@@ -38,4 +66,4 @@ if __name__ == '__main__':
     b = np.array([[1, 1, 1]]) # Shape: (1, 3)
 
     # What is the shape of output?
-    print dummy.forward(x, w, b)
+    print dummy.forward_prop(x, w, b)
