@@ -7,13 +7,13 @@ import unittest
 
 class DenseTest(unittest.TestCase):
     def setUp(self):
-        """Configure and setup variables for each test case
+        """Configures and sets up variables for each test case
 
         N (int): Number of inputs
-        D (int): Input dimension, which is the total number of pixels from each input image.
+        D (int): Input dimension, which is the total number of pixels from each input image
         H (int): Output/hidden unit dimension
         """
-        np.random.seed(19880911)
+        np.random.seed(314)
 
         self.img_height = 28
         self.img_width = 28
@@ -58,7 +58,7 @@ class DenseTest(unittest.TestCase):
                                                    x=b, 
                                                    df=grad_output)
 
-        # Compute gradient using backprop algorithm.
+        # Compute gradients using backprop algorithm
         grad_x, grad_w, grad_b = self.layer.backprop(grad_output)
 
         np.testing.assert_array_almost_equal(num_grad_x, grad_x, decimal=7)

@@ -8,7 +8,7 @@ class Dense(object):
         self.bias = None
 
     def forward_prop(self, x, w, b):
-        """Performs forward propagation in the Dense layer.
+        """Performs forward propagation in Dense layer.
 
         Args:
             x (np.ndarray): Input data in matrix form.
