@@ -1,9 +1,12 @@
 from layers import Dense, ReLU, Softmax
-from models.loss import categorical_cross_entropy
+from loss import categorical_cross_entropy
+from optimizers import GradientDescent
+
 from keras.datasets import mnist
 from keras.utils import to_categorical
-from optimizers import GradientDescent
+
 from exceptions import Exception
+
 import numpy as np
 
 
@@ -36,8 +39,8 @@ class Sequential(object):
         for i in range(len(self.layers)):
             w = self.weights[i]
             b = self.biases[i]
-            x = self.layers[i].forward_pass(x, w, b)
-            x = self.activations[i].forward_pass(x)
+            x = self.layers[i].forward_prop(x, w, b)
+            x = self.activations[i].forward_prop(x)
         
         y_pred = x
         loss = self.loss_func(y_pred, y)
@@ -45,8 +48,8 @@ class Sequential(object):
         
         grad_upstream = y
         for i in reversed(range(len(self.layers))):
-            grad_upstream = self.activations[i].backward_pass(grad_upstream)
-            grad_upstream, grad_w, grad_b = self.layers[i].backward_pass(grad_upstream)
+            grad_upstream = self.activations[i].backprop(grad_upstream)
+            grad_upstream, grad_w, grad_b = self.layers[i].backprop(grad_upstream)
             grad_weights[i] = grad_w
             grad_biases[i] = grad_b
 

@@ -1,25 +1,33 @@
-from layers import Dense
+from models.loss import categorical_cross_entropy
+from layers import Dense, ReLU, Softmax
+from models import Sequential
+from optimizers import GradientDescent
+
+from keras.datasets import mnist
+from keras.utils import to_categorical
+
+from exceptions import Exception
+
 import numpy as np
 
 
-# Input dimension - 10
-# Final output dimension - 1 
-layer_dimens = [(10, 20), (20, 50), (50, 100), (100, 5), (5, 1)]
+def main():
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    print 'Imported MNIST data: training input %s and training labels %s.' % (x_train.shape, y_train.shape)
+    print 'Imported MNIST data: test input %s and test labels %s.' % (x_test.shape, y_test.shape)
 
-# Declare weights and biases for every layer
-weights = dict()
-biases = dict()
+    N, H, W = x_train.shape
+    x = x_train.reshape((N,H*W)).astype('float') / 255
+    y = to_categorical(y_train, num_classes=10)
 
-for layer_num in range(len(layer_dimens)):
-    # De-constructor dimension into in and out
-    in_dim, out_dim = layer_dimens[layer_num]
+    model = Sequential()
+    model.add(Dense(), ReLU(), layer_dim=(28*28, 300), weight_scale=1e-2)
+    model.add(Dense(), ReLU(), layer_dim=(300, 100), weight_scale=1e-2)
+    model.add(Dense(), Softmax(), layer_dim=(100, 10), weight_scale=1e-2)
 
-    # Randomly initialize some weights
-    weights[layer_num] = np.random.randn(in_dim, out_dim)
-    biases[layer_num] = np.zeros(out_dim)
+    model.compile(optimizer=GradientDescent(learning_rate=1e-2),loss_func=categorical_cross_entropy)
+    model.fit(x, y, epochs=10, batch_size=50, verbose=False)    
 
-layers = dict()
-# TODO: Create # of layers depending on # of dimensions
 
-# Use forward in each layer to compute an output.
-
+if __name__ == '__main__':
+    main()
