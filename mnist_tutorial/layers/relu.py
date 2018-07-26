@@ -2,10 +2,6 @@ import numpy as np
 
 
 class ReLU(object):
-    """ReLU implements a network layer that performs rectified linear unit transformation.
-    The input to this layer is typically, but not limited to, a matrix of shape (N, D) . The layer 
-    squashes all values that are less than zero in input matrix.
-    """
     def __init__(self):
         self.input = None
 
@@ -13,7 +9,7 @@ class ReLU(object):
         """Performs forward propagation in ReLU activation layer.
 
         Args:
-            input: A matrix of any shape
+            x (numpy.ndarray): Input matrix of any shape
             
         Returns:
             output: A matrix with ReLU applied, same shape as input
@@ -26,10 +22,10 @@ class ReLU(object):
         """Performs back propagation in ReLU activation layer.
 
         Args:
-            grad_out: Upstream derivative
+            grad_out (numpy.ndarray): Upstream derivative
         
         Returns:
-            grad_in: Gradient of upstream variable with respect to input
+            grad_in (numpy.ndarray): Gradient of upstream variable with respect to input
         """
         grad_in = grad_out
         grad_in[self.input<=0] = 0

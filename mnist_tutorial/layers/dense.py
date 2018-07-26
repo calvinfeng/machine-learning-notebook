@@ -11,12 +11,12 @@ class Dense(object):
         """Performs forward propagation in Dense layer.
 
         Args:
-            x (np.ndarray): Input data in matrix form.
-            w (np.ndarray): Weight matrix for the layer.
-            b (np.ndarray): Bias array
+            x (numpy.ndarray): Input data in matrix form.
+            w (numpy.ndarray): Weight matrix for the layer.
+            b (numpy.ndarray): Bias array
 
         Returns:
-            output (np.ndarray)
+            output (numpy.ndarray)
         """
         self.input = x
         self.weight = w
