@@ -100,29 +100,30 @@ def classify(row, node):
     return classify(row, node.false_branch)
     
 
-header = ['color', 'diameter', 'label']
+if __name__ == '__main__':
+    header = ['color', 'diameter', 'label']
 
-training_data = [
-    ['Green', 3, 'Apple'],
-    ['Yellow', 3, 'Apple'],
-    ['Red', 1, 'Grape'],
-    ['Red', 1, 'Grape'],
-    ['Yellow', 3, 'Lemon']
-]
+    training_data = [
+        ['Green', 3, 'Apple'],
+        ['Yellow', 3, 'Apple'],
+        ['Red', 1, 'Grape'],
+        ['Red', 1, 'Grape'],
+        ['Yellow', 3, 'Lemon']
+    ]
 
-#####################
-# Construct the tree 
-#####################
-root = build_tree(header, training_data)
-print_tree(root)
+    #####################
+    # Construct the tree 
+    #####################
+    root = build_tree(header, training_data)
+    print_tree(root)
 
-testing_data = [
-    ['Green', 3, 'Apple'],
-    ['Yellow', 4, 'Apple'],
-    ['Red', 2, 'Grape'],
-    ['Red', 1, 'Grape'],
-    ['Yellow', 3, 'Lemon']
-]
+    testing_data = [
+        ['Green', 3, 'Apple'],
+        ['Yellow', 4, 'Apple'],
+        ['Red', 2, 'Grape'],
+        ['Red', 1, 'Grape'],
+        ['Yellow', 3, 'Lemon']
+    ]
 
-for row in testing_data:
-    print 'Actual label is %s and predicted %s' % (row[-1], classify(row, root))
+    for row in testing_data:
+        print 'Actual label is %s and predicted %s' % (row[-1], classify(row, root))
