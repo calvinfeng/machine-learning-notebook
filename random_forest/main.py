@@ -1,60 +1,82 @@
 from keras.utils import to_categorical
 from sklearn import tree
-from random_forest import build_tree, print_tree
+from random_forest import build_tree, print_tree, classify
 
 import numpy as np
 import csv
 
 
-def predict_with_sklearn_dtree(x_rows, y_labels):
-    x = np.array(x_rows).astype('float')
-    y = np.array(y_labels).astype('int')
+IRIS_MAP = {
+    'Iris-setosa': 0,
+    'Iris-versicolor': 1,
+    'Iris-virginica': 2
+}
 
-    N = len(x)
+
+def predict_with_sklearn_dtree(data):
+    N = len(data)
+
+    x, y = None, None
+    for row in data:
+        num_feat = len(row) - 1
+        if x is None and y is None:
+            x = np.array(row[:num_feat])
+            y = np.array([IRIS_MAP[row[-1]]])
     
-    x_train = x[:int(N*0.80)]
-    y_train = to_categorical(y[:int(N*0.80)], num_classes=2)
+        x = np.vstack((x, np.array(row[:num_feat])))
+        y = np.append(y, IRIS_MAP[row[-1]])
+
+    x_train = x[:int(0.80*N)]
+    y_train = to_categorical(y[:int(0.80*N)], num_classes=3)
     
     model = tree.DecisionTreeClassifier()
     model.fit(x_train, y_train)
 
-    x_test = x[int(N*0.80):]
-    y_test = to_categorical(y[int(N*0.80):], num_classes=2)
+    x_test = x[int(0.80*N):]
+    y_test = to_categorical(y[int(0.80*N):], num_classes=3)
 
     return model.score(x_test, y_test)
 
 
-def predict_with_dtree(col_names, x_rows, y_labels):
-    training_data = []
+def predict_with_dtree(col_names, data):
+    N = len(data)
+    training_data = data[:int(0.80*N)]
 
-    N = len(x_rows)
-    for i in range(int(N*0.80)):
-        training_data.append(x_rows[i] + [y_labels[i]])
-    
     root = build_tree(col_names, training_data)
     print_tree(root)
 
-    testing_data = []
-    for i in range(int(N*0.80), N):
-        testing_data.append(x_rows[i], [y_labels[i]])
+    testing_data = data[int(0.80*N):]
+
+    for row in testing_data:
+        print 'Actual label is %s and predicted %s' % (row[-1], classify(row, root))
+
+
+def load_data(csv_path):
+    col_names = None
+    data = []
+
+    with open(csv_path, 'rb') as csvfile:
+        reader = csv.reader(csvfile)
+
+        # Extract column names from header
+        header = reader.next()
+        col_names = header[1:len(header)]
+
+        for row in reader:
+            data_row = [float(el) for el in row[1:len(row)-1]] + [row[-1]]
+            data.append(data_row)
+
+    return col_names, data
 
 
 def main():
-    col_names = None
-    x, y = [], []
-
-    with open('./datasets/credit_card_fraud.csv', 'rb') as csvfile:
-        reader = csv.reader(csvfile)
-        
-        # Extract column names from header
-        header = reader.next()
-        col_names = header[1:len(header) - 1]
-        
-        for row in reader:
-            x.append([float(el) for el in row[1:len(row)-1]])
-            y.append(int(row[-1]))
+    col_names, data = load_data('./datasets/iris.csv')
     
-    predict_with_dtree(col_names, x, y)
+    # Shuffle the data
+    np.random.shuffle(data)
+
+    print predict_with_sklearn_dtree(data)
+    predict_with_dtree(col_names, data)
 
 
 if __name__ == '__main__':
