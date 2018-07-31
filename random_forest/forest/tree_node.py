@@ -1,5 +1,5 @@
 from split_rule import SplitRule
-from util import partition, gini, impurity_reduction, entropy, info_gain
+from util import partition, gini, purity_gain, entropy, info_gain
 
 
 class TreeNode(object):
@@ -10,24 +10,44 @@ class TreeNode(object):
     assuming a binary tree implementation for decision tree.
     """
 
-    def __init__(self, X, attr_names):
+    def __init__(self, attr_names, X):
         self.X = X
         self.attr_names = attr_names
+        self.true_branch = None
+        self.false_branch = None
 
+    @property
+    def prediction(self):
+        if self.true_branch is not None and self.false_branch is not None:
+            return None 
+
+        N = len(self.X)
+        prob = dict()
+        for row in self.X:
+            label = row[-1]
+            if label not in prob:
+                prob[label] = 0.0
+            
+            prob[label] += 1
+
+        for label in prob:
+            prob[label] /= N
+        
+        return prob
 
     def seek_split_rule(self, criterion='gini'):
         if criterion == 'gini':
             metric = gini
-            eval_score = impurity_reduction
+            eval_gain = purity_gain
         elif criterion == 'entropy':
             metric = entropy
-            eval_score = info_gain
+            eval_gain = info_gain
         else:
             raise ValueError('%s is not a valid partition criterion' % criterion)
 
-        best_rule = None
-        best_score = 0
-        curr_metric_val = metric(self.X)
+        self.rule = None
+        best_gain = 0
+        current_metric_val = metric(self.X)
 
         for i in range(len(self.attr_names) - 1):
             # Extract unique values from dataset in a given feature/column.
@@ -42,15 +62,41 @@ class TreeNode(object):
                 if len(true_set) == 0 or len(false_set) == 0:
                     continue
                 
-                score = eval_score([true_set, false_set], curr_metric_val, len(self.X))
-                if score >= best_score:
-                    best_score, best_rule = score, rule
-
-        return best_score, best_rule
-
+                gain = eval_gain([true_set, false_set], current_metric_val, len(self.X))
+                if gain >= best_gain:
+                    best_gain, self.rule = gain, rule
 
     def split(self):
-        pass
+        self.seek_split_rule()
+
+        if self.rule is None:
+            return None
+
+        true_set, false_set = partition(self.X, self.rule)
+        self.true_branch = TreeNode(self.attr_names, X=true_set)
+        self.false_branch = TreeNode(self.attr_names, X=false_set)
+
+        return self.true_branch, self.false_branch                
+
+
+def build_tree(root):
+    if root.split() is not None:
+        build_tree(root.true_branch)
+        build_tree(root.false_branch)
+
+
+def print_tree(root, spacing=''):
+    if root.rule is None:
+        print spacing + 'Prediction:', root.prediction
+        return
+
+    print spacing + 'Rule:', str(root.rule)
+
+    print spacing + '--> True:'
+    print_tree(root.true_branch, spacing + ' ')
+
+    print spacing + '--> False:'
+    print_tree(root.false_branch, spacing + ' ')
 
 
 if __name__ == '__main__':
@@ -64,5 +110,8 @@ if __name__ == '__main__':
         ['Yellow', 3, 'Lemon']
     ]
 
-    root = TreeNode(training_data, header)
-    print root.seek_split_rule(criterion='entropy')
+    root = TreeNode(header, X=training_data)
+    build_tree(root)
+    print_tree(root)
+
+    

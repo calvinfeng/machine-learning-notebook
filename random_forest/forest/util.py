@@ -47,16 +47,15 @@ def gini(X):
     return impurity
     
 
-def impurity_reduction(partitions, curr_impurity, N):
+def purity_gain(partitions, curr_impurity, N):
     """Calculate the reduction in impurity after partitions
     """
-    reduction = curr_impurity
+    gain = curr_impurity
     for part in partitions:
         prob = float(len(part)) / N
-        reduction -= prob * gini(part)
+        gain -= prob * gini(part)
     
-    return reduction
-
+    return gain
 
 
 def entropy(X):
