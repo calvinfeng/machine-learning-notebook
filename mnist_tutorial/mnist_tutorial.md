@@ -1,13 +1,9 @@
 
 # MNIST Tutorial
-In this tutorial, we will first use `tensorflow` and `keras` to build a simple fully connected neural 
-network to perform hand written digit classification on MNIST dataset. Then we will dive into the
-details of how to write a neural network from scratch. Basically, we will re-implement the 
-functionality of `keras` from scratch, without the help of tensorflow or any machine learning frameworks.
+In this tutorial, we will first use `tensorflow` and `keras` to build a simple fully connected neural network to perform hand written digit classification on MNIST dataset. Then we will dive into the details of how to write a neural network from scratch. Basically, we will re-implement the functionality of `keras` from scratch, without the help of tensorflow or any machine learning frameworks.
 
 ## Keras
-Step one, let's build a simple sequential model using `keras` and we will see how powerful `keras` is. 
-It should only take us less than 10 lines of code to build a 3-layer fully connected network.
+Step one, let's build a simple sequential model using `keras` and we will see how powerful `keras` is. It should only take us less than 10 lines of code to build a 3-layer fully connected network.
 
 
 ```python
@@ -124,15 +120,10 @@ print 'Accuracy on test data %f' % test_acc
     Accuracy on test data 0.958100
 
 
-That is a 95.8% accuracy on test data! This isn't bad but it isn't the best. We can achieve 99.8% if
-we use convolutional neural network. This is a topic for another tutorial.
+That is a 95.8% accuracy on test data! This isn't bad but it isn't the best. We can achieve 99.8% if we use convolutional neural network. This is a topic for another tutorial.
 
 ## Implement From Scratch
-Now it is time to implement everything from scratch. The source code can be found on [GitHub][1]. We 
-are going to deep dive into every detail of the implementation to get a full understanding of what's 
-going on. It is important to understsand how to perform gradient calculation using the idea of a 
-[computational graph][2] before we proceed onto writing code. In every layer, we will focus on 
-calculating the local gradients and use chain rule to compute the gradient with respect to loss.
+Now it is time to implement everything from scratch. The source code can be found on [GitHub][1]. We are going to deep dive into every detail of the implementation to get a full understanding of what's going on. It is important to understsand how to perform gradient calculation using the idea of a [computational graph][2] before we proceed onto writing code. In every layer, we will focus on calculating the local gradients and use chain rule to compute the gradient with respect to loss.
 
 [1]:https://github.com/calvinfeng/machine-learning-notebook/tree/master/mnist_tutorial
 [2]:http://colah.github.io/posts/2015-08-Backprop/
@@ -147,11 +138,7 @@ $$
 y = \vec{x}W + b
 $$
 
-$$W$$ is our weight matrix and $$b$$ is the bias vector. We take an input, which is $\vec{x}$, and perform 
-an [affine][3] transformation on it. The input to our forward propagation function can be any shape, 
-e.g. `(N, 28, 28, 3)`, this represents N 28x28 images with 3 channels (RGB). However, the weight matrix 
-must be of shape `(28*28*3, H)` where H is the hidden unit dimension. Thus, the input needs to be 
-reshaped before we carry out the matrix multiplication.
+$W$ is our weight matrix and $b$ is the bias vector. We take an input, which is $\vec{x}$, and perform an [affine][3] transformation on it. The input to our forward propagation function can be any shape, e.g. `(N, 28, 28, 3)`, this represents N 28x28 images with 3 channels (RGB). However, the weight matrix must be of shape `(28*28*3, H)` where H is the hidden unit dimension. Thus, the input needs to be reshaped before we carry out the matrix multiplication.
 ```python
     def forward_prop(self, x, w, b):
         self.input = x
@@ -167,9 +154,7 @@ reshaped before we carry out the matrix multiplication.
 [3]:https://en.wikipedia.org/wiki/Affine_transformation
 
 ### Backpropagation
-It should be the layer's responsibility to compute local gradients and apply chain rule to them to 
-obtain gradient of loss. What are local gradients? They are the gradient of $$y$$ with respect to 
-$$x$$, $$W$$, and $$b$$, as opposed to the gradient of loss (which is global gradient in our context.)
+It should be the layer's responsibility to compute local gradients and apply chain rule to them to obtain gradient of loss. What are local gradients? They are the gradient of $y$ with respect to $x$, $W$, and $b$, as opposed to the gradient of loss (which is global gradient in our context.)
 
 $$
 \frac{\partial y}{\partial W} = x^{T}
@@ -184,10 +169,7 @@ $$
 $$
 
 #### Tensor Calculus
-Notice that we are doing tensor calculus, the actual derivation of differentiation isn't very clean.
-It involves constructing a Jacobian matrix because we are basically taking derivative of a vector i.e.
-$$y$$ with respect to a matrix, i.e. $$W$$. For more information, please look at 
-[Prof. Erik Learned-Miller's note][4]. 
+Notice that we are doing tensor calculus, the actual derivation of differentiation isn't very clean. It involves constructing a Jacobian matrix because we are basically taking derivative of a vector i.e. $y$ with respect to a matrix, i.e. $W$. For more information, please look at [Prof. Erik Learned-Miller's note][4]. 
 
 For now, let's look at a simple example to prove the equations above:
 
@@ -206,7 +188,7 @@ w_{3,1} & w_{3,2}
 \end{bmatrix}
 $$
 
-Thus, $$y$$ is
+Thus, $y$ is
 
 $$
 y = \begin{bmatrix}
@@ -214,7 +196,7 @@ w_{1,1}x_{1} + w_{2,1}x_{2} + w_{3,1}x_{3} & w_{1,2}x_{1} + w_{2,2}x_{2} + w_{3,
 \end{bmatrix}
 $$
 
-Now if we want to take derivative of $$y$$ with respect to $$\vec{x}$$, we need to construct a Jacobian.
+Now if we want to take derivative of $y$ with respect to $\vec{x}$, we need to construct a Jacobian.
 
 $$
 \frac{\partial y}{\partial \vec{x}} = \begin{bmatrix}
@@ -233,24 +215,19 @@ w_{1,2} & w_{2,2} & w_{3,2}
 $$
 
 #### Dimension Analysis
-Anyways, my typical lazy approach to the problem is dimension analysis. We know that upstream gradient, 
-the gradient of loss with respect to $$y$$ has the shape `(N, H)`. We know that $$x$$ has the shape `(N, D)`. 
-We are expecting to get the gradient of $$y$$ with respect to $$W$$, which should have the shape of `(D, H)`. 
-This is translating to the following in code:
+Anyways, my typical lazy approach to the problem is dimension analysis. We know that upstream gradient, the gradient of loss with respect to $y$ has the shape `(N, H)`. We know that $x$ has the shape `(N, D)`. We are expecting to get the gradient of $y$ with respect to $W$, which should have the shape of `(D, H)`. This is translating to the following in code:
 ```python
 # Applying vector chain rule, as a result, grad_w is the gradient of loss with respect to weight
 grad_w = np.dot(x.T, grad_y)  # (D, N) x (N, H) => (D, H)
 ```
 
-Similarly, we can do the same for gradient of $$x$$:
+Similarly, we can do the same for gradient of $x$:
 ```python
 # Applying vector chain rule, as a result, grad_x is the gradient of loss with respect to input
 grad_x = np.dot(grad_y, w.T)
 ```
 
-Since the local gradient of bias is 1, the gradient of loss with respect to $$y$$ is going to be the 
-gradient we use for updating biases. But the problem is that `grad_y` has shape `(N, H)` while bias 
-vector has shape `(H,)`. this just means that we need to sum up the contributions from N examples.
+Since the local gradient of bias is 1, the gradient of loss with respect to $y$ is going to be the gradient we use for updating biases. But the problem is that `grad_y` has shape `(N, H)` while bias vector has shape `(H,)`. this just means that we need to sum up the contributions from N examples.
 ```
 grad_b = np.sum(grad_y.T, axis=1)
 ```
@@ -273,8 +250,7 @@ Now put everything together.
 [4]:https://compsci697l.github.io/docs/vecDerivs.pdf
 
 ## ReLU Activation
-ReLU stands for rectified linear unit. It squashes all negative inputs to zero and keeps the value of
-all positive inputs. 
+ReLU stands for rectified linear unit. It squashes all negative inputs to zero and keeps the value of all positive inputs. 
 ```python
 relu(1)  # => 1
 relu(52342)  # => 52342
@@ -297,10 +273,7 @@ def forward_prop(self, x):
 ```
 
 ### Back Propagation
-ReLU acts as a switch. If any input is negative, it won't pass the input forward to next layer. If
-any input is positive, it will pass the input forward to next layer without any additional 
-modifications. What does that imply? Whenever the input is positive, we have a slope of 1 because 
-the change is linearly proportional to the input. This is like: 
+ReLU acts as a switch. If any input is negative, it won't pass the input forward to next layer. If any input is positive, it will pass the input forward to next layer without any additional modifications. What does that imply? Whenever the input is positive, we have a slope of 1 because the change is linearly proportional to the input. This is like: 
 
 $$
 \text{ Given } f(x) = x \rightarrow \frac{\partial f}{\partial x} = 1
@@ -312,9 +285,7 @@ $$
 \text{ Given } f(x) = 0 \rightarrow \frac{\partial f}{\partial x} = 0
 $$
 
-We can expect that our local gradient is filled with ones and zeros in a matrix of shape `(N, H)`.
-We will multiply the local gradient by the upstream gradient. With that mind, we can take a short cut
-and write:
+We can expect that our local gradient is filled with ones and zeros in a matrix of shape `(N, H)`. We will multiply the local gradient by the upstream gradient. With that mind, we can take a short cut and write:
 ```python
 def backprop(self, grad_output):
     grad_input = grad_output
@@ -324,13 +295,9 @@ def backprop(self, grad_output):
 ```
 
 ## Softmax Activation
-What is softmax? It is a generalization of the logistic function that allows us to handle multiple
-classes. To put it in layman term, it is a function that we can use to squash a set of random values
-with range `{-Inf, Inf}` to a range of `{0, 1}`. You may ask, why squashing? It is because squashing
-allows us to extract probabilities and likelihood from a set of values. 
+What is softmax? It is a generalization of the logistic function that allows us to handle multiple classes. To put it in layman term, it is a function that we can use to squash a set of random values with range `{-Inf, Inf}` to a range of `{0, 1}`. You may ask, why squashing? It is because squashing allows us to extract probabilities and likelihood from a set of values. 
 
-For example, let's ask the question, given Dog, Cat, Hippo, and Parrot, which one is your favorite
-pet? You can arbitrarily assign some score to each of them, like
+For example, let's ask the question, given Dog, Cat, Hippo, and Parrot, which one is your favorite pet? You can arbitrarily assign some score to each of them, like
 ```
 {
     "dog": 100,
@@ -340,13 +307,10 @@ pet? You can arbitrarily assign some score to each of them, like
 }
 ```
 
-For whatever reason you don't like parrot, because they are too talkative, you give it a negative
-score. 
+For whatever reason you don't like parrot, because they are too talkative, you give it a negative score. 
 
 ### Quantifying Score
-The problem with score is that it is completely arbitrary and it is meaningless to tell someone that
-"Dog and cat score 100 points". It is more meaningful to ask which one of them is most likely to be 
-your favorite pet. 
+The problem with score is that it is completely arbitrary and it is meaningless to tell someone that "Dog and cat score 100 points". It is more meaningful to ask which one of them is most likely to be your favorite pet. 
 
 Let's define score as an array
 
@@ -359,8 +323,7 @@ pet_types = ['dog', 'cat', 'hippo', 'parrot']
 pet_scores = [100, 100, 70, -100]
 ```
 
-I will denote `s` as score for convenience. Softmax probability for a given `i` item is defined as 
-follows
+I will denote `s` as score for convenience. Softmax probability for a given `i` item is defined as follows
 
 $$
 P(i) = \frac{e^{s_{i}}}{\Sigma_{j}^{N} e^{s_{j}}}
@@ -391,8 +354,7 @@ for i in range(len(pet_types)):
 
 
 ### Numerically Instability
-The math expression above is fairly easy to understand, but it suffers from one problem: 
-*numerical instability*. The probability function will blow up when the score value is too high.
+The math expression above is fairly easy to understand, but it suffers from one problem: *numerical instability*. The probability function will blow up when the score value is too high.
 
 Let me demonstrate with an example:
 
@@ -418,12 +380,10 @@ probability(car_scores, 1)
     nan
 
 
-We get a `NaN` as answer! You know why? Because `np.exp(1000)` is tooooooo big to fit in memory. The
-computer cannot handle such big number. We need a way to get around this problem and allow our
-probability function to take in any score values otherwise it is garbage.
 
-Stablize numerical instability by multiplying by 1. (This is a common trick that is used in many
-engineering fields and physics.)
+We get a `NaN` as answer! You know why? Because `np.exp(1000)` is tooooooo big to fit in memory. The computer cannot handle such big number. We need a way to get around this problem and allow our probability function to take in any score values otherwise it is garbage.
+
+Stablize numerical instability by multiplying by 1. (This is a common trick that is used in many engineering fields and physics.)
 
 $$
 P(i) = \frac{C \cdot e^{s_{i}}}{C \cdot \Sigma_{j}^{N} e^{s_{j}}}
@@ -435,15 +395,15 @@ $$
 \frac{C}{C} = 1
 $$
 
-`C` is any arbitrary constant, be it `C = 1`, `C = 1000` or `C = 9999999`. Now we can rewrite the
-expression by doing a little algebra here. 
+`C` is any arbitrary constant, be it `C = 1`, `C = 1000` or `C = 9999999`. Now we can rewrite the expression by doing a little algebra here. 
 
 $$
 P(i) = \frac{e^{s_{i} + log(C)}}{C \cdot \Sigma_{j}^{N} e^{s_{j} + log(C)}}
 $$
 
-A common choice for `log(C)` is `-1 * np.max(scores)`. Basically, we are subtracting all scores by
-the max score in the score array. It's a very simple trick.
+A common choice for `log(C)` is `-1 * np.max(scores)`. Basically, we are subtracting all scores by the max score in the score array. It's a very simple trick.
+
+
 ```python
 def stable_probability(scores, i):
     max_score = np.max(scores)
@@ -464,4 +424,111 @@ for i in range(len(car_brands)):
 
 
 ### Forward Propagation
+The forward propagation will be very similar to what we implemented in the section above, except this time we will use vectorized approach to make it even more efficient.
 
+```python
+def forward_prop(self, x):
+    shifted_logits = x - np.max(x, axis=1, keepdims=True)
+    Z = np.sum(np.exp(shifted_logits), axis=1, keepdims=True)
+    probs = np.exp(shifted_logits) / Z   
+    
+    return probs
+```
+
+### Back Propagation
+The gradient of loss with respect to score has a very simple expression:
+
+$$
+\frac{\partial L_{i}}{\partial s_{k}} = \left\{ 
+\begin{matrix}
+\text{ if } y_{i} = k \quad p_{k} - 1 \\ 
+\text{ else } \quad p_{k}
+\end{matrix}
+\right.
+$$
+
+**HOW TO INTERPRET**: For any given `ith` input, we expect to receive a score vector. We can call it `s` and use $s_{k}$ to represent `s[k]` where `k` is an index into the score vector.
+Every score element is translated into probaility after softmax activation is applied. If the length of score vector`len(s)` is `K`, then the lenght of probability vector `len(probs)` is also `K`. 
+
+
+```python
+# Here's an example in Python
+score = np.array([12, 2, 1])
+prob = np.exp(score) / np.sum(np.exp(score))
+print 'Probability vector is', prob
+
+# Let's assume that label y[i] is 0
+y = 0
+grad_score = prob.copy()
+grad_score[y] -= 1
+print 'Gradient of loss with respect to score is', grad_score
+```
+
+    Probability vector is [  9.99937902e-01   4.53971105e-05   1.67006637e-05]
+    Gradient of loss with respect to score is [ -6.20977742e-05   4.53971105e-05   1.67006637e-05]
+
+
+#### Derivation
+By definition, categorical loss for a single input is:
+
+$$
+L = -log\left(\frac{e^{s_{y}}}{e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{K-1}}\right)
+$$
+
+When we take derivative, we are taking it with respect to the score vector. Again, this is tensor calculus.
+
+$$
+\frac{\partial L}{\partial \vec{s}} = 
+\left \langle 
+\frac{\partial L}{\partial s_{0}},
+\frac{\partial L}{\partial s_{1}},
+...,
+\frac{\partial L}{\partial s_{y}},
+...,
+\frac{\partial L}{\partial s_{K-1}},
+\right \rangle
+$$
+
+For example, let's take derivative of $s_{k}$ when $k \neq y$ using u-substitution.
+
+$$
+L = -log\left(u\right)
+$$
+
+and 
+
+$$
+u = e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-1}
+$$
+
+Now take derivative with respect to $u$.
+
+$$
+\frac{\partial L}{\partial u} = \frac{-1}{u}
+$$
+
+And take derivative of $u$ with respect to $s_{1}$ using product rule.
+
+$$
+\frac{\partial u}{\partial s_{1}} = 0 + (-1) e^{s_{y}}e^{s_{1}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-2}
+$$
+
+Now use chain rule to compute the final result.
+
+$$
+\frac{\partial L}{\partial u}\frac{\partial u}{\partial s_{1}} = (-1)(-1)
+\frac{e^{s_{y}}e^{s_{1}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)}{e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{2}} = 
+\frac{e^{s_{1}}}{\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)} = p_{1}
+$$
+
+QED, we have shown that if $y \neq k$, gradient of score at `k` is the probability at `k`. Let's move onto show derivation for when $y = k$. The only difference here is the product rule part.
+
+$$
+\frac{\partial u}{\partial s_{y}} = e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-1} - e^{s_{y}}e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-2}
+$$
+
+Now use chain rule again.
+
+$$
+\frac{\partial L}{\partial u}\frac{\partial u}{\partial s_{y}} = \frac{-e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)}{e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)} + \frac{e^{s_{y}}e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)}{e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{2}} = p_{k} - 1
+$$
