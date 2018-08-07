@@ -79,25 +79,25 @@ plot_histo_chart(model.fit(x, y, validation_split=0.20, epochs=10, batch_size=50
 
     Train on 48000 samples, validate on 12000 samples
     Epoch 1/10
-    48000/48000 [==============================] - 3s 63us/step - loss: 1.9959 - acc: 0.8826 - val_loss: 0.6230 - val_acc: 0.9272
+    48000/48000 [==============================] - 4s 81us/step - loss: 1.9824 - acc: 0.8846 - val_loss: 0.6390 - val_acc: 0.9190
     Epoch 2/10
-    48000/48000 [==============================] - 3s 62us/step - loss: 0.5144 - acc: 0.9275 - val_loss: 0.4369 - val_acc: 0.9403
+    48000/48000 [==============================] - 4s 78us/step - loss: 0.5175 - acc: 0.9269 - val_loss: 0.4547 - val_acc: 0.9336
     Epoch 3/10
-    48000/48000 [==============================] - 3s 61us/step - loss: 0.4345 - acc: 0.9378 - val_loss: 0.3999 - val_acc: 0.9466
+    48000/48000 [==============================] - 4s 78us/step - loss: 0.4354 - acc: 0.9358 - val_loss: 0.4010 - val_acc: 0.9476
     Epoch 4/10
-    48000/48000 [==============================] - 3s 62us/step - loss: 0.4030 - acc: 0.9434 - val_loss: 0.3807 - val_acc: 0.9517
+    48000/48000 [==============================] - 4s 86us/step - loss: 0.4049 - acc: 0.9431 - val_loss: 0.3878 - val_acc: 0.9457
     Epoch 5/10
-    48000/48000 [==============================] - 3s 60us/step - loss: 0.3846 - acc: 0.9460 - val_loss: 0.3658 - val_acc: 0.9517
+    48000/48000 [==============================] - 4s 81us/step - loss: 0.3846 - acc: 0.9471 - val_loss: 0.3715 - val_acc: 0.9498
     Epoch 6/10
-    48000/48000 [==============================] - 3s 62us/step - loss: 0.3698 - acc: 0.9496 - val_loss: 0.3505 - val_acc: 0.9572
+    48000/48000 [==============================] - 4s 91us/step - loss: 0.3729 - acc: 0.9494 - val_loss: 0.3645 - val_acc: 0.9508
     Epoch 7/10
-    48000/48000 [==============================] - 3s 62us/step - loss: 0.3587 - acc: 0.9519 - val_loss: 0.3455 - val_acc: 0.9562
+    48000/48000 [==============================] - 4s 90us/step - loss: 0.3585 - acc: 0.9523 - val_loss: 0.3420 - val_acc: 0.9559
     Epoch 8/10
-    48000/48000 [==============================] - 3s 63us/step - loss: 0.3480 - acc: 0.9532 - val_loss: 0.3342 - val_acc: 0.9590
+    48000/48000 [==============================] - 5s 97us/step - loss: 0.3499 - acc: 0.9535 - val_loss: 0.3421 - val_acc: 0.9574
     Epoch 9/10
-    48000/48000 [==============================] - 3s 63us/step - loss: 0.3395 - acc: 0.9553 - val_loss: 0.3320 - val_acc: 0.9579
+    48000/48000 [==============================] - 4s 93us/step - loss: 0.3399 - acc: 0.9555 - val_loss: 0.3357 - val_acc: 0.9584
     Epoch 10/10
-    48000/48000 [==============================] - 3s 62us/step - loss: 0.3337 - acc: 0.9565 - val_loss: 0.3225 - val_acc: 0.9609
+    48000/48000 [==============================] - 5s 95us/step - loss: 0.3334 - acc: 0.9571 - val_loss: 0.3263 - val_acc: 0.9591
 
 
 
@@ -116,8 +116,8 @@ test_loss, test_acc = model.evaluate(x, y, batch_size=50)
 print 'Accuracy on test data %f' % test_acc
 ```
 
-    10000/10000 [==============================] - 0s 23us/step
-    Accuracy on test data 0.958100
+    10000/10000 [==============================] - 0s 35us/step
+    Accuracy on test data 0.957300
 
 
 That is a 95.8% accuracy on test data! This isn't bad but it isn't the best. We can achieve 99.8% if we use convolutional neural network. This is a topic for another tutorial.
@@ -366,14 +366,6 @@ car_scores = [100, 1000, 100]
 probability(car_scores, 1)
 ```
 
-    /home/carmento/Desktop/calvinfeng/machine-learning-notebook/environment/lib/python2.7/site-packages/ipykernel_launcher.py:4: RuntimeWarning: overflow encountered in exp
-      after removing the cwd from sys.path.
-    /home/carmento/Desktop/calvinfeng/machine-learning-notebook/environment/lib/python2.7/site-packages/ipykernel_launcher.py:6: RuntimeWarning: overflow encountered in exp
-      
-    /home/carmento/Desktop/calvinfeng/machine-learning-notebook/environment/lib/python2.7/site-packages/ipykernel_launcher.py:6: RuntimeWarning: invalid value encountered in double_scalars
-      
-
-
 
 
 
@@ -423,6 +415,28 @@ for i in range(len(car_brands)):
     Probability of hyundai being the best is 0.000000
 
 
+## Cross Entropy Loss
+Before we dive into the implementation of a softmax layer, we must establish what is the loss function we are going to use for this model. Since we are performing hand written digit classification, we will for sure put softmax as our last layer of activation, i.e. whatever we get out from the softmax layer is the result of our model. 
+
+In the `keras` example above, we have this one line which specifies what kind of loss function and function optimizer the model is using.
+```python
+model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
+```
+
+### Categorical Cross Entropy
+The choice here is cross-entropy loss. It measures the performance of a classification model whose output is a probability value between 0 and 1. Cross entropy loss increases as the predicted probability diverges from the actual label. The loss for a given `ith` example is defined as follows:
+
+$$
+L_{i} = -log\left(P(y_{i})\right)
+$$
+
+What does that mean? Suppose the correct label is 3, and your predicted probability for class 3 is 1. The loss expression will give you a zero loss because `-1*log(1) = 0`. What if you predicited probability is 0? Then `-1*log(0)` will give you an infinity loss. Typically we use average loss because we often compute loss over multiple examples. 
+
+$$
+L = \frac{1}{N}\Sigma_{i=0}^{N} L_{i} = \frac{1}{N}\Sigma_{i=0}^{N} -log\left(P(y_{i})\right)
+$$
+
+## Back to Softmax
 ### Forward Propagation
 The forward propagation will be very similar to what we implemented in the section above, except this time we will use vectorized approach to make it even more efficient.
 
@@ -532,3 +546,65 @@ Now use chain rule again.
 $$
 \frac{\partial L}{\partial u}\frac{\partial u}{\partial s_{y}} = \frac{-e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)}{e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)} + \frac{e^{s_{y}}e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)}{e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{2}} = p_{k} - 1
 $$
+
+## Put Everything Together
+Finally we are ready to put everything together. I will leave this as an exercise to reader for constructing his/her own model using the layers implemented in this tutorial. I will showcase what I've built.
+
+
+```python
+# Everything from this tutorial
+from models.loss import categorical_cross_entropy
+from layers import Dense, ReLU, Softmax
+from models import Sequential
+from optimizers import GradientDescent
+
+# Keras
+from keras.datasets import mnist
+from keras.utils import to_categorical
+
+import numpy as np
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+print 'Imported MNIST data: training input %s and training labels %s.' % (x_train.shape, y_train.shape)
+print 'Imported MNIST data: test input %s and test labels %s.' % (x_test.shape, y_test.shape)
+
+N, H, W = x_train.shape
+x = x_train.reshape((N,H*W)).astype('float') / 255
+y = to_categorical(y_train, num_classes=10)
+
+model = Sequential()
+model.add(Dense(), ReLU(), layer_dim=(28*28, 300), weight_scale=1e-2)
+model.add(Dense(), ReLU(), layer_dim=(300, 100), weight_scale=1e-2)
+model.add(Dense(), Softmax(), layer_dim=(100, 10), weight_scale=1e-2)
+
+model.compile(optimizer=GradientDescent(learning_rate=1e-2),loss_func=categorical_cross_entropy)
+model.fit(x, y, epochs=10, batch_size=50, verbose=False)    
+```
+
+    Imported MNIST data: training input (60000, 28, 28) and training labels (60000,).
+    Imported MNIST data: test input (10000, 28, 28) and test labels (10000,).
+    Epoch (1/10) training accuracy: 0.200000 and training loss 2.302445
+    Epoch (2/10) training accuracy: 0.900000 and training loss 0.253407
+    Epoch (3/10) training accuracy: 0.980000 and training loss 0.199864
+    Epoch (4/10) training accuracy: 0.920000 and training loss 0.168803
+    Epoch (5/10) training accuracy: 1.000000 and training loss 0.041192
+    Epoch (6/10) training accuracy: 0.960000 and training loss 0.088683
+    Epoch (7/10) training accuracy: 1.000000 and training loss 0.029964
+    Epoch (8/10) training accuracy: 1.000000 and training loss 0.030463
+    Epoch (9/10) training accuracy: 0.980000 and training loss 0.055227
+    Epoch (10/10) training accuracy: 1.000000 and training loss 0.020520
+    Epoch (11/10) training accuracy: 1.000000 and training loss 0.011982
+
+
+
+```python
+N, H, W = x_test.shape
+x = x_test.reshape((N,H*W)).astype('float') / 255
+y = to_categorical(y_test, num_classes=10)
+
+loss, acc = model.evaluate(x, y)
+print 'Final loss: %f and accuracy on test dataset: %f' % (loss, acc)
+```
+
+    Final loss: 0.078131 and accuracy on test dataset: 0.978700
+

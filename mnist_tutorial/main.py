@@ -28,6 +28,12 @@ def main():
     model.compile(optimizer=GradientDescent(learning_rate=1e-2),loss_func=categorical_cross_entropy)
     model.fit(x, y, epochs=10, batch_size=50, verbose=False)    
 
+    N, H, W = x_test.shape
+    x = x_test.reshape((N,H*W)).astype('float') / 255
+    y = to_categorical(y_test, num_classes=10)
+
+    model.evaluate(x, y)
+
 
 if __name__ == '__main__':
     main()

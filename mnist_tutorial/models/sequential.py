@@ -102,7 +102,7 @@ class Sequential(object):
             if y_pred is None:
                 y_pred = probs
             else:
-                y_pred = np.concatenate(y_pred, probs) 
+                y_pred = np.concatenate([y_pred, probs]) 
         
         acc = np.mean(np.argmax(y_pred, axis=1) == np.argmax(y, axis=1))
 
