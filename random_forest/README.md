@@ -1,17 +1,19 @@
-This is the shitty one
+# Random Forest
+For full explanation, please look at the Jupyter notebook.
 
-https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/
+## Pseudo-code
+1. Randomly select `k` features from total `K` features, where `k << K`
+2. Construct a decision tree using `k` features and give it a threshold for splitting
+    * Minimum sample split, i.e. minimum number of samples required to split an internal node
+    * Minimum samples leaf, i.e. minimum number of samples required to be a leaf node
+    * Max leaf nodes
+    * Minimum purity increase
+    * Maximum depth
+3. Build a forest by repeating steps 1 to 3 for `n` times to create `n` number of tree.
+4. Make prediction through majority vote.
 
-The better one is on Google channel.
-
-
-## Gini Impurity
-We can quantify the uncertainty as a single node using a metric called *Gini Impurity*.
-
-## Information Gain
-We can quantify how much does a question reduce that uncertainty using a concept called *Information Gain*.
-
-## Question To Ask
-What type of question can we ask at each node? Notice that each node takes a list of rows as input.
-We will iterate over every value for every feature that appears in those rows. Each of these become 
-a candidate for threshold we can use to partition the data.
+## Pruning
+Pruning is the inverse of splitting. Grow the tree fully until leaf nodes have minimum impurity.
+Then all pairs of leaf nodes are considered for elimination. Any pair whose elimination yields a 
+satisfactory (small) increase in impurity is eliminated, and the common antecedent node is declared
+as leaf node.

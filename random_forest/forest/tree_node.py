@@ -79,6 +79,21 @@ class TreeNode(object):
         return self.true_branch, self.false_branch                
 
 
+def classify(node, x):
+    """
+    Args:
+        root (TreeNode):
+        x (numpy.ndarray): One-dimensional array, which is a row of data
+    """
+    if node.rule is None:
+        return node.prediction
+    
+    if node.rule.match(x):
+        return classify(node.true_branch, x)
+    
+    return classify(node.false_branch, x)
+
+
 def build_tree(root):
     if root.split() is not None:
         build_tree(root.true_branch)
