@@ -1,6 +1,6 @@
 from keras.utils import to_categorical
 from sklearn import tree
-from forest import DecisionTree
+from forest import DecisionTree, RandomForest
 
 import numpy as np
 import csv
@@ -51,6 +51,19 @@ def predict_with_dtree(col_names, data):
         print 'Actual label is %s and predicted %s' % (row[-1], tree.predict(row))
 
 
+def predict_with_forest(col_names, data):
+    N = len(data)
+    training_data = data[:int(0.80*N)]
+
+    forest = RandomForest(n_features=3)
+    forest.fit(col_names, training_data)
+
+    testing_data = data[int(0.80*N):]
+
+    for row in testing_data:
+        print 'Actual label is %s and predicted %s' % (row[-1], forest.predict(row))
+
+
 def load_data(csv_path):
     col_names = None
     data = []
@@ -76,7 +89,8 @@ def main():
     np.random.shuffle(data)
 
     # print predict_with_sklearn_dtree(data)
-    predict_with_dtree(col_names, data)
+    # predict_with_dtree(col_names, data)
+    predict_with_forest(col_names, data)
 
 
 if __name__ == '__main__':
