@@ -2,11 +2,14 @@ from tree_node import TreeNode
 
 
 class DecisionTree(object):
-    def __init__(self):
+    def __init__(self, feat_indices=None):
         self.root = None
+        self.feat_indices = feat_indices
 
-    def fit(self, header, training_data):
-        self.root = TreeNode(header, X=training_data)
+    def fit(self, column_names, training_data):
+        """Construct a decision tree
+        """
+        self.root = TreeNode(column_names, X=training_data)
 
         def build_tree(node):
             if node.split() is not None:
@@ -46,7 +49,7 @@ class DecisionTree(object):
 
 
 if __name__ == '__main__':
-    header = ['color', 'diameter', 'label']
+    column_names = ['color', 'diameter', 'label']
 
     training_data = [
         ['Green', 3, 'Apple'],
@@ -57,6 +60,6 @@ if __name__ == '__main__':
     ]
 
     tree = DecisionTree()
-    tree.fit(header, training_data)
+    tree.fit(column_names, training_data)
     tree.display()
     print tree.predict(['Red', 4])

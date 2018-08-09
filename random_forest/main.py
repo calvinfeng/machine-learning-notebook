@@ -1,6 +1,6 @@
 from keras.utils import to_categorical
 from sklearn import tree
-from forest import build_tree, print_tree, classify, TreeNode
+from forest import DecisionTree
 
 import numpy as np
 import csv
@@ -42,14 +42,13 @@ def predict_with_dtree(col_names, data):
     N = len(data)
     training_data = data[:int(0.80*N)]
 
-    root = TreeNode(col_names, X=training_data)
-    build_tree(root)
-    print_tree(root)
+    tree = DecisionTree()
+    tree.fit(col_names, training_data)
 
     testing_data = data[int(0.80*N):]
 
     for row in testing_data:
-        print 'Actual label is %s and predicted %s' % (row[-1], classify(root, row))
+        print 'Actual label is %s and predicted %s' % (row[-1], tree.predict(row))
 
 
 def load_data(csv_path):

@@ -10,9 +10,10 @@ class TreeNode(object):
     assuming a binary tree implementation for decision tree.
     """
 
-    def __init__(self, attr_names, X):
+    def __init__(self, column_names, X):
         self.X = X
-        self.attr_names = attr_names
+        self.rule = None
+        self.column_names = column_names
         self.true_branch = None
         self.false_branch = None
 
@@ -45,16 +46,15 @@ class TreeNode(object):
         else:
             raise ValueError('%s is not a valid partition criterion' % criterion)
 
-        self.rule = None
         best_gain = 0
         current_metric_val = metric(self.X)
 
-        for i in range(len(self.attr_names) - 1):
+        for i in range(len(self.column_names) - 1):
             # Extract unique values from dataset in a given feature/column.
             values = set([x[i] for x in self.X])
 
             for val in values:
-                rule = SplitRule(self.attr_names[i], i, val)
+                rule = SplitRule(self.column_names[i], i, val)
 
                 # Partition the current dataset and check if everything landed on one side. If so, 
                 # this is a bad partition, don't consider it.                
@@ -73,60 +73,10 @@ class TreeNode(object):
             return None
 
         true_set, false_set = partition(self.X, self.rule)
-        self.true_branch = TreeNode(self.attr_names, X=true_set)
-        self.false_branch = TreeNode(self.attr_names, X=false_set)
+        self.true_branch = TreeNode(self.column_names, X=true_set)
+        self.false_branch = TreeNode(self.column_names, X=false_set)
 
         return self.true_branch, self.false_branch                
 
-
-def classify(node, x):
-    """
-    Args:
-        root (TreeNode):
-        x (numpy.ndarray): One-dimensional array, which is a row of data
-    """
-    if node.rule is None:
-        return node.prediction
-    
-    if node.rule.match(x):
-        return classify(node.true_branch, x)
-    
-    return classify(node.false_branch, x)
-
-
-def build_tree(root):
-    if root.split() is not None:
-        build_tree(root.true_branch)
-        build_tree(root.false_branch)
-
-
-def print_tree(root, spacing=''):
-    if root.rule is None:
-        print spacing + 'Prediction:', root.prediction
-        return
-
-    print spacing + 'Rule:', str(root.rule)
-
-    print spacing + '--> True:'
-    print_tree(root.true_branch, spacing + ' ')
-
-    print spacing + '--> False:'
-    print_tree(root.false_branch, spacing + ' ')
-
-
-if __name__ == '__main__':
-    header = ['color', 'diameter', 'label']
-
-    training_data = [
-        ['Green', 3, 'Apple'],
-        ['Yellow', 3, 'Apple'],
-        ['Red', 1, 'Grape'],
-        ['Red', 1, 'Grape'],
-        ['Yellow', 3, 'Lemon']
-    ]
-
-    root = TreeNode(header, X=training_data)
-    build_tree(root)
-    print_tree(root)
 
     
