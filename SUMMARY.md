@@ -26,3 +26,6 @@
 * Reinforcement Learning
   * [Deep Q Learning](/reinforcement_learning/reinforcement_learning.md)
   * [Policy Gradients](/reinforcement_learning/policy_gradients.md)
+
+### Golang
+* [Pointer Assignment](/go_technique/pointer_trick.md)
