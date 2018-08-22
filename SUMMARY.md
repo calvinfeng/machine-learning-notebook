@@ -28,4 +28,5 @@
   * [Policy Gradients](/reinforcement_learning/policy_gradients.md)
 
 ### Golang
-* [Pointer Assignment](/go_technique/pointer_trick.md)
+* [Pointer Assignment](/go_technique/pointer_assignment.md)
+* [Custom JSON Marshaling](/go_technique/custom_json_marshaling.md)
