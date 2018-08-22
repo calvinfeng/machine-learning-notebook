@@ -55,7 +55,7 @@ def predict_with_forest(col_names, data):
     N = len(data)
     training_data = data[:int(0.80*N)]
 
-    forest = RandomForest(n_features=3)
+    forest = RandomForest(n_samples=10, n_features=3)
     forest.fit(col_names, training_data)
 
     testing_data = data[int(0.80*N):]

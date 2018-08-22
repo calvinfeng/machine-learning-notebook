@@ -9,7 +9,7 @@ class DecisionTree(object):
     def fit(self, column_names, training_data):
         """Construct a decision tree
         """
-        self.root = TreeNode(column_names, X=training_data)
+        self.root = TreeNode(column_names, X=training_data, feat_indices=self.feat_indices)
 
         def build_tree(node):
             if node.split() is not None:
@@ -19,6 +19,8 @@ class DecisionTree(object):
         build_tree(self.root)
 
     def display(self):
+        """Prints a decision tree to screen
+        """
         def _print_tree(node, spacing=''):
             if node.rule is None:
                 print spacing + 'Prediction:', node.prediction
@@ -36,6 +38,8 @@ class DecisionTree(object):
             _print_tree(self.root)
 
     def predict(self, x):
+        """Makes a prediction using the provided data row
+        """
         def _classify(node, x):
             if node.rule is None:
                 return node.prediction

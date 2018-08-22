@@ -10,12 +10,23 @@ class TreeNode(object):
     assuming a binary tree implementation for decision tree.
     """
 
-    def __init__(self, column_names, X):
+    def __init__(self, column_names, X, feat_indices=None):
+        """Construct a decision tree node
+
+        Args:
+            X (list): A multi-dimensional list, of shape (N, D) where D is the number of columns.
+            column_names ([]string): A list of column names.
+            feat_indices ([]int): A list of indices that is used for splitting.
+        """
         self.X = X
         self.rule = None
         self.column_names = column_names
         self.true_branch = None
         self.false_branch = None
+        
+        self.feat_indices = range(len(column_names) - 1)
+        if feat_indices is not None:
+            self.feat_indices = feat_indices
 
     @property
     def prediction(self):
@@ -49,7 +60,7 @@ class TreeNode(object):
         best_gain = 0
         current_metric_val = metric(self.X)
 
-        for i in range(len(self.column_names) - 1):
+        for i in self.feat_indices:
             # Extract unique values from dataset in a given feature/column.
             values = set([x[i] for x in self.X])
 
