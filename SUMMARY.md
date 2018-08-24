@@ -2,6 +2,7 @@
 * [Introduction](README.md)
 
 ### Supervised Learning
+* [Random Forest](/random_forest/random_forest.md)
 * Neural Network
   * [Numpy Basics](/neural_network/numpy_basics.md)
   * [Neural Network](/neural_network/neural_network.md)
