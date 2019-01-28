@@ -89,9 +89,9 @@ np.isclose(A, U.dot(S).dot(V.T))
 There are several properties of SVD we should know about.
 
 * It is always possible to decompose a real valued matrix into $$U \Sigma V^{T}$$
-* $$U$$, $$\Sigma$$, and $$V$$ are unique
-* $$U$$ and $$V$$ are column orthogonal i.e. $$U^{T}U = I$$ and $$V^{T}V = I$$
-* $$\Sigma$$ entries are positive and sorted in descending order
+* The matrices $$U$$, $$\Sigma$$, and $$V$$ are unique
+* The matrices $$U$$ and $$V$$ are column orthogonal i.e. $$U^{T}U = I$$ and $$V^{T}V = I$$
+* The $$\Sigma$$ entries are positive and sorted in descending order
 
 Going back to the movie example, imagine that we have 4 movies
 
