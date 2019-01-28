@@ -3,7 +3,7 @@
 
 ## Formulation
 
-Let's assume that our system has $I_{user}$ users and $J_{movie}$ movies. We assign $K_{latent}$
+Let's assume that our system has $$I_{user}$$ users and $$J_{movie}$$ movies. We assign $$K_{latent}$$
 features to each user and movie in the system. We can construct a matrix factorization as follows:
 
 $$
@@ -31,17 +31,17 @@ r_{I,0} & ...     & ...      & ... & r_{I, J}
 \end{vmatrix}
 $$
 
-$X$ represents the latent feature matrix for all users in our system. $\Theta$ represents the latent
-feature matrix for all movies in our system. The matrix product of $X$ and $\Theta^{T}$ is the
-model predicated rating.
+$X$ represents the latent feature matrix for all users in our system. $$\Theta$$ represents the
+latent feature matrix for all movies in our system. The matrix product of $$X$$ and $$\Theta^{T}$$
+is the model predicated rating.
 
 $$
 X\Theta^{T} = \hat{R}
 $$
 
-Let $R$ represents the actual rating we received from the MovieLens dataset. For every missing
-value in $R$, we will ignore their contribution to the loss function. Then for every `R[i][j] != nil`,
-we define the loss function as follows:
+Let $$R$$ represents the actual rating we received from the MovieLens dataset. For every missing
+value in $$R$$, we will ignore their contribution to the loss function. Then for every
+`R[i][j] != nil`, we define the loss function as follows:
 
 $$
 L_{X, \Theta} = \frac{1}{2}\Sigma_{i,j} (X\Theta^{T} - R)^{2} + \frac{\lambda}{2}\Sigma_{i, k}X^{2} + \frac{\lambda}{2}\Sigma_{j, k}\Theta^{2}
@@ -78,8 +78,9 @@ $$
 
 ### Vectorized Approach
 
-Recall that the output of our low-rank matrices model is $\hat{R}$ and let's find the gradient of $L$
-with respect to $\hat{R}$ first. The $\frac{1}{2}$ term will get canceled out by the square term.
+Recall that the output of our low-rank matrices model is $$\hat{R}$$ and let's find the gradient of
+$$L$$ with respect to $$\hat{R}$$ first. The $$\frac{1}{2}$$ term will get canceled out by the square
+term.
 
 $$
 \frac{\partial L}{\partial \hat{R}} = \hat{R} - R
@@ -138,7 +139,6 @@ Please look at the `lowrank` module inside this folder to find out more about th
 
 Let's confirm that gradients are computed correctly first.
 
-
 ```python
 import lowrank
 import numpy as np
@@ -147,11 +147,11 @@ np.random.seed(0)
 rand_training_mat = np.random.rand(5, 5)
 
 # Randomly remove certain values to make the matrix sparse
-rand_training_mat[rand_training_mat < 0.50] = 0 
+rand_training_mat[rand_training_mat < 0.50] = 0
 
 # Pick out some set of values from the training set to be test set and then remove those values from training set
 rand_test_mat = np.copy(rand_training_mat)
-rand_test_mat[rand_training_mat < 0.90] = 0 
+rand_test_mat[rand_training_mat < 0.90] = 0
 rand_training_mat[rand_test_mat != 0] = 0
 
 print 'Randomly initialized training sparse matrix'
