@@ -1,7 +1,9 @@
 # Summary
+
 * [Introduction](README.md)
 
-### Supervised Learning
+## Supervised Learning
+
 * [Random Forest](/random_forest/random_forest.md)
 * Neural Network
   * [Numpy Basics](/neural_network/numpy_basics.md)
@@ -15,13 +17,14 @@
 * Recurrent Neural Network
   * [Vanilla Recurrent Neural Network](/recurrent_neural_network/recurrent_neural_networks.md)
   * [LSTM Recurrent Neural Network](/recurrent_neural_network/long_short_term_memory.md)
-* Matrix Factorization
-  * [Singular Value Decomposition](/matrix_factorization/singular_value_decomposition.md)
-  * [Low Rank Matrix Factorization](/matrix_factorization/low_rank_matrix_factorization.md)
+* Recommender
+  * [Singular Value Decomposition](/recommender/singular_value_decomposition.md)
+  * [Low Rank Matrix Factorization](/recommender/low_rank_matrix_factorization.md)
 * Tutorial
   * [MNIST Tutorial](/mnist_tutorial/mnist_tutorial.md)
 
-### Unsupervised Learning
+## Unsupervised Learning
+
 * Clustering
   * [Spectral Clustering](/clustering/spectral_clustering.md)
 * Reinforcement Learning
