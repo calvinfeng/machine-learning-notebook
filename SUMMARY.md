@@ -20,6 +20,7 @@
 * Recommender
   * [Singular Value Decomposition](/recommender/singular_value_decomposition.md)
   * [Low Rank Matrix Factorization](/recommender/low_rank_matrix_factorization.md)
+  * [Neural Collaborative Filtering](/recommender/neural_collaborative_filtering.md)
 * Natural Language Processing
   * [Word2Vec](/natural_language/word2vec.md)
 * Tutorial
