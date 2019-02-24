@@ -111,19 +111,6 @@ train.head()
 ```
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -179,19 +166,6 @@ test.head()
 ```
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -251,8 +225,8 @@ $$
 \hat{y}_{ui} = a\left(h^{T}(p_{u} \cdot q_{i})\right)
 $$
 
-where $a$ is an activation function and $h$ is the edge weight matrix of the output layer. The edge
-weight matrix can be seen as an additional weight to the layer.
+where $$a$$ is an activation function and $$h$$ is the edge weight matrix of the output layer. The
+edge weight matrix can be seen as an additional weight to the layer.
 
 ### Matrix Factorization
 
