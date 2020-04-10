@@ -1,6 +1,7 @@
-
 # LSTM Recurrent Neural Network
+
 ## Exploding Gradient in Vanilla RNN
+
 Recall that our RNN model:
 
 $$
@@ -15,17 +16,26 @@ $$
 h_{t} = tanh \begin{pmatrix} W \begin{pmatrix} h_{t-1} \\ x_{t} \end{pmatrix} \end{pmatrix}
 $$
 
-For every time step of a sequence, we backprogate from `h[t]` to `h[t-1]`. First the gradient will flow through the `tanh` gate and then to matrix multiplication gate. As we know, whenever we backprop into matrix multiplication gate, the upstream gradient is multiplied by the tranpose of the `W` matrix. This happens at every time step throughout the sequence. What if the sequence is very long?
+For every time step of a sequence, we backprogate from `h[t]` to `h[t-1]`. First the gradient will
+flow through the `tanh` gate and then to matrix multiplication gate. As we know, whenever we
+backprop into matrix multiplication gate, the upstream gradient is multiplied by the tranpose of the
+`W` matrix. This happens at every time step throughout the sequence. What if the sequence is very
+long?
 
 ![rnn-gradient-flow](assets/rnn-gradient-flow.png)
 
-The final expression for gradient on `h[0]` will involve many factors of this weight matrix. This will either lead to an exploding gradient problem or vanishing gradient problem. There' a simple hack to address this problme, which is using `numpy.clip`. However, if the problem is vanishing gradient, clipping isn't going to help.
+The final expression for gradient on `h[0]` will involve many factors of this weight matrix. This
+will either lead to an exploding gradient problem or vanishing gradient problem. There' a simple hack
+to address this problme, which is using `numpy.clip`. However, if the problem is vanishing gradient,
+clipping isn't going to help.
 
 ## Introducing LSTM
 
-LSTM has a fancier recurrence relation than the vanilla RNN. LSTM has two states, one is being the usual hidden state `h[t]` we see in vanilla RNN and another one is called the cell state `c[t]`. Cell state is an internal vector that is not exposed to the outside world. 
+LSTM has a fancier recurrence relation than the vanilla RNN. LSTM has two states, one is being the
+usual hidden state `h[t]` we see in vanilla RNN and another one is called the cell state `c[t]`.
+Cell state is an internal vector that is not exposed to the outside world.
 
-Let's define some terminologies here: 
+Let's define some terminologies here:
 
 * `f` **forget gate**: whether to erase cell
 * `i` **input gate**: whether to write to cell
@@ -57,11 +67,17 @@ h_{t} &= o \odot tanh(c_{t}) \\
 \end{aligned}
 $$
 
-We take the previous cell state and hidden state as the inputs to our LSTM cell. The previous hidden state is combined with the input vector and multiply with the weight matrix to produce `ifog`. The forget gate multiplies element-wise with the previous cell state. The input and gate gate also multiply element wise. The two results are combined through sum elemenwise to produce a new cell state. The cell state is then squashed by a `tanh` and multiplied element-wise by the output gate to produce our next hidden state.
+We take the previous cell state and hidden state as the inputs to our LSTM cell. The previous hidden
+state is combined with the input vector and multiply with the weight matrix to produce `ifog`. The
+forget gate multiplies element-wise with the previous cell state. The input and gate gate also
+multiply element wise. The two results are combined through sum elemenwise to produce a new cell
+state. The cell state is then squashed by a `tanh` and multiplied element-wise by the output gate to
+produce our next hidden state.
 
-<img src="assets/lstm.png" width=400>
+![LSTM](./assets/lstm.png)
 
-I omitted biases in above equations. Also, in some literatures, people tend to omit the `g` gate. In a non-matrix form, including biases, we can express the internal cell equations in the following way:
+I omitted biases in above equations. Also, in some literatures, people tend to omit the `g` gate. In
+a non-matrix form, including biases, we can express the internal cell equations in the following way:
 
 $$
 f_{t} = \sigma \left(W_{hf}h_{t-1} + W_{xf}x + b_{f}\right)
@@ -79,23 +95,33 @@ $$
 c_{t} = f_{t} \odot c_{t-1} + i_{t} \odot \tanh \left( W_{gx}x + W_{gh}h_{t-1} + b_{g} \right)
 $$
 $$
-h_{t} = o_{t} \odot tanh \left(c_{t} \right) 
+h_{t} = o_{t} \odot tanh \left(c_{t} \right)
 $$
 
 ### LSTM Gradient Flow
-Backpropagating from `c[t]` to `c[t-1]` is only element-wise multiplication by the `f` gate, and there is no matrix multiplication by W. The `f` gate is different at every time step, ranged between 0 and 1 due to sigmoid property, thus we have avoided of the problem of multiplying the same thing over and over again. 
 
-Backpropagating from `h[t]` to `h[t-1]` is going through only one single `tanh` nonlinearity rather than `tanh` for every single step.
+Backpropagating from `c[t]` to `c[t-1]` is only element-wise multiplication by the `f` gate, and
+there is no matrix multiplication by W. The `f` gate is different at every time step, ranged between
+0 and 1 due to sigmoid property, thus we have avoided of the problem of multiplying the same thing
+over and over again.
 
-<img src="assets/cell-state-gradient-flow.png">
+Backpropagating from `h[t]` to `h[t-1]` is going through only one single `tanh` nonlinearity rather
+than `tanh` for every single step.
+
+![cell state gradient flow](./assets/cell-state-gradient-flow.png)
 
 ## LSTM Forward Propagation
-The forward propagation isn't all that different from the vanilla recurrent neural network, we just now have more variables. Suppose we take a mini-batch of data, of shape `(N, T, D)`. `N` is our batch size, `T` is the size of the sequence, and `D` is the dimension of our input. 
 
-For example, I have a sentence, `"hello world I am Calvin"`. We can treat this sentence as one input sequence with size `T=5` because it has five words. The dimension of the input depends on how we represent each word. Before we feed the sentence into a RNN, each word of a sentence has to be converted to a word vector which has dimension of `D`. 
+The forward propagation isn't all that different from the vanilla recurrent neural network, we just
+now have more variables. Suppose we take a mini-batch of data, of shape `(N, T, D)`. `N` is our batch
+size, `T` is the size of the sequence, and `D` is the dimension of our input.
+
+For example, I have a sentence, `"hello world I am Calvin"`. We can treat this sentence as one input
+sequence with size `T=5` because it has five words. The dimension of the input depends on how we
+represent each word. Before we feed the sentence into a RNN, each word of a sentence has to be
+converted to a word vector which has dimension of `D`.
 
 ### Word Vector Representation
-
 
 ```python
 import numpy as np
@@ -144,9 +170,12 @@ print '\nInput sequence has shape', input_sequences.shape
     
     Input sequence has shape (2, 5, 5)
 
-
 ### Forward Step & Sequence Example
-When we pass a mini batch of sequences to the LSTM layer, we will run through the each word vector of each sequence through series of time step. In each time step, we perform the following forward propagation:
+
+When we pass a mini batch of sequences to the LSTM layer, we will run through the each word vector
+of each sequence through series of time step. In each time step, we perform the following forward
+propagation:
+
 ```python
 def _forward_step(self, x, prev_hidden_state, prev_cell_state):
     """Forward pass for a single time step of the LSTM layer.
@@ -191,11 +220,13 @@ def _forward_step(self, x, prev_hidden_state, prev_cell_state):
     return next_hidden_state, next_cell_state, cache
 ```
 
-The cache is necessary for back propagation later. The forward propagation of a LSTM layer can be thought as breaking a sequence into time steps and feed each time step to the above code snippet.
+The cache is necessary for back propagation later. The forward propagation of a LSTM layer can be
+thought as breaking a sequence into time steps and feed each time step to the above code snippet.
+
 ```python
 def forward(self, input_sequence, h0, Wx=None, Wh=None, b=None):
-    """Forward pass for a LSTM layer over an entire sequence of data. 
-    This assumes an input sequence composed of T vectors, each of dimension D. 
+    """Forward pass for a LSTM layer over an entire sequence of data.
+    This assumes an input sequence composed of T vectors, each of dimension D.
     The LSTM uses a hidden size of H, and it works over a mini-batch containing N sequences.
 
     :param np.array input_sequence: Input data of shape (N, T, D)
@@ -213,12 +244,12 @@ def forward(self, input_sequence, h0, Wx=None, Wh=None, b=None):
     N, T, D = input_sequence.shape
     _, H = h0.shape
 
-    # Cache the inputs and create time series variables, 
+    # Cache the inputs and create time series variables,
     # i.e. hidden states over time and cell states over time.
     self.input_sequence = input_sequence
     self.h0 = h0
 
-    self.hidden_states_over_t = np.zeros((N, T, H))        
+    self.hidden_states_over_t = np.zeros((N, T, H))
     self.cell_states_over_t = np.zeros((N, T, H))
     self.caches = dict()
 
@@ -238,6 +269,7 @@ def forward(self, input_sequence, h0, Wx=None, Wh=None, b=None):
 ```
 
 ## LSTM Back Propagation
+
 We are given the following upstream gradients:
 
 $$
@@ -260,12 +292,14 @@ $$
 
 Recall that `ifog` gates are declared as follows:
 $$
-\begin{pmatrix} i \\ f \\ o \\ g \end{pmatrix} = 
+\begin{pmatrix} i \\ f \\ o \\ g \end{pmatrix} =
 \begin{pmatrix} \sigma \\ \sigma \\ \sigma \\ tanh \end{pmatrix}
 \left( \vec{x}W_{x} + \vec{h}_{t-1}W_{h} + b\right)
 $$
 
-The expected output of above calculation is a matrix of shape `(N, 4H)` where N is the mini-batch size and H is the hidden dimension. Using what we have above, we can compute the next cell state as follows:
+The expected output of above calculation is a matrix of shape `(N, 4H)` where N is the mini-batch
+size and H is the hidden dimension. Using what we have above, we can compute the next cell state as
+follows:
 
 $$
 c_{t} = f \cdot c_{t-1} + i \cdot g
@@ -278,7 +312,10 @@ h_{t} = o \cdot tanh\left(c_{t}\right)
 $$
 
 ### Compute Gradients
-Since we are given upstream gradients of loss with respect to output cell state and output hidden state, we will first compute gradients of hidden state with respect to cell state and gradient of new cell state with respect to old cell state.
+
+Since we are given upstream gradients of loss with respect to output cell state and output hidden
+state, we will first compute gradients of hidden state with respect to cell state and gradient of
+new cell state with respect to old cell state.
 
 $$
 \frac{\partial h_{t}}{\partial c_{t}} = o \cdot (1 - tanh^{2}(c_{t}))
@@ -288,7 +325,8 @@ $$
 \frac{\partial c_{t}}{\partial c_{t - 1}} = f
 $$
 
-Now we can calculate gradient of loss with respect to previous cell state, which is a sum of contributions from both upstream gradients.
+Now we can calculate gradient of loss with respect to previous cell state, which is a sum of
+contributions from both upstream gradients.
 
 $$
 \frac{\partial L}{\partial c_{t-1}} = \frac{\partial L}{\partial c_{t}} \frac{\partial c_{t}}{\partial c_{t-1}} +
@@ -298,12 +336,12 @@ $$
 Proceed and compute gradients for `ifog` gates:
 
 $$
-\frac{\partial L}{\partial i} = \frac{\partial L}{\partial c_{t}} \frac{\partial c_{t}}{\partial i} + 
+\frac{\partial L}{\partial i} = \frac{\partial L}{\partial c_{t}} \frac{\partial c_{t}}{\partial i} +
 \frac{\partial L}{\partial h_{t}} \frac{\partial h_{t}}{\partial c_{t}} \frac{\partial c_{t}}{\partial i}
 $$
 
 $$
-\frac{\partial L}{\partial f} = \frac{\partial L}{\partial c_{t}} \frac{\partial c_{t}}{\partial f} + 
+\frac{\partial L}{\partial f} = \frac{\partial L}{\partial c_{t}} \frac{\partial c_{t}}{\partial f} +
 \frac{\partial L}{\partial h_{t}} \frac{\partial h_{t}}{\partial c_{t}} \frac{\partial c_{t}}{\partial f}
 $$
 
@@ -312,7 +350,7 @@ $$
 $$
 
 $$
-\frac{\partial L}{\partial g} = \frac{\partial L}{\partial c_{t}} \frac{\partial c_{t}}{\partial g} + 
+\frac{\partial L}{\partial g} = \frac{\partial L}{\partial c_{t}} \frac{\partial c_{t}}{\partial g} +
 \frac{\partial L}{\partial h_{t}} \frac{\partial h_{t}}{\partial c_{t}} \frac{\partial c_{t}}{\partial g}
 $$
 
@@ -339,6 +377,7 @@ $$
 $$
 
 ### Backprop Step & Sequence Example
+
 Using the cache from the forward propagation time step, we can compute gradients for each time step.
 
 ```python
@@ -360,11 +399,9 @@ def _backward_step(self, grad_next_hidden_state, grad_next_cell_state, cache):
     """
     x, _, next_c, i_gate, f_gate, o_gate, g_gate, prev_h, prev_c = cache
 
-    # Note that grad_prev_c has two contributions, one from grad_next_cell_state and another one from 
+    # Note that grad_prev_c has two contributions, one from grad_next_cell_state and another one from
     # grad_next_hidden_state
-    grad_next_h_next_c = 
-In [ ]:
-o_gate * ( 1 - (np.tanh(next_c) * np.tanh(next_c)))
+    grad_next_h_next_c = o_gate * ( 1 - (np.tanh(next_c) * np.tanh(next_c)))
 
     grad_prev_cell_state = (grad_next_hidden_state * grad_next_h_next_c * f_gate) + (grad_next_cell_state * f_gate)
 
@@ -391,10 +428,13 @@ o_gate * ( 1 - (np.tanh(next_c) * np.tanh(next_c)))
     grad_Wh = np.dot(prev_h.T, grad_act)
     grad_b = np.sum(grad_act, axis=0)
 
-    return grad_x, grad_prev_hidden_state, grad_prev_cell_state, grad_Wx, grad_Wh, grad_b 
+    return grad_x, grad_prev_hidden_state, grad_prev_cell_state, grad_Wx, grad_Wh, grad_b
 ```
 
-We will use the step function in the sequence function. We iterate through each hidden state over time in a reversed order, hence the name back propagation. Every backprop time step will give us a gradient value for each of our weights and biases. We accumulate them over the whole sequence. 
+We will use the step function in the sequence function. We iterate through each hidden state over
+time in a reversed order, hence the name back propagation. Every backprop time step will give us a
+gradient value for each of our weights and biases. We accumulate them over the whole sequence.
+
 ```python
 def backward(self, grad_hidden_state_over_t):
     """Backward pass for a LSTM layer over an entire sequence of data.
@@ -437,15 +477,19 @@ def backward(self, grad_hidden_state_over_t):
 ```
 
 ## Example Model
-Here is a simple model that takes a matrix of word indices as inputs and produces a matrix of word indices. I made the model such that it can answer simple questions but don't expect it to be as smart as Alexa because it has no natural language model. All it does is that it takes a sequence of input and produces a sequence of output.
+
+Here is a simple model that takes a matrix of word indices as inputs and produces a matrix of word
+indices. I made the model such that it can answer simple questions but don't expect it to be as
+smart as Alexa because it has no natural language model. All it does is that it takes a sequence of
+input and produces a sequence of output.
 
 The archiecture is very simple, it has three layers
+
 1. *Word Embedding Layer* - It converts word indices into vector representations.
 2. *LSTM Layer* - It takes the word vectors and produces another set of word vectors.
 3. *Affine Layer* - It takes the outputs and convert them into softmax scores
 
 The softmax score is used to classify word vectors into the appropriate word index.
-
 
 ```python
 import matplotlib.pyplot as plt
@@ -469,13 +513,12 @@ feed_dict = {
 model = LSTMRecurrentModel(word_to_idx, idx_to_word)
 ```
 
-Now we have our model defined, we will run a solver with **Adam** optimizer to train the model. 
-
+Now we have our model defined, we will run a solver with **Adam** optimizer to train the model.
 
 ```python
 solver = LSTMSolver(model, feed_dict=feed_dict,
-                           batch_size=10, 
-                           num_epochs=300, 
+                           batch_size=10,
+                           num_epochs=300,
                            print_every=10,
                            learning_rate_decay=0.99,
                            update_rule='adam',
@@ -486,10 +529,7 @@ plt.plot(iters, losses)
 plt.show()
 ```
 
-
 ![png](long_short_term_memory_files/long_short_term_memory_11_0.png)
-
-
 
 ```python
 from rnn.data_util import convert_string_to_index_matrix
@@ -506,5 +546,7 @@ model.sample(input_sequence)
     Q: Where is the sky?
     A: She is blue.
 
-
-Since I have so little data, I am still surprised that it can actually answer some basic questions. However, it is clearly not answering the questions in an intelligent manner. When I asked, *where is the sky?*, it tries to tell me what color is it. That is because in my training data, I only have one data point that has something to do with the sky.
+Since I have so little data, I am still surprised that it can actually answer some basic questions.
+However, it is clearly not answering the questions in an intelligent manner. When I asked,
+*where is the sky?*, it tries to tell me what color is it. That is because in my training data, I
+only have one data point that has something to do with the sky.

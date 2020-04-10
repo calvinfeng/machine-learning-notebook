@@ -86,7 +86,7 @@ dataset = pd.read_csv('../datasets/100k/ratings.csv', header=0, names=['user_id'
 
 # Need to map movie ID to [1, num_movies]
 movie_id_to_new_id = dict()
-id = 1 
+id = 1
 for index, row in dataset.iterrows():
     if movie_id_to_new_id.get(row['movie_id']) is None:
         movie_id_to_new_id[row['movie_id']] = id
@@ -524,7 +524,7 @@ concat = merge([movie_vec_mlp, user_vec_mlp], mode='concat', name='concat')
 concat_dropout = Dropout(0.2)(concat)
 fc_1 = Dense(100, name='fc-1', activation='relu')(concat_dropout)
 fc_1_bn = BatchNormalization(name='batch-norm-1')(fc_1)
-fc_1_dropout = Dropout(0.2)(fc_1_bn) 
+fc_1_dropout = Dropout(0.2)(fc_1_bn)
 fc_2 = Dense(50, name='fc-2', activation='relu')(fc_1_dropout)
 fc_2_bn = BatchNormalization(name='batch-norm-2')(fc_2)
 fc_2_dropout = Dropout(0.2)(fc_2_bn)

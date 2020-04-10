@@ -61,7 +61,8 @@ $$
 
 ## Part 2 - Lagrange Multiplier
 
-Lagrange multiplier is frequently used in classical mechanics to solve function optimization under constraints. Lagrangian mechanic is often used in non-relativistic quantum mechanics for particle
+Lagrange multiplier is frequently used in classical mechanics to solve function optimization under
+constraints. Lagrangian mechanic is often used in non-relativistic quantum mechanics for particle
 physics, however that would require knowledge in path integral. In this section, I am sticking to
 the plain old Lagrange multipler to solve a simple constraint problem as an example.
 
@@ -148,7 +149,10 @@ $$
 \text{A is positive semidefinite} \quad x^{T}Ax \geq 0
 $$
 
-Being positive semidefinite is an important quality, because if a matrix is definite or semidefinite positive, the vector, at which derivative of the expression is zero, has to be the solution for minimization. Now we have our constraints, we are ready to use Lagrange multiplier to minimize this expression.
+Being positive semidefinite is an important quality, because if a matrix is definite or semidefinite
+positive, the vector, at which derivative of the expression is zero, has to be the solution for
+minimization. Now we have our constraints, we are ready to use Lagrange multiplier to minimize this
+expression.
 
 $$
 \mathcal{L} = x^{T}Ax - \lambda\left(x^{T}x - 1\right)
@@ -179,13 +183,16 @@ $$
 x^{T}x = 1
 $$
 
-So what does this mean? It means that if you want to minimize the expression $$x^{T}Ax$$, `x` must be the eigenvectors of `A`! Here are couple important properties:
+So what does this mean? It means that if you want to minimize the expression $$x^{T}Ax$$, `x` must
+be the eigenvectors of `A`! Here are couple important properties:
 
 * `A` is positive if all eigenvalues are positive.
 * `A` is semidefinite positive if all eigenvalues are either positive or zero.
 * All eigenvectors are the same size, they have a norm equal to 1.
-* The eigenvector corresponding to the smallest eigenvalue will give you the smallest possible value of $$A\vec{x}$$
-* In converse, eigenvector corresponding to the biggest eigenvalue will give you the maximum of $$A\vec{x}$$. However I am not 100% sure of this point, I need to run couple tests to verify it.
+* The eigenvector corresponding to the smallest eigenvalue will give you the smallest possible value
+   of $$A\vec{x}$$
+* In converse, eigenvector corresponding to the biggest eigenvalue will give you the maximum of
+  $$A\vec{x}$$. However I am not 100% sure of this point, I need to run couple tests to verify it.
 
 ## Part 4 - Similarity Graph
 
@@ -203,7 +210,8 @@ W_{V} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Each element of `W` represents the connectivity strength between vertix `i` and vertix `j`. For example, `W[0][0]` is the connection strength between vertix 0 and itself (we can assume that 5 is
+Each element of `W` represents the connectivity strength between vertix `i` and vertix `j`. For
+example, `W[0][0]` is the connection strength between vertix 0 and itself (we can assume that 5 is
 the maximum connectivity strength.) A zero value can represent that there is no connection. So far
 the numbers in the adjacency matrix seems something arbitrary because it is. In general, we should
 use a Gaussian Kernel to fill in the connectivity strength.
@@ -233,7 +241,8 @@ $$
 
 ### Minimizing Relationship
 
-Let's define `A` as a subset of `V` such that $$A \subset V$$. Also define $$\overline{A}$$ to be a set of vertices that are not in the set `A`. Then we can say that:
+Let's define `A` as a subset of `V` such that $$A \subset V$$. Also define $$\overline{A}$$ to be a
+set of vertices that are not in the set `A`. Then we can say that:
 
 $$
 A \cup \overline{A} = V
@@ -253,7 +262,8 @@ plt.scatter(Vx, Vy)
 plt.show()
 ```
 
-Visually speaking, it is very clear to us that these points can be grouped into two clusters, We can say that everything in the bottom-left group belongs to the set `A`.
+Visually speaking, it is very clear to us that these points can be grouped into two clusters, We can
+say that everything in the bottom-left group belongs to the set `A`.
 
 $$
 A = \{\{0, 0\}, \{0, 1\}, \{1, 0\}\}
@@ -265,7 +275,8 @@ $$
 \overline{A} = \{\{5, 2\}, \{6, 2\}, \{6, 3\}\}
 $$
 
-We can designate a feature vector for these vertices, and this feature vector represents whether a vertex is in the set `A` or not using 1 to indicate positive and 0 to indicate negative.
+We can designate a feature vector for these vertices, and this feature vector represents whether a
+vertex is in the set `A` or not using 1 to indicate positive and 0 to indicate negative.
 
 $$
 f_{A} = \begin{bmatrix}
@@ -273,7 +284,8 @@ f_{A} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Now the natural question to ask is, how does this work if we have more than 2 clusters? Suppose we want 6 clusters, then we simply create 6 feature vectors each represents one of the groups
+Now the natural question to ask is, how does this work if we have more than 2 clusters? Suppose we
+want 6 clusters, then we simply create 6 feature vectors each represents one of the groups
 `A, B, C, D, E, F`.
 
 $$
@@ -298,13 +310,17 @@ f_{A}, f_{B}, f_{C}, f_{D}, f_{E}, f_{F} =
 \end{bmatrix}
 $$
 
-Now we can say that the point of spectral clustering is to find feature vectors such that the relationship between points in set and points not in set are minimized. We can declare the following equation as our relationship.
+Now we can say that the point of spectral clustering is to find feature vectors such that the
+relationship between points in set and points not in set are minimized. We can declare the following
+equation as our relationship.
 
 $$
 R = \Sigma_{i} \Sigma_{j} W_{i, j} (f_{i} - f_{j})^{2}
 $$
 
-Our objective is to find the correct feature vector(s) such that when two vertices share strong connection should be categorized into the same cluster, which in turn minimize the relationship expression. There exissts many solutions to this minimization as we shall see soon.
+Our objective is to find the correct feature vector(s) such that when two vertices share strong
+connection should be categorized into the same cluster, which in turn minimize the relationship
+expression. There exissts many solutions to this minimization as we shall see soon.
 
 $$
 argmin_{f} \; \Sigma_{i, j} W_{i, j} (f_{i} - f_{j})^{2}
@@ -364,7 +380,8 @@ $$
 \end{aligned}
 $$
 
-Usually we call the term degree matrix minus adjacency matrix, the **Laplacian**. We can EASILY minimize the expression based on what we derived in **Part 3**. In conclusion, if we want to find
+Usually we call the term degree matrix minus adjacency matrix, the **Laplacian**. We can EASILY
+minimize the expression based on what we derived in **Part 3**. In conclusion, if we want to find
 the solutions (vectors `f`) such that it minimizes the connectivity and clustering relationship, we
 find the least dominant eigenvectors of the **Laplacian** matrix. This was mindblowing to me when I
 first learned about it.

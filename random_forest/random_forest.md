@@ -189,7 +189,8 @@ The procedure to benchmark a branching decision is.
 
 1. Calculate the entropy before the split happens.
 2. Calculate the entropy for left and right sub-branch.
-3. Using the prior entropy and weighted sum of the sub-entropies, we can come up with information gain.
+3. Using the prior entropy and weighted sum of the sub-entropies, we can come up with information
+   gain.
 
 $$
 IG = E_{0} - \Sigma_{i}^{2} P(i)E_{i}
@@ -339,8 +340,10 @@ of shape `(N, K)`.
 1. Randomly select k features from total K features, where k << K
 2. Construct a decision tree using k features and give it a threshold for splitting
     * Example threshold: minimum impurity decrease, a.k.a minimum purity gain.
-    * Example threshold: maximum depth, i.e. should not split when the tree has reached maximum depth.
-    * Example threshold: minimum sample split, i.e. minimum number of samples required to split a decision node.
+    * Example threshold: maximum depth, i.e. should not split when the tree has reached maximum
+      depth.
+    * Example threshold: minimum sample split, i.e. minimum number of samples required to split a
+      decision node.
     * Optional argument: whether to bootstrap or not.
 3. Build a forest by repeating Step No.2 for `n_estimators` times.
 4. Prediction is made through majority vote from the tree.

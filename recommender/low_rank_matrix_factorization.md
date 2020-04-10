@@ -204,7 +204,6 @@ print np.matrix.round(grad_m - num_grad_m, decimals=10)
 %matplotlib inline
 import matplotlib.pyplot as plt
 
-
 DATA_DIR = 'datasets/100k/'
 converter = lowrank.MatrixConverter(movies_filepath=DATA_DIR + 'movies.csv',
                                     ratings_filepath=DATA_DIR + 'ratings.csv')
