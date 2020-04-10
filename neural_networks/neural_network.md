@@ -7,7 +7,7 @@ I am primarily focusing on the implementation and mathematics behind **feed-forw
 
 ## Forward Propagation
 
-### Affine 
+### Affine
 
 Given an input vector or matrix, we forward propagate through the network by applying matrix
 multiplication to the input by a set of weight. In many textbook examples, like the diagram below:
@@ -56,7 +56,6 @@ positive and big in magnitude, the output is 1.
 $$
 \sigma(x) = \frac{1}{1 + e^{-x}}
 $$
-
 
 ```python
 import matplotlib.pyplot as plt
@@ -187,6 +186,7 @@ perform gradient descent, we must first compute the gradients for every layer of
 and then perform back propagation from output layer all the way back to input layer.
 
 ### Softmax Gradient
+
 We will compute the gradient of softmax loss with respect to score first. I am not going to derive
 the mathematics of derivatives of a softmax loss because it is a bit length to type and you can find
 it on [stackexchange](https://math.stackexchange.com/questions/945871/derivative-of-softmax-loss-function).
@@ -248,7 +248,7 @@ $$
 \frac{\partial A}{\partial b} = 1
 $$
 
-I will apply the same chain rule technique here: 
+I will apply the same chain rule technique here:
 
 $$
 \frac{\partial L}{\partial W} = \frac{\partial L}{\partial A} \cdot \frac{\partial A}{\partial W}
@@ -301,7 +301,7 @@ Example for calculating gradients for mean squared error loss
 
 ```python
 # (N x output_dim)
-grads['A2'] = 2.0 * (acts['A2'] - y) 
+grads['A2'] = 2.0 * (acts['A2'] - y)
 grads['theta2'] = grads['A2'] * ((1 - acts['A2']) * acts['A2'])
 
 # (hidden_dim x N)(N x output_dim)
@@ -309,7 +309,7 @@ grads['W2'] = np.dot(acts['a1'].T, grads['theta2'])
 grads['b2'] = np.sum(grads['theta2'], axis=0)
 
 # (N x output_dim)(output_dim x hidden_dim)
-grads['a1'] = np.dot(grads['theta2'], self.params['W2'].T) 
+grads['a1'] = np.dot(grads['theta2'], self.params['W2'].T)
 grads['theta1'] = grads['a1'] * ((1 - acts['a1']) * acts['a1'])
 
 # (input_dim x N)(N x hidden_dim)
@@ -342,7 +342,7 @@ $$
 \frac{\partial \hat{y}}{\partial \theta_2} = (1 - \hat{y}) \cdot \hat{y}
 $$
 
-Derivatve of second weight and a with respect to $\theta_{2}$ 
+Derivatve of second weight and a with respect to $\theta_{2}$
 
 $$
 \frac{\partial \theta_{2}}{\partial W_{2}} = a \quad \frac{\partial \theta_{2}}{\partial a} = W_{2}
@@ -360,7 +360,7 @@ $$
 \frac{\partial \theta_{1}}{\partial W_{1}} = x \quad \frac{\partial \theta_{2}}{\partial x} = W_{1}
 $$
 
-Therefore, 
+Therefore,
 
 $$
 \frac{L}{\partial W_{2}} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial \theta_2} \cdot \frac{\partial \theta_{2}}{\partial W_{2}}
@@ -430,6 +430,5 @@ pyplot.show()
 
 Actually that work out pretty damn well, with 100% classification accuracy. However, it could be
 because my data set is small. I've only got 120 training examples and 30 test examples. Go to my
-github to look at the full implementation details:
-
-https://www.github.com/calvinfeng/machine-learning-notebook
+[Github](https://www.github.com/calvinfeng/machine-learning-notebook) to look at the full
+implementation details.

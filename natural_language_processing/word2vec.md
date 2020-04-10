@@ -201,7 +201,7 @@ def neg_sampling_cost_and_gradient(embedding, ctx_word_idx, w2, K=10):
     grad_embedding = np.zeros(embedding.shape) # (1, D)
 
     # Changing from softmax to sigmoid (new objective func)
-    score = sigmoid(np.dot(w2[ctx_word_idx], embedding[0])) 
+    score = sigmoid(np.dot(w2[ctx_word_idx], embedding[0]))
     cost = -np.log(score)
 
     grad_w2[ctx_word_idx] += embedding * (score - 1.0)
