@@ -2,24 +2,28 @@
 # Weight Initializations
 
 ## Zeros Are Bad
+
 In general we should never initialize the weights of our network to be all zeros.
 
 $$
 W = \vec{0}
 $$
 
-Because when the network starts training, all neurons are practically doing same thing and all weights will receive identical updates, which greatly reduces the power of a neural network.
+Because when the network starts training, all neurons are practically doing same thing and all
+weights will receive identical updates, which greatly reduces the power of a neural network.
 
 ## Normally Distributed
-One of the naive approaches is to use small randoms that are normally distributed, e.g. guassian random numbers with zero mean and $10^{-2}$ standard deviations
 
+One of the naive approaches is to use small randoms that are normally distributed, e.g. guassian
+random numbers with zero mean and $10^{-2}$ standard deviations
 
 ```python
 W = 0.01 * np.random.randn(fan_in, fan_out)
 ```
 
-Glossary: `fan_in` is the a term that defines the maximum number of inputs that a system can accept. `fan_out` is a term that defines the maximum number of inputs that the output of a system can feed to other systems. 
-
+Glossary: `fan_in` is the a term that defines the maximum number of inputs that a system can accept.
+`fan_out` is a term that defines the maximum number of inputs that the output of a system can feed
+to other systems.
 
 ```python
 import numpy as np
@@ -85,9 +89,8 @@ for i, H in hidden_layer_acts.items():
     Hidden layer 9 had mean -0.000000 and std 0.000001
     Hidden layer 10 had mean -0.000000 and std 0.000000
 
-
-Notice that when we have a 10-layer deep network, all activations approach zero at the end with this set of initialization. Well, how about increase the standard deviation?
-
+Notice that when we have a 10-layer deep network, all activations approach zero at the end with this
+set of initialization. Well, how about increase the standard deviation?
 
 ```python
 %matplotlib inline
@@ -102,7 +105,7 @@ hidden_layer_acts, hidden_layer_means, hidden_layer_stds = forward_prop(hidden_l
 
 for i, H in hidden_layer_acts.items():
     print('Hidden layer %d had mean %f and std %f' % (i + 1, hidden_layer_means[i], hidden_layer_stds[i]))
-    
+
 # Plot the results
 plt.figure()
 plt.subplot(121)
@@ -132,24 +135,21 @@ plt.show()
     Hidden layer 9 had mean 0.000313 and std 0.981687
     Hidden layer 10 had mean -0.001314 and std 0.981719
 
-
-
 ![png](weight_initialization_files/weight_initialization_3_1.png)
-
-
 
 ![png](weight_initialization_files/weight_initialization_3_2.png)
 
-
-Notice that almost all neurons completely saturated to either -1 or 1 in every layer. This means gradients will be all zero and we won't be able to perform any learning on this network.
+Notice that almost all neurons completely saturated to either -1 or 1 in every layer. This means
+gradients will be all zero and we won't be able to perform any learning on this network.
 
 ## Xavier Initialization
-So what is this saying? Normally random distributed numbers do not work with deep learning weight initialization. A good rule of thumb is to try Xaiver initialization from the paper *Xiaver Initialization (Glorot et al. 2010)*. 
+
+So what is this saying? Normally random distributed numbers do not work with deep learning weight
+initialization. A good rule of thumb is to try Xaiver initialization from the paper *Xiaver Initialization (Glorot et al. 2010)*.
 
 ```python
-W = np.random.randn(fan_in, fan_out) / np.sqrt(fan_in) 
+W = np.random.randn(fan_in, fan_out) / np.sqrt(fan_in)
 ```
-
 
 ```python
 def xavier_init(fan_in, fan_out):
@@ -159,7 +159,7 @@ hidden_layer_acts, hidden_layer_means, hidden_layer_stds = forward_prop(hidden_l
 
 for i, H in hidden_layer_acts.items():
     print('Hidden layer %d had mean %f and std %f' % (i + 1, hidden_layer_means[i], hidden_layer_stds[i]))
-    
+
 # Plot the results
 plt.figure()
 plt.subplot(121)
@@ -189,13 +189,8 @@ plt.show()
     Hidden layer 9 had mean -0.000225 and std 0.242764
     Hidden layer 10 had mean 0.000805 and std 0.230877
 
-
-
 ![png](weight_initialization_files/weight_initialization_6_1.png)
 
-
-
 ![png](weight_initialization_files/weight_initialization_6_2.png)
-
 
 Now everything is nice and normally distributed!
