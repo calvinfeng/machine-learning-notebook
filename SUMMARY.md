@@ -4,6 +4,7 @@
 
 ## Supervised Learning
 
+* [Naive Bayes](/naive_bayes/naive_bayes.md)
 * [Random Forest](/random_forest/random_forest.md)
 * Neural Network
   * [Numpy Basics](/neural_networks/numpy_basics.md)
