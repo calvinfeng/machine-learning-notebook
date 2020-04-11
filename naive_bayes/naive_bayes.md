@@ -9,12 +9,12 @@ classify whether a given email is a spam or ham by looking at its word frequency
 
 ### Definitions
 
-Let's define $N$ to be the number of total emails we have in the dataset and $N_{s}$ to be the
+Let's define $$N$$ to be the number of total emails we have in the dataset and $$N_{s}$$ to be the
 number of spam emails in the email set.
 
-$N_{so}$ is the number of spam emails that contain the word "offer"
+$$N_{so}$$ is the number of spam emails that contain the word "offer"
 
-$N_{o}$ is the number of emails that contain the word "offer"
+$$N_{o}$$ is the number of emails that contain the word "offer"
 
 Then the probability of having a spam email in the set is said to be:
 
@@ -56,7 +56,7 @@ $$
 P(SPAM=1 \mid OFFER=1) = \frac{P(OFFER=1 \mid SPAM=1)P(SPAM=1)}{P(OFFER=1)} = \frac{\frac{N_{so}}{N_{s}}\frac{N_{s}}{N}}{\frac{N_{o}}{N}} = \frac{N_{so}}{N_{o}}
 $$
 
-This is known as the **Bayes' rule**, famously stated as $P(A \mid B)=\frac{P(B \mid A)P(A)}{P(B)}$
+This is known as the **Bayes' rule**, famously stated as $$P(A \mid B)=\frac{P(B \mid A)P(A)}{P(B)}$$
 
 $$
 P(SPAM=0 \mid OFFER=1) = \frac{P(OFFER=1 \mid SPAM=0)P(SPAM=0)}{P(OFFER=1)} \\
@@ -250,9 +250,9 @@ $$
 
 ### Conditional Independence
 
-Let's denote the event of having a particular disease to be $D$, event for showing positive on test
-1 for detecting the disease to be $T_{1}$, and event for showing positive on test 2 for detecting
-the same disease to be $T_{2}$.
+Let's denote the event of having a particular disease to be $$D$$, event for showing positive on test
+1 for detecting the disease to be $$T_{1}$$, and event for showing positive on test 2 for detecting
+the same disease to be $$T_{2}$$.
 
 The following case is **NOT** unconditionally independent because it is conditional
 
@@ -263,7 +263,7 @@ $$
 Given that we know test 2 is showing a positive result, it does influence the probability of having
 a positive on test 1, even though test 2 could have been a false positive. It is because a positive
 result from either tests can influence the probability of having the disease. The tworesults we have
-from $T_{1}$ and $T_{2}$ are connected by the variable $D$.
+from $$T_{1}$$ and $$T_{2}$$ are connected by the variable $$D$$.
 
 $$
 P(T_{1} \mid D) \neq P(T_{1}) \\
@@ -278,7 +278,7 @@ P(T_{1} \mid T_{2} \wedge D) = P(T_{1} \mid D)
 $$
 
 This is saying that if the condition of having the disease is satisfied, then the probabilities of
-$T_{1}$ and $T_{2}$ are independent from each other. And equivalently speaking:
+$$T_{1}$$ and $$T_{2}$$ are independent from each other. And equivalently speaking,
 
 $$
 P(T_{1} \wedge T_{2} \mid D) = P(T_{1} \mid D) \cdot P(T_{2} \mid D)
@@ -332,10 +332,10 @@ It enables us to separate terms for ease of calculation.
 
 ## Applying The Naive Assumption
 
-For abbreviation, I will write $LIMITED = 1$ as $L$ and $LIMITED = 0$ as $L_{c}$. Same applies to
-other variables.
+For abbreviation, I will write $$LIMITED = 1$$ as $$L$$ and $$LIMITED = 0$$ as $$L_{c}$$. Same
+applies to other variables.
 
-We are trying to calculate the probability ratio of the following:
+We are trying to calculate the probability ratio of the following.
 
 $$
 \frac{P(S \mid L \wedge O)}{P(S_{c} \mid L \wedge O)}

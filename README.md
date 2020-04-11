@@ -27,3 +27,12 @@ The list is not sorted in any order.
 * Machine in Learning in Production
 
 The list is certainly expanding as I take new classes and learn new things from work.
+
+## Latex Usage
+
+Jupyter notebook uses single dollar sign for inline equations but GitBook uses double dollar sign
+for inline equations. I need a RegExp that capture and convert.
+
+```text
+\$.*?\$
+```
