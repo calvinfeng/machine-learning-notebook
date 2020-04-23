@@ -37,6 +37,5 @@
 
 ## SageMaker
 
+* [Population Segmentation with PCA and KMeans](/sagemaker/population_segmentation.md)
 * [Fraud Detection with Linear Learner](/sagemaker/fraud_detection.md)
-* LinearLearner
-* Keras Deployment
