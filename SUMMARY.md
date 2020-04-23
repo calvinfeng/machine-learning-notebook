@@ -37,6 +37,6 @@
 
 ## SageMaker
 
-* XGBoost
+* [Fraud Detection with Linear Learner](/sagemaker/fraud_detection.md)
 * LinearLearner
 * Keras Deployment
