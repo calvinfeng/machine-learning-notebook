@@ -210,7 +210,7 @@ predictor = model.deploy(initial_instance_count=1,
 
 ## Model Evaluation
 
-We need to verify the implementation by running the predictor against test data. 
+We need to verify the implementation by running the predictor against test data.
 
 ```python
 def evaluate(predictor, test_features, test_labels, verbose=True):
