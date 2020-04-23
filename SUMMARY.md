@@ -39,3 +39,4 @@
 
 * [Population Segmentation with PCA and KMeans](/sagemaker/population_segmentation.md)
 * [Fraud Detection with Linear Learner](/sagemaker/fraud_detection.md)
+* [Time Series Forecast with DeepAR](/sagemaker/time_series_forecast.md)

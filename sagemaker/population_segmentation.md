@@ -764,8 +764,7 @@ display(s.iloc[NUM_COMPONENTS-5:, :])
 ```python
 def explained_variance(s, n_top_components):
     '''
-
-    :param s: A dataframe of singular values for top components; 
+    :param s: A dataframe of singular values for top components;
               the top value is in the last row.
     :param n_top_components: An integer, the number of top components to use.
     :return: The expected data variance covered by the n_top_components.
@@ -929,7 +928,7 @@ def create_pca_transformed_df(original_data, pca_transformed_data, num_top_compo
 
 ```python
 # Manually pick top 7 components.
-pca_transformed_census_df = create_pca_transformed_df(norm_census_df, pca_result, 7) 
+pca_transformed_census_df = create_pca_transformed_df(norm_census_df, pca_result, 7)
 pca_transformed_census_df.columns = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7']
 pca_transformed_census_df.head()
 ```
