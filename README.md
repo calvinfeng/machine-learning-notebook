@@ -9,6 +9,18 @@ The source of the content primarily comes from courses I took from Stanford, i.e
 CS224n and many other research papers, textbooks and online tutorials. There are also notes I took
 from my professional work and personal projects using machine learning.
 
+## Python 2 vs Python 3
+
+I wrote majority of the content in Python 2.7 in 2018. Now Python 2.7 is fully deprecated, I am
+switching to Python 3.8.
+
+My dependency will be upgraded to
+
+- Tensorflow 2.4.1
+- Keras 2.4.3
+
+Some of my old Tensorflow code probably won't work anymore.
+
 ## Table of Contents
 
 The list is not sorted in any order.
