@@ -4,6 +4,8 @@
 
 ## Supervised Learning
 
+* Overview
+  * [Loss Functions](/overview/loss_function_overview.md)
 * [Naive Bayes](/naive_bayes/naive_bayes.md)
 * [Random Forest](/random_forest/random_forest.md)
 * Neural Network

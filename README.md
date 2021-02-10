@@ -40,7 +40,19 @@ The list is not sorted in any order.
 
 The list is certainly expanding as I take new classes and learn new things from work.
 
-## Latex Usage
+## Export Notebook
+
+### Jupyter Convert
+
+If my notebook does not contain any `matplotlib.pyplot` then I can export it as simple text.
+
+```bash
+jupyter nbconvert --to markdown loss_function_overview.ipynb --stdout
+```
+
+Otherwise, I'd need to export differently.
+
+### Latex
 
 Jupyter notebook uses single dollar sign for inline equations but GitBook uses double dollar sign
 for inline equations. I need a RegExp that capture and convert.
