@@ -7,7 +7,9 @@
 * Overview
   * [Loss Functions](/overview/loss_function_overview.md)
 * [Naive Bayes](/naive_bayes/naive_bayes.md)
-* [Random Forest](/random_forest/random_forest.md)
+* Decision Tree
+  * [Random Forest](/random_forest/random_forest.md)
+  * [Gradient Boosting](/random_forest_py3/gradient_boosting.md)
 * Neural Network
   * [Numpy Basics](/neural_networks/numpy_basics.md)
   * [Neural Network](/neural_networks/neural_network.md)

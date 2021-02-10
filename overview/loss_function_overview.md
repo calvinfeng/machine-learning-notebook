@@ -7,13 +7,13 @@ For supervised learning, there are two main categories of learning objectives.
 
 I will use the following notations and assume indexing starts at 1 for ease of writing.
 
-- $N$ is the number of training inputs
-- $i$ is an index of a training input
-- $P$ is the number of parameters or weights in the model
-- $j$ is an index of a parameter
-- $w$ is a parameter/weight of the model
-- $y_i$ is the ground truth label for ith input
-- $\hat{y}$ is the predicted label for ith input
+- $$N$$ is the number of training inputs
+- $$i$$ is an index of a training input
+- $$P$$ is the number of parameters or weights in the model
+- $$j$$ is an index of a parameter
+- $$w$$ is a parameter/weight of the model
+- $$y_i$$ is the ground truth label for ith input
+- $$\hat{y}$$ is the predicted label for ith input
 
 ## Regression Losses
 
@@ -88,7 +88,7 @@ remove the outliers from the dataset before training.
 ### Huber Loss / Smooth Mean Absolute Error
 
 Huber loss function is defined as the combination of MSE and MAE loss function, using a
-hyperparameter called $\delta$ to control the switch point.
+hyperparameter called $$\delta$$ to control the switch point.
 
 $$
 L_{i} = \left\{\begin{matrix}
@@ -97,7 +97,7 @@ L_{i} = \left\{\begin{matrix}
 \end{matrix}\right.
 $$
 
-If the error is small and below threshold $\delta$, the error is squared. Otherwise, the error is
+If the error is small and below threshold $$\delta$$, the error is squared. Otherwise, the error is
 absolute valued. The choice of delta value is critical because it determines what you are willing to
 cosnider as an outlier. Hence the Huber loss could be less sensitive to outliers compared to a
 standard L2 loss.

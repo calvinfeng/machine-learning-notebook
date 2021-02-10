@@ -52,11 +52,29 @@ jupyter nbconvert --to markdown loss_function_overview.ipynb --stdout
 
 Otherwise, I'd need to export differently.
 
+```bash
+jupyter nbconvert --to markdown loss_function_overview.ipynb
+```
+
 ### Latex
 
 Jupyter notebook uses single dollar sign for inline equations but GitBook uses double dollar sign
 for inline equations. I need a RegExp that capture and convert.
 
-```text
-\$.*?\$
+`?` means once or none.
+
+```regexp
+\$.?\$
+```
+
+`+` means one or more.
+
+```regexp
+\$.+\$
+```
+
+The following will capture all `$<some text>$`.
+
+```regexp
+^\$.+\$$
 ```
