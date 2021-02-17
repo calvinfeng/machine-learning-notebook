@@ -6,6 +6,7 @@
 
 * Overview
   * [Loss Functions](/overview/loss_function_overview.md)
+  * [Evaluation Metrics](/overview/evaluation_metrics.md)
 * [Naive Bayes](/naive_bayes/naive_bayes.md)
 * Decision Tree
   * [Random Forest](/random_forest/random_forest.md)
