@@ -60,7 +60,7 @@ pylint==1.9.3
 pyparsing==2.2.0
 python-dateutil==2.7.3
 pytz==2018.5
-PyYAML==3.13
+PyYAML==5.4
 pyzmq==17.1.0
 qtconsole==4.3.1
 scandir==1.7
