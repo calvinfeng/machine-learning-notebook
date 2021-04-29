@@ -17,6 +17,7 @@
   * [TensorFlow Basics](/neural_networks/tensorflow_basics.md)
 * Convolutional Neural Network
   * [Convolution Operation](/convolutional_neural_networks/convolution_operation.md)
+  * [Transpose Convolution Operation](/convolutional_neural_networks/transpose_convolution_operation.md)
   * [Batch Normalization](/convolutional_neural_networks/batch_normalization.md)
   * [Weight Initialization](/convolutional_neural_networks/weight_initialization.md)
   * [Segmentation](/convolutional_neural_networks/segmentation.md)
