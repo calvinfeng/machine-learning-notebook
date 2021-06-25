@@ -39,7 +39,6 @@ $$
 
 ## Upsample Techniques
 
-
 ### K-Nearest Neighbors
 
 We take every element of an input tensor and duplicate it by a factor of `K`. For example, `K=4`:

@@ -25,9 +25,10 @@
   * [Vanilla Recurrent Neural Network](/recurrent_neural_networks/recurrent_neural_networks.md)
   * [LSTM Recurrent Neural Network](/recurrent_neural_networks/long_short_term_memory.md)
 * Recommender
-  * [Singular Value Decomposition](/recommender/singular_value_decomposition.md)
-  * [Low Rank Matrix Factorization](/recommender/low_rank_matrix_factorization.md)
-  * [Neural Collaborative Filtering](/recommender/neural_collaborative_filtering.md)
+  * [Singular Value Decomposition](/recommender/notebooks/singular_value_decomposition.md)
+  * [Low Rank Matrix Factorization](/recommender/notebooks/low_rank_matrix_factorization.md)
+  * [Neural Collaborative Filtering](/recommender/notebooks/neural_collaborative_filtering.md)
+  * [Sampling Bias Corrected Neural Modeling for Large Corpus Item Recommendations](/recommender/notesbook/sampling_bias_corrected_neural_modeling_for_large_corpus_item_recommendations.md)
 * Natural Language Processing
   * [Word2Vec](/natural_language_processing/word2vec.md)
 * Tutorial
