@@ -139,7 +139,7 @@ $$
 y = \vec{x}W + b
 $$
 
-$W$ is our weight matrix and $b$ is the bias vector. We take an input, which is $\vec{x}$, and
+$$W$$ is our weight matrix and $$b$$ is the bias vector. We take an input, which is $$\vec{x}$$, and
 perform an [affine][3] transformation on it. The input to our forward propagation function can be
 any shape, e.g. `(N, 28, 28, 3)`, this represents N 28x28 images with 3 channels (RGB). However, the
 weight matrix must be of shape `(28*28*3, H)` where H is the hidden unit dimension. Thus, the input
@@ -162,8 +162,8 @@ def forward_prop(self, x, w, b):
 ### Backpropagation
 
 It should be the layer's responsibility to compute local gradients and apply chain rule to them to
-obtain gradient of loss. What are local gradients? They are the gradient of $y$ with respect to
-$x$, $W$, and $b$, as opposed to the gradient of loss (which is global gradient in our context.)
+obtain gradient of loss. What are local gradients? They are the gradient of $$y$$ with respect to
+$$x$$, $$W$$, and $$b$$, as opposed to the gradient of loss (which is global gradient in our context.)
 
 $$
 \frac{\partial y}{\partial W} = x^{T}
@@ -181,7 +181,7 @@ $$
 
 Notice that we are doing tensor calculus, the actual derivation of differentiation isn't very clean.
 It involves constructing a Jacobian matrix because we are basically taking derivative of a vector
-i.e. $y$ with respect to a matrix, i.e. $W$. For more information, please look at
+i.e. $$y$$ with respect to a matrix, i.e. $$W$$. For more information, please look at
 [Prof. Erik Learned-Miller's note][4].
 
 For now, let's look at a simple example to prove the equations above.
@@ -201,7 +201,7 @@ w_{3,1} & w_{3,2}
 \end{bmatrix}
 $$
 
-Thus, $y$ is
+Thus, $$y$$ is
 
 $$
 y = \begin{bmatrix}
@@ -209,7 +209,7 @@ w_{1,1}x_{1} + w_{2,1}x_{2} + w_{3,1}x_{3} & w_{1,2}x_{1} + w_{2,2}x_{2} + w_{3,
 \end{bmatrix}
 $$
 
-Now if we want to take derivative of $y$ with respect to $\vec{x}$, we need to construct a Jacobian.
+Now if we want to take derivative of $$y$$ with respect to $$\vec{x}$$, we need to construct a Jacobian.
 
 $$
 \frac{\partial y}{\partial \vec{x}} = \begin{bmatrix}
@@ -230,23 +230,23 @@ $$
 #### Dimension Analysis
 
 Anyways, my typical lazy approach to the problem is dimension analysis. We know that upstream
-gradient, the gradient of loss with respect to $y$ has the shape `(N, H)`. We know that $x$ has the
-shape `(N, D)`. We are expecting to get the gradient of $y$ with respect to $W$, which should have
-the shape of `(D, H)`. This is translating to the following in code.
+gradient, the gradient of loss with respect to $$y$$ has the shape `(N, H)`. We know that $$x$$ has
+the shape `(N, D)`. We are expecting to get the gradient of $$y$$ with respect to $$W$$, which should
+have the shape of `(D, H)`. This is translating to the following in code.
 
 ```python
 # Applying vector chain rule, as a result, grad_w is the gradient of loss with respect to weight
 grad_w = np.dot(x.T, grad_y)  # (D, N) x (N, H) => (D, H)
 ```
 
-Similarly, we can do the same for gradient of $x$:
+Similarly, we can do the same for gradient of $$x$$:
 
 ```python
 # Applying vector chain rule, as a result, grad_x is the gradient of loss with respect to input
 grad_x = np.dot(grad_y, w.T)
 ```
 
-Since the local gradient of bias is 1, the gradient of loss with respect to $y$ is going to be the
+Since the local gradient of bias is 1, the gradient of loss with respect to $$y$$ is going to be the
 gradient we use for updating biases. But the problem is that `grad_y` has shape `(N, H)` while bias
 vector has shape `(H,)`. this just means that we need to sum up the contributions from N examples.
 
@@ -522,9 +522,9 @@ $$
 $$
 
 **HOW TO INTERPRET**: For any given `ith` input, we expect to receive a score vector. We can call
-it `s` and use $s_{k}$ to represent `s[k]` where `k` is an index into the score vector. Every score
-element is translated into probaility after softmax activation is applied. If the length of score
-vector`len(s)` is `K`, then the lenght of probability vector `len(probs)` is also `K`.
+it `s` and use $$s_{k}$$ to represent `s[k]` where `k` is an index into the score vector. Every
+score element is translated into probaility after softmax activation is applied. If the length of
+score vector`len(s)` is `K`, then the lenght of probability vector `len(probs)` is also `K`.
 
 ```python
 # Here's an example in Python
@@ -564,7 +564,7 @@ $$
 \right \rangle
 $$
 
-For example, let's take derivative of $s_{k}$ when $k \neq y$ using u-substitution.
+For example, let's take derivative of $$s_{k}$$ when $$k \neq y$$ using u-substitution.
 
 $$
 L = -log\left(u\right)
@@ -576,13 +576,13 @@ $$
 u = e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-1}
 $$
 
-Now take derivative with respect to $u$.
+Now take derivative with respect to $$u$$.
 
 $$
 \frac{\partial L}{\partial u} = \frac{-1}{u}
 $$
 
-And take derivative of $u$ with respect to $s_{1}$ using product rule.
+And take derivative of $$u$$ with respect to $$s_{1}$$ using product rule.
 
 $$
 \frac{\partial u}{\partial s_{1}} = 0 + (-1) e^{s_{y}}e^{s_{1}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-2}
@@ -596,7 +596,8 @@ $$
 \frac{e^{s_{1}}}{\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)} = p_{1}
 $$
 
-QED, we have shown that if $y \neq k$, gradient of score at `k` is the probability at `k`. Let's move onto show derivation for when $y = k$. The only difference here is the product rule part.
+QED, we have shown that if $$y \neq k$$, gradient of score at `k` is the probability at `k`. Let's
+move onto show derivation for when $$y = k$$. The only difference here is the product rule part.
 
 $$
 \frac{\partial u}{\partial s_{y}} = e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-1} - e^{s_{y}}e^{s_{y}}\left( e^{s_{0}} + e^{s_{1}} + ... + e^{s_{y}} + ... + e^{s_{K-1}}\right)^{-2}

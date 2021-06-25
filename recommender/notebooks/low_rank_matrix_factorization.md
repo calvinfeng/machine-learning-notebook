@@ -31,7 +31,7 @@ r_{I,0} & ...     & ...      & ... & r_{I, J}
 \end{vmatrix}
 $$
 
-$X$ represents the latent feature matrix for all users in our system. $$\Theta$$ represents the
+$$X$$ represents the latent feature matrix for all users in our system. $$\Theta$$ represents the
 latent feature matrix for all movies in our system. The matrix product of $$X$$ and $$\Theta^{T}$$
 is the model predicated rating.
 
@@ -90,7 +90,7 @@ $$
 \hat{R} = X\Theta^{T}
 $$
 
-Now let's figure out the gradient of $\hat{R}$ with respect to $X$ and $\Theta$:
+Now let's figure out the gradient of $$\hat{R}$$ with respect to $$X$$ and $$\Theta$$:
 
 $$
 \frac{\partial \hat{R}}{\partial X} = \Theta^{T}
