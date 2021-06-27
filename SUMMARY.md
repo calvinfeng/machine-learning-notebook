@@ -29,6 +29,7 @@
   * [Low Rank Matrix Factorization](/recommender/notebooks/low_rank_matrix_factorization.md)
   * [Neural Collaborative Filtering](/recommender/notebooks/neural_collaborative_filtering.md)
   * [Sampling Bias Corrected Neural Modeling for Large Corpus Item Recommendations](/recommender/notebooks/sampling_bias_corrected_neural_modeling_for_large_corpus_item_recommendations.md)
+  * [Real-time Personalization using Embeddings for Search Ranking](/recommender/notebooks/real_time_personalization_using_embeddings_for_search_ranking.md)
 * Natural Language Processing
   * [Word2Vec](/natural_language_processing/word2vec.md)
 * Tutorial
