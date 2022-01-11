@@ -2,16 +2,12 @@
 
 ## Introduction
 
-This is my personal machine learning notebook, used primarily for references and sharing what I
-learned recently.
-
-The source of the content primarily comes from courses I took from Stanford, i.e. CS229, CS231n and
-CS224n and many other research papers, textbooks and online tutorials. There are also notes I took
-from my professional work and personal projects using machine learning.
+This is my personal notebook for documenting knowledge I picked up as I progress through my career
+in machine learning.
 
 ## Python 2 vs Python 3
 
-I wrote majority of the content in Python 2.7 in 2018. Now Python 2.7 is fully deprecated, I am
+I wrote majority of the content in Python 2.7 in 2018. Now Python 2.7 is deprecated, I am
 switching to Python 3.8.
 
 My dependency will be upgraded to
@@ -22,8 +18,6 @@ My dependency will be upgraded to
 Some of my old Tensorflow code probably won't work anymore.
 
 ## Table of Contents
-
-The list is not sorted in any order.
 
 * Clustering
 * Simple Neural Networks
@@ -36,9 +30,7 @@ The list is not sorted in any order.
 * Naive Bayesian Networks
 * Recommender System
 * Transferred Learning
-* Machine in Learning in Production
-
-The list is certainly expanding as I take new classes and learn new things from work.
+* Machine Learning in Production
 
 ## Export Notebook
 

@@ -1,8 +1,11 @@
-*.pyc
-environment/
-.ipynb_checkpoints/
 .vscode/
+.DS_Store
+
+.ipynb_checkpoints/
+*.pyc
+*.pickle
+
+environment/
+.env/
 env/
 envpy3/
-.DS_Store
-*.pickle
