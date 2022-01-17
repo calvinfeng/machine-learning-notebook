@@ -9,3 +9,6 @@ environment/
 .env/
 env/
 envpy3/
+
+
+data/
