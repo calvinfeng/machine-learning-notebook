@@ -1068,7 +1068,7 @@ for i in range(3):
 ```
 
     County: Colorado-Garfield
-    
+
     label {
       key: "closest_cluster"
       value {
@@ -1085,9 +1085,9 @@ for i in range(3):
         }
       }
     }
-    
+
     County: Texas-Shelby
-    
+
     label {
       key: "closest_cluster"
       value {
@@ -1104,9 +1104,9 @@ for i in range(3):
         }
       }
     }
-    
+
     County: Louisiana-Evangeline
-    
+
     label {
       key: "closest_cluster"
       value {

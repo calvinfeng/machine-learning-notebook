@@ -34,11 +34,15 @@ Think of taking derivative of `x.T * A * x` with respect to a vector as an eleme
 
 $$
 \begin{aligned}
-\frac{\partial}{\partial \vec{x}} x^{T}Ax &= \begin{bmatrix} \frac{\partial}{\partial x_{0}} \\ \frac{\partial}{\partial x_{1}} \end{bmatrix} x^{T}Ax \\
-&= \begin{bmatrix}
-2a_{00}x_{0} + a_{01}x_{1} + a_{10}x_{1} \\
-a_{01}x_{0} + a_{10}x_{0} + 2a_{11}x_{1}
-\end{bmatrix}
+  \frac{\partial}{\partial \vec{x}} x^{T}Ax
+  &= \begin{bmatrix}
+    \frac{\partial}{\partial x_{0}} \\
+    \frac{\partial}{\partial x_{1}}
+    \end{bmatrix} x^{T}Ax \\
+  &= \begin{bmatrix}
+    2a_{00}x_{0} + a_{01}x_{1} + a_{10}x_{1} \\
+    a_{01}x_{0} + a_{10}x_{0} + 2a_{11}x_{1}
+    \end{bmatrix}
 \end{aligned}
 $$
 
@@ -46,10 +50,12 @@ Which is equivalent to:
 
 $$
 \begin{bmatrix}
-2a_{00} & a_{01} + a_{10} \\
-a_{01} + a_{10} & 2a_{11}
+  2a_{00} & a_{01} + a_{10} \\
+  a_{01} + a_{10} & 2a_{11}
 \end{bmatrix}
-\begin{bmatrix} x_{0} \\ x_{1} \end{bmatrix}
+\begin{bmatrix}
+x_{0} \\ x_{1}
+\end{bmatrix}
 = \left( A + A^{T} \right) \vec{x}
 $$
 
@@ -358,7 +364,9 @@ $$
 &= \Sigma_{i} f_{i} \begin{bmatrix} W_{i, 0} & W_{i, 1} & W_{i, 2} & ... \end{bmatrix}
 \begin{bmatrix} f_{0} \\ f_{1} \\ f_{2} \\ ... \end{bmatrix} \\\\
 &= \Sigma_{i} f_{i} \begin{bmatrix} W_{i, 0} & W_{i, 1} & W_{i, 2} & ... \end{bmatrix} \vec{f} \\\\
-&= \left(f_{0} \begin{bmatrix} W_{0, 0} & W_{0, 1} & W_{0, 2} & ... \end{bmatrix} + f_{1} \begin{bmatrix} W_{1, 0} & W_{1, 1} & W_{1, 2} & ... \end{bmatrix} + f_{2} \begin{bmatrix} W_{2, 0} & W_{2, 1} & W_{2, 2} & ... \end{bmatrix} + ...\right)\;\vec{f}\\\\
+&= \left(f_{0} \begin{bmatrix} W_{0, 0} & W_{0, 1} & W_{0, 2} & ... \end{bmatrix} +
+f_{1} \begin{bmatrix} W_{1, 0} & W_{1, 1} & W_{1, 2} & ... \end{bmatrix} +
+f_{2} \begin{bmatrix} W_{2, 0} & W_{2, 1} & W_{2, 2} & ... \end{bmatrix} + ...\right)\;\vec{f}\\\\
 &= \begin{bmatrix} f_{0} & f_{1} & f_{2} ... \end{bmatrix}
 \begin{bmatrix} W_{0,0} & W_{0,1} & W_{0,2} & ... \\
 W_{1,0} & W_{1,1} & W_{1,2} & ... \\

@@ -3,19 +3,27 @@
 ## Introduction
 
 This is my personal notebook for documenting knowledge I picked up as I progress through my career
-in machine learning.
+in machine learning. It helps me reinforcing my theoretical understanding of the problems and
+solutions I have seen.
 
 ## Python 2 vs Python 3
 
-I wrote majority of the content in Python 2.7 in 2018. Now Python 2.7 is deprecated, I am
-switching to Python 3.8.
+I wrote majority of the content in Python 2.7 in 2018. Now it's 2022 April, Python 2 has been long
+deprecated, I am switching to Python 3.8 with TensorFlow 2.8.
 
-My dependency will be upgraded to
+My current system setup
 
-- Tensorflow 2.4.1
-- Keras 2.4.3
+- Ubuntu 20.04
+- Tensorflow 2.8.*
+- Python 3.8.*
+- CUDA 11.2
+- cuDNN 8.4
+- Matplotlib 3.5.*
 
-Some of my old Tensorflow code probably won't work anymore.
+Some older code will be running on
+
+- Tensorflow 1.15
+- Python 2.7.*
 
 ## Table of Contents
 

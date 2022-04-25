@@ -4,15 +4,15 @@
 
 ## Supervised Learning
 
-* Overview
-  * [Loss Functions](/overview/loss_function_overview.md)
-  * [Evaluation Metrics](/overview/evaluation_metrics.md)
+* Basic Overview
+  * [Numpy Basics](/basics/numpy_basics.md)
+  * [Loss Functions](/basics/loss_function_overview.md)
+  * [Evaluation Metrics](/basics/evaluation_metrics.md)
 * [Naive Bayes](/naive_bayes/naive_bayes.md)
 * Decision Tree
   * [Random Forest](/random_forest/random_forest.md)
   * [Gradient Boosting](/random_forest_py3/gradient_boosting.md)
 * Neural Network
-  * [Numpy Basics](/neural_networks/numpy_basics.md)
   * [Neural Network](/neural_networks/neural_network.md)
   * [TensorFlow Basics](/neural_networks/tensorflow_basics.md)
 * Convolutional Neural Network
@@ -24,6 +24,8 @@
 * Recurrent Neural Network
   * [Vanilla Recurrent Neural Network](/recurrent_neural_networks/recurrent_neural_networks.md)
   * [LSTM Recurrent Neural Network](/recurrent_neural_networks/long_short_term_memory.md)
+* Search
+  * [Nearest Neighbor Search](/nearest_neighbor/nearest_neighbor_search.md)
 * Recommender
   * [Singular Value Decomposition](/recommender/notebooks/singular_value_decomposition.md)
   * [Low Rank Matrix Factorization](/recommender/notebooks/low_rank_matrix_factorization.md)

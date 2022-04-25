@@ -1,0 +1,7 @@
+tensorflow-gpu==2.8.*
+matplotlib==3.5.*
+jupyterlab
+# Nearnest Neighbors
+faiss-gpu
+hnswlib
+annoy
