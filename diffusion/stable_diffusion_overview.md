@@ -92,7 +92,7 @@ I actually re-frame the problem such that I don't even need a classifier. I trai
 
 We need a U-Net to detect noises from noisy images. This is practically the same ideas the medical imaging use case. It's an image segmentation task at hand.
 
-![U-Net](U-Net.png)
+![U-Net](./assets/U-Net.png)
 
 However, U-Net limits the resolution we can obtain. We either need an extensive amount of resources to pull it off with a pure U-Net or we need to find a way to compress the image into a smaller latent vector. Let's go with the latter; we project an input from image space to latent space using a VAE. Then feed this latent vector input U-Net to perform de-noising, or reverse diffusion.
 
@@ -104,11 +104,11 @@ The VAE is effectively a deep learning compression algorithm. Variational AutoEn
 
 ### AutoEncoder
 
-![AutoEncoder](ae.png)
+![AutoEncoder](./assets/ae.png)
 
 The learning object only aims to minimize the squared difference between input and reconstructed input. This will result in a latent space that is not regularized.
 
-![AE Latent Space](ae-latent-space.png)
+![AE Latent Space](/assets/ae-latent-space.png)
 
 When latent space is not regularized, any latent vector that lands on the "white" spot of the space will return a non-sense reconstructed input. The model expects to see a familiar input and produces a latent vector that exists in the latent space. If it does not see one, it will produce a latent vector that does not exist in the latent space. When this occurs, the output, aka reconstructed input, will be gibberish.
 
@@ -116,11 +116,11 @@ We can solve this by changing the learning objective to use KL divergence and ad
 
 ### Variational AutoEncoder
 
-![Variational AutoEncoder](vae.png)
+![Variational AutoEncoder](./assets/vae.png)
 
 The resultant latent space is then regularized.
 
-![VAE Latent Space](vae-latent-space.png)
+![VAE Latent Space](./assets/vae-latent-space.png)
 
 The encoder in the AE outputs latent vectors. Instead of outputting the vectors in the latent space, the encoder of VAE outputs parameters of a pre-defined distribution in the latent space for every input. The VAE then imposes a constraint on this latent distribution forcing it to be a normal distribution. This constraint makes sure that the latent space is regularized.
 
@@ -130,13 +130,13 @@ We need to teach the model to generate images based on a prompt. We can accompli
 
 In order for the text embedding to resembles an image and vice versa, we need to train two encoders, text encoder and image encoder. These two encoders need to produce latent vectors that are similar in latent space for a given image and text pair. At the same time it needs to perform "contrastive" loss to push negative samples away in latent space. For example, "I am dining", "I am eating dinner", "I am having dinner", should be far away from, "I am working". 
 
-![CLIP Encoder](clip-encoder.png)
+![CLIP Encoder](./assets/clip-encoder.png)
 
 This is known as **Contrastive Language–Image Pre-training** encoder. The end result is that given a text, it can query similar images in the latent space, and vice versa.
 
 ## Put Everything Together
 
-![Stable Diffusion Architecture](stable-diffusion-architecture.png)
+![Stable Diffusion Architecture](./assets/stable-diffusion-architecture.png)
 
 1. We use variational autoencoder to project image into latent space.
 2. We perform diffusion process to add noise to the vector.

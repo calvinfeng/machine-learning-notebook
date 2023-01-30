@@ -174,7 +174,7 @@ pil_images[0]
 
     0it [00:00, ?it/s]
 
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_22_1.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_22_1.png)
     
 ## Variational Autoencoder
 
@@ -218,18 +218,10 @@ Download a demo image
 input_image = Image.open('macaw.jpg').resize((512, 512))
 input_image
 ```
-
-
-
-
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_28_0.png)
-    
-
-
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_28_0.png)
 
 Encode the image into latent space, i.e. going from `(512, 512, 3)` to `(64, 64, 4)`.
-
 
 ```python
 latent = encode_pil_to_latent(input_image)
@@ -254,7 +246,7 @@ for c in range(4):
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_32_0.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_32_0.png)
     
 
 
@@ -270,7 +262,7 @@ decoded_pil
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_34_0.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_34_0.png)
     
 
 
@@ -342,7 +334,7 @@ plt.show()
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_45_0.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_45_0.png)
     
 
 
@@ -362,7 +354,7 @@ decode_latent_to_pil(noisy_latent)[0]
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_47_0.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_47_0.png)
     
 
 
@@ -405,7 +397,7 @@ input_image
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_52_0.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_52_0.png)
     
 
 
@@ -484,7 +476,7 @@ decode_latent_to_pil(noisy_latent)[0]
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_53_1.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_53_1.png)
     
 
 
@@ -920,7 +912,7 @@ generate_with_embeddings(modified_output_embeddings)
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_86_1.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_86_1.png)
     
 
 
@@ -974,7 +966,7 @@ generate_with_embeddings(modified_output_embeddings)
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_90_1.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_90_1.png)
     
 
 
@@ -1004,7 +996,7 @@ generate_with_embeddings(mixed_embeddings)
 
 
     
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_92_1.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_92_1.png)
     
 
 
@@ -1147,6 +1139,7 @@ for i, t in tqdm(enumerate(scheduler.timesteps)):
 from IPython.display import Video
 Video("out.mp4")
 ```
+
 <video src="out.mp4" controls  >
     Your browser does not support the <code>video</code> element.
 </video>
@@ -1313,4 +1306,4 @@ decode_latent_to_pil(latents)[0]
     30 loss: 23.056489944458008
     40 loss: 22.5749454498291
 
-![png](stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_117_2.png)
+![png](./stable_diffusion_deep_dive_files/stable_diffusion_deep_dive_117_2.png)

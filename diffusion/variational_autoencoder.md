@@ -290,7 +290,7 @@ for test_batch in test_dataset.take(1):
 generate_and_save_images(model, 0, test_sample)
 ```
 
-![png](variational_autoencoder_files/variational_autoencoder_22_0.png)
+![png](./variational_autoencoder_files/variational_autoencoder_22_0.png)
 
 ```python
 for epoch in range(1, epochs + 1):
@@ -310,7 +310,7 @@ for epoch in range(1, epochs + 1):
 
     Epoch: 10, Test set ELBO: -156.0026397705078, time elapse for current epoch: 10.945546627044678
 
-![png](variational_autoencoder_files/variational_autoencoder_23_1.png)
+![png](./variational_autoencoder_files/variational_autoencoder_23_1.png)
 
 
 ```python
@@ -325,7 +325,7 @@ plt.axis('off')  # Display images
 
     (-0.5, 399.5, 399.5, -0.5)
 
-![png](variational_autoencoder_files/variational_autoencoder_25_1.png)
+![png](./variational_autoencoder_files/variational_autoencoder_25_1.png)
     
 
 ## Visualize Training Progression
@@ -391,19 +391,9 @@ plt.plot(x, norm.prob(x))
 plt.plot(x, norm.prob(norm.quantile(np.linspace(0., 1., 100))))
 ```
 
-
-
-
     [<matplotlib.lines.Line2D at 0x7f500fb32f10>]
 
-
-
-
-    
-![png](variational_autoencoder_files/variational_autoencoder_33_1.png)
-    
-
-
+![png](./variational_autoencoder_files/variational_autoencoder_33_1.png)
 
 ```python
 def plot_latent_images(model, n, digit_size=28):
@@ -428,18 +418,8 @@ def plot_latent_images(model, n, digit_size=28):
     plt.show()
 ```
 
-
 ```python
 plot_latent_images(model, 20)
 ```
 
-
-    
-![png](variational_autoencoder_files/variational_autoencoder_35_0.png)
-    
-
-
-
-```python
-
-```
+![png](./variational_autoencoder_files/variational_autoencoder_35_0.png)
