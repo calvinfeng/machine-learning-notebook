@@ -20,7 +20,7 @@ $$
 
 This integral requires us to sum over all possible values of `z`. There is no closed form solution of this integral over
 a joint distribution. We have to iterate through all possible values of `z`. It becomes unfeasible if `z` is high
-dimensional vector. Thus, we need a way to approximate this posterior $p(z /mid x)$.
+dimensional vector. Thus, we need a way to approximate this posterior $$p(z \mid x)$$.
 
 ## Inference as Optimization
 
