@@ -1,8 +1,12 @@
 # Approximate Inference
 
-> Many probablistic models are difficult to train because it is difficult to perform inference in them. In the context of deep learning, we usually have a set of visible variables $x$ and a set of latent variables $z$. The challenge of inference refers to the difficult problem of computing posterior $p(z \mid x)$ or taking expectations with respect to it. Such operations are often necessary for tasks like maximum likelihood learning.
+> Many probablistic models are difficult to train because it is difficult to perform inference in them. In the context
+> of deep learning, we usually have a set of visible variables $$x$$ and a set of latent variables $$z$$. The challenge
+> of inference refers to the difficult problem of computing posterior $$p(z \mid x)$$ or taking expectations with respect
+> to it. Such operations are often necessary for tasks like maximum likelihood learning.
 
-In deep learning, the posterior in general means given a visible variable, e.g. an input, what's the probability distribution of the latent variables e.g. hidden layer activation. So we have posterior of the following form.
+In deep learning, the posterior in general means given a visible variable, e.g. an input, what's the probability
+distribution of the latent variables e.g. hidden layer activation. So we have posterior of the following form.
 
 $$
 p(z\mid x) = \frac{p(x \mid z) p(z)}{p(x)} = \frac{p_{joint}(z, x)}{p(x)}
@@ -14,11 +18,14 @@ $$
 p(x) = \int_{-\infty}^{\infty} p(z, x) dz
 $$
 
-This integral requires us to sum over all possible values of `z`. There is no closed form solution of this integral over a joint distribution. We have to iterate through all possible values of `z`. It becomes unfeasible if `z` is high dimensional vector. Thus, we need a way to approximate this posterior $p(z /mid x)$.
+This integral requires us to sum over all possible values of `z`. There is no closed form solution of this integral over
+a joint distribution. We have to iterate through all possible values of `z`. It becomes unfeasible if `z` is high
+dimensional vector. Thus, we need a way to approximate this posterior $p(z /mid x)$.
 
 ## Inference as Optimization
 
-> Many approaches to confronting the problem of difficult inference make use of the observation that exact inference can be described as an optimization problem.
+> Many approaches to confronting the problem of difficult inference make use of the observation that exact inference can
+> be described as an optimization problem.
 
 ### ELBO
 
@@ -28,22 +35,29 @@ Resources
 - [Variational Inference, Part 3](https://www.youtube.com/watch?v=4LuA5m5Hsxc)
 - [Deep Learning Book](https://www.deeplearningbook.org/contents/inference.html)
 
-Assume that we have a probabilistic model with parameters $\theta$. It takes observed input $x$ and generates latent output $z$. We want to update $\theta$ such that it maximizes the likelihood of our model producing the observed data distribution. We will never know the true distribution of our inputs because we are only given the snapshots. For example, if `x`s are pixels of images, it's impossible for us to know the true distribution of pixels across all images. At best, we can only come up with a modeled distribution that aims to maximizes the likelihood of observed data.
+Assume that we have a probabilistic model with parameters $$\theta$$. It takes observed input $$x$$ and generates latent
+output $$z$$. We want to update $$\theta$$ such that it maximizes the likelihood of our model producing the observed
+data distribution. We will never know the true distribution of our inputs because we are only given the snapshots. For
+example, if `x`s are pixels of images, it's impossible for us to know the true distribution of pixels across all images.
+At best, we can only come up with a modeled distribution that aims to maximizes the likelihood of observed data.
 
 $$
 \text{argmax}_\theta \Sigma_{i=1}^{N} log\;p_\theta(x_i)
 $$
 
-It is too difficult to calculate the distribution of $x$ because we need to marginalize out $z$. We can get away by computing a lower bound on $log\;p_\theta(x)$. This bound is called the **evidence lower bound**(ELBO). 
+It is too difficult to calculate the distribution of $$x$$ because we need to marginalize out $$z$$. We can get away by
+computing a lower bound on $$log\;p_\theta(x)$$. This bound is called the **evidence lower bound**(ELBO). 
 
 $$
 \mathbb{L}(x, \theta, q) = log\;p_\theta(x) - D_{KL}\left[\; q(z \mid x) \;\|\; p_\theta(z \mid x) \right] \text{where q is an arbitrary probability distribution over z}
 $$
 
 
-The difference between the $log\;p_\theta(x)$ and $\mathbb{L}$ is the KL divergence term. KL divergence is always non-negative. We can see that lower bound becomes the true distribution if we can minimize the KL divergence term to 0. It goes to zero when $q$ is the same distribution as $p(z \mid x)$.
+The difference between the $$log\;p_\theta(x)$$ and $$\mathbb{L}$$ is the KL divergence term. KL divergence is always
+non-negative. We can see that lower bound becomes the true distribution if we can minimize the KL divergence term to 0.
+It goes to zero when $$q$$ is the same distribution as $$p(z \mid x)$$.
 
-We can re-arrange $\mathbb{L}$ algebraically.
+We can re-arrange $$\mathbb{L}$$ algebraically.
 
 $$
 \begin{align}
@@ -55,13 +69,17 @@ $$
 \end{align}
 $$
 
-Since we have expected value of $log\;p_\theta(x)$ with respect to $h$, we can say this is taking the expected value of a constant. This will cancel out the first term. Here we have the final form.
+Since we have expected value of $$log\;p_\theta(x)$$ with respect to $$h$$, we can say this is taking the expected value
+of a constant. This will cancel out the first term. Here we have the final form.
 
 $$
 \mathbb{L}(x, \theta, q) = - \mathbb{E}_{z\sim q} \left[ log\;q(z \mid x) - log\;p_\theta(x, z)\right]
 $$
 
-The inference can be thought of as the procedure for finding the $q$ that maximizes the lower bound $\mathbb{L}$. Whether the lower bound is tight (close approximation to $p(x)$) or loose, it's dependent on the choice of $q$ we pick. $\mathbb{L}$ is significantly easier to compute when we choose easy distribution $q$, e.g. a Gaussian distribution with mean and variance as the only parameters. 
+The inference can be thought of as the procedure for finding the $$q$$ that maximizes the lower bound $$\mathbb{L}$$.
+Whether the lower bound is tight (close approximation to $$p(x)$$) or loose, it's dependent on the choice of $$q$$ we
+pick. $$\mathbb{L}$$ is significantly easier to compute when we choose easy distribution $$q$$, e.g. a Gaussian
+distribution with mean and variance as the only parameters. 
 
 ## TensorFlow Example
 
@@ -145,11 +163,12 @@ class CVAE(tf.keras.Model):
         return logits
 ```
 
-The VAE has encoder and decoder. The encoder consumes an observable variable `x` vector and produces a latent variable `z` via reparametrization. We choose Gaussian distribution to be our $q(z \mid x)$ distribution.
+The VAE has encoder and decoder. The encoder consumes an observable variable `x` vector and produces a latent variable `z` via reparametrization. We choose Gaussian distribution to be our $$q(z \mid x)$$ distribution.
 
 **Why Reparametrization?**
 
-`z` is supposed to be sampled from a Gaussian distribution but gradient cannot flow through a `tf.random.normal` function. We need to reparametrize `z` such that the gradient is not dependent on `tf.random.normal`.
+`z` is supposed to be sampled from a Gaussian distribution but gradient cannot flow through a `tf.random.normal` function.
+We need to reparametrize `z` such that the gradient is not dependent on `tf.random.normal`.
 
 We can generate a unit Gaussian from `tf.random.normal` and redefine `z` as follows.
 
@@ -157,7 +176,7 @@ $$
 z = \mu + \sigma \cdot \epsilon
 $$
 
-where $\epsilon$ is sampled from a unit Gaussian distribution.
+where $$\epsilon$$ is sampled from a unit Gaussian distribution.
 
 
 ```python
@@ -218,25 +237,29 @@ tf.exp(log_normal_pdf(z, 0., 0.))
 
 ## Loss Explained
 
-Let $x$ be our input and $\hat{x}$ be our output. Our objective is to set $x \approx \hat{x}$
+Let $$x$$ be our input and $$\hat{x}$$ be our output. Our objective is to set $$x \approx \hat{x}$$
 
 ```py
 logp_x_z = -tf.reduce_sum(cross_ent, axis=[1, 2, 3])
 ```
 
-$log\;p(x\mid z)$ is equivalent to asking how far apart is the distribution of output $\hat{x}$ given that we have `z` (which comes from input $x$) away from the distribution of $x$. This is known as the **reconstruction loss**.
+$$log\;p(x\mid z)$$ is equivalent to asking how far apart is the distribution of output $$\hat{x}$$ given that we have
+`z` (which comes from input $$x$$) away from the distribution of $$x$$. This is known as the **reconstruction loss**.
 
 ```py
 log_p_z = log_normal_pdf(z, 0., 0.)
 log_q_z_x = log_normal_pdf(z, mean, logvar)
 ```
 
-These two terms reprsent the **KL divergence**. It asks how far apart is model's encoder output `z` distribution away from the expected Gaussian distribution of `z`. This divergence is expressed in terms of log density ratio which derivation can be found on [Density Ratio Estimation for KL Divergence Minimzation Between Implicit Distributions](https://tiao.io/post/density-ratio-estimation-for-kl-divergence-minimization-between-implicit-distributions/). 
+These two terms reprsent the **KL divergence**. It asks how far apart is model's encoder output `z` distribution away
+from the expected Gaussian distribution of `z`. This divergence is expressed in terms of log density ratio which
+derivation can be found on [Density Ratio Estimation for KL Divergence Minimzation Between Implicit Distributions](https://tiao.io/post/density-ratio-estimation-for-kl-divergence-minimization-between-implicit-distributions/). 
 
-When we set `mean=0` and `logvar=0` for $p(z) = $ `log_normal_pdf(z, 0, 0)`. We will obtain `mean=0` and `var=1` which is saying that `z` is sampled from a standard Gaussian probability density function.
+When we set `mean=0` and `logvar=0` for $$p(z) = $$ `log_normal_pdf(z, 0, 0)`. We will obtain `mean=0` and `var=1` which
+is saying that `z` is sampled from a standard Gaussian probability density function.
 
-If the loss is minimized, model $p(z)$ will match the enforced Gaussian distribution $q(z \mid x)$. We selectively chose a distribution for $q$. This loss minimization is encouraging the model to learn the selected distribution $q$.
-
+If the loss is minimized, model $$p(z)$$ will match the enforced Gaussian distribution $$q(z \mid x)$$. We selectively
+chose a distribution for $q$. This loss minimization is encouraging the model to learn the selected distribution $$q$$.
 
 Another way to write the KL divergence loss without the log normal probability density function is
 

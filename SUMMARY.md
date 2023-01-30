@@ -17,6 +17,7 @@
 * Diffusion
   * [Variational Inference](diffusion/variational_inference.md)
   * [Variational Autoencoder](diffusion/variational_autoencoder.md)
+  * [Stable Diffusion Overview](diffusion/stable_diffusion_overview.md)
   * [Stable Diffusion Deep Dive](/diffusion/stable_diffusion_deep_dive.md)
 * [Naive Bayes](/naive_bayes/naive_bayes.md)
 * Decision Tree
