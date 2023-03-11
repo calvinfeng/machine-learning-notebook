@@ -27,7 +27,7 @@
   * [Word2Vec](/natural_language_processing/word2vec.md)
 * Neural Network
   * [Neural Network](/neural_networks/neural_network.md)
-  * [TensorFlow Basics](/neural_networks/tensorflow_basics.md)
+  * [TensorFlow 1.x Basics (Deprecated)](/neural_networks/tensorflow_basics.md)
 * Search
   * [Nearest Neighbor Search](/nearest_neighbor/nearest_neighbor_search.md)
 * Recommender
