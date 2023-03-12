@@ -15,6 +15,7 @@
   * [Weight Initialization](/convolutional_neural_networks/weight_initialization.md)
   * [Segmentation](/convolutional_neural_networks/segmentation.md)
 * Diffusion
+  * [KL Divergence](diffusion/kl_divergence.md)
   * [Variational Inference](diffusion/variational_inference.md)
   * [Variational Autoencoder](diffusion/variational_autoencoder.md)
   * [Stable Diffusion Overview](diffusion/stable_diffusion_overview.md)
