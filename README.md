@@ -3,18 +3,26 @@
 ## Introduction
 
 This is my personal notebook for documenting knowledge I picked up as I progress through my career
-in machine learning. It helps me reinforcing my theoretical understanding of the problems and
-solutions I have seen.
+in machine learning. I like to write things down to reinforce my understanding of a topic. Although
+I strive to provide the best explanation, I don't do this full time. I don't recommend this
+notebook as a learning resource for beginners.
+
+If you are reading this, I recommend the following resources for you. They are written by people in
+the research communities.
+
+- [Dive Into Deep Learning](https://d2l.ai/index.html)
+- [Deep Learning](https://www.deeplearningbook.org/)
+- [labml.ai Annotated PyTorch Paper Implementations](https://nn.labml.ai/)
 
 ## Python 2 vs Python 3
 
-I wrote majority of the content in Python 2.7 in 2018. Now it's 2022 April, Python 2 has been long
-deprecated, I am switching to Python 3.8 with TensorFlow 2.8.
+I wrote majority of the content in Python 2.7 in 2018. Now it's 2023, Python 2 has been long
+deprecated, I am switching to Python 3.8 with TensorFlow 2.x and PyTorch.
 
 My current system setup
 
 - Ubuntu 20.04
-- Tensorflow 2.8.*
+- Tensorflow 2.8 or PyTorch 1.13 
 - Python 3.8.*
 - CUDA 11.2
 - cuDNN 8.4
@@ -24,6 +32,8 @@ Some older code will be running on
 
 - Tensorflow 1.15
 - Python 2.7.*
+
+PyTorch 2.0 is coming out in March 2023. I will switch to that soon.
 
 ## Table of Contents
 
