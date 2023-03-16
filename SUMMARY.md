@@ -26,9 +26,6 @@
   * [Gradient Boosting](/random_forest_py3/gradient_boosting.md)
 * Natural Language Processing
   * [Word2Vec](/natural_language_processing/word2vec.md)
-* Neural Network
-  * [Neural Network](/neural_networks/neural_network.md)
-  * [TensorFlow 1.x Basics (Deprecated)](/neural_networks/tensorflow_basics.md)
 * Search
   * [Nearest Neighbor Search](/nearest_neighbor/nearest_neighbor_search.md)
 * Recommender
@@ -41,8 +38,6 @@
 * Recurrent Neural Network
   * [Vanilla Recurrent Neural Network](/recurrent_neural_networks/recurrent_neural_networks.md)
   * [LSTM Recurrent Neural Network](/recurrent_neural_networks/long_short_term_memory.md)
-* Old Stuff 
-  * [MNIST Tutorial](/mnist_tutorial/mnist_tutorial.md)
 
 ## Unsupervised Learning
 
