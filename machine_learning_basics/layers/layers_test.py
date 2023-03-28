@@ -4,12 +4,16 @@ from layers.dense import Dense
 from layers.activations import ReLU, Sigmoid
 from layers.utils import numerical_gradient
 
+np.random.seed(1234)
+
 
 def test_dense():
     dense = Dense()
     x = np.random.randn(10, 4)
     w = np.random.randn(4, 8)
-    b = np.random.randn(8,)
+    b = np.random.randn(
+        8,
+    )
     y = dense(x, w, b)
 
     grad_out = np.ones(y.shape)
