@@ -2,8 +2,10 @@
 .DS_Store
 
 .ipynb_checkpoints/
-*.pyc
 *.pickle
+*.pyc
+__pycache__/
+.pytest_cache/
 
 environment/
 .env/
