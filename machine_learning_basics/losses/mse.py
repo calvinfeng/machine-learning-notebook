@@ -15,5 +15,5 @@ class MeanSquaredError:
         if self.y_pred is None:
             raise ValueError("loss function must be forward propagated first")
 
-        grad_y = 2 * (self.y_true - self.y_pred)
+        grad_y = 2 * (self.y_pred - self.y_true)
         return grad_y
