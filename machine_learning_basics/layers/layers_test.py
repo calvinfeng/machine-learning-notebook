@@ -1,10 +1,10 @@
 import numpy as np
 
+np.random.seed(1234)
+
 from layers.dense import Dense
 from layers.activations import ReLU, Sigmoid
-from layers.utils import numerical_gradient
-
-np.random.seed(1234)
+from gradient.utils import numerical_gradient
 
 
 def test_dense():
