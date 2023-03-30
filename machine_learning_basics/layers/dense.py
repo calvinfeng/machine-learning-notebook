@@ -8,7 +8,7 @@ class Dense:
         self.b = None
 
     def __call__(self, x, w, b):
-        """Perform feed-forward propagation
+        """Perform forward propagation
 
         Args:
             x (np.ndarray): Input
@@ -24,10 +24,15 @@ class Dense:
         return np.matmul(x, w) + b
 
     def gradients(self, grad_out):
-        """Perform back-propagation and return gradients with respect to upstream loss function.
+        """Perform back propagation and return gradients with respect to upstream loss function.
 
         Args:
             grad_out (np.ndarray): Gradient of loss with respect to output.
+
+        Returns:
+            np.ndarray: Gradient of loss with respect to x
+            np.ndarray: Gradient of loss with respect to w
+            np.ndarray: Gradient of loss with respect to b
         """
         if self.x is None:
             raise ValueError("layer must be forward propagated first")
