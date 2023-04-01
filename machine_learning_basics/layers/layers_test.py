@@ -4,7 +4,8 @@ np.random.seed(1234)
 
 from layers.dense import Dense
 from layers.conv import Conv2D
-from layers.activations import ReLU, Sigmoid
+from layers.relu import ReLU
+from layers.sigmoid import Sigmoid
 from gradient.utils import numerical_gradient
 
 
