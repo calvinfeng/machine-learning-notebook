@@ -21,7 +21,7 @@ class Dense:
         self.x = x
         self.w = w
         self.b = b
-        return np.matmul(x, w) + b
+        return x @ w + b
 
     def gradients(self, grad_out):
         """Perform back propagation and return gradients with respect to upstream loss function.
@@ -37,7 +37,7 @@ class Dense:
         if self.x is None:
             raise ValueError("layer must be forward propagated first")
         
-        grad_x = np.matmul(grad_out, self.w.T)
-        grad_w = np.matmul(self.x.T, grad_out)
+        grad_x = grad_out @ self.w.T
+        grad_w = self.x.T @ grad_out
         grad_b = np.sum(grad_out, axis=0)
         return grad_x, grad_w, grad_b
