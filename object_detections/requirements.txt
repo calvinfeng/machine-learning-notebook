@@ -40,7 +40,7 @@ prometheus-client==0.12.0
 prompt-toolkit==3.0.23
 ptyprocess==0.7.0
 pycparser==2.21
-Pygments==2.10.0
+Pygments==2.15.0
 pyparsing==3.0.6
 pyrsistent==0.18.0
 python-dateutil==2.8.2
